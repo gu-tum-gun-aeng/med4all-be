@@ -1,4 +1,4 @@
-name: Deno
+name: Deno-pr-checker
 
 on:
   pull_request:
