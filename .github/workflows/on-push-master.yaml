@@ -1,4 +1,4 @@
-name: Deno-testing
+name: Deno-on-push-main
 
 on:
   push:
@@ -58,4 +58,4 @@ jobs:
           password: "${{ secrets.AWS_SECRET_ACCESS_KEY }}"
           registry: 950124295708.dkr.ecr.ap-southeast-1.amazonaws.com
           image_name: ${{ env.IMAGE_NAME }}
-          image_tag: latest, ${{ env.RELEASE_VERSION }}
+          image_tag: latest,${{ env.RELEASE_VERSION }}
