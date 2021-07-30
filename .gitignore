@@ -1,0 +1,6 @@
+.deno_plugins
+.vscode
+.idea
+.env.dev
+.env.prod
+cov_profile

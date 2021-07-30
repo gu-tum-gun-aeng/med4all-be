@@ -1,0 +1,107 @@
+{
+  "$schema": "https://deno.land/x/denon/schema.json",
+  "allow": [
+    "net",
+    "env",
+    "read",
+    "write",
+    "plugin",
+    "run"
+  ],
+  "scripts": {
+    "start": {
+      "cmd": "deno run ./src/app.ts",
+      "unstable": true,
+      "desc": "run server",
+      "env": {
+        "ENV": "dev",
+        "NO_COLOR": "true"
+      },
+      "watch": true,
+      "tsconfig": "tsconfig.json",
+      "lock": "lock.json"
+    },
+    "test": {
+      "cmd": "deno test tests/",
+      "desc": "Perform All Testing.",
+      "unstable": true,
+      "env": {
+        "ENV": "test"
+      },
+      "watch": false,
+      "tsconfig": "tsconfig.json",
+      "lock": "lock.json"
+    },
+    "test:unit": {
+      "cmd": "deno test tests/unit/",
+      "desc": "Perform Unit Testing.",
+      "unstable": true,
+      "env": {
+        "ENV": "test"
+      },
+      "watch": false,
+      "tsconfig": "tsconfig.json",
+      "lock": "lock.json"
+    },
+    "test:integration": {
+      "cmd": "deno test tests/integration/",
+      "desc": "Perform Integration Testing",
+      "unstable": true,
+      "env": {
+        "ENV": "test"
+      },
+      "watch": false,
+      "tsconfig": "tsconfig.json",
+      "lock": "lock.json"
+    },
+    "prod": {
+      "cmd": "deno run app.bundle.js",
+      "desc": "Run the server.",
+      "unstable": true,
+      "env": {
+        "ENV": "production",
+        "NO_COLOR": "true"
+      },
+      "watch": false,
+      "lock": "lock.json"
+    },
+    "fmt": {
+      "cmd": "deno fmt",
+      "desc": "Format the code.",
+      "allow": [],
+      "watch": false
+    },
+    "lint": {
+      "cmd": "deno lint",
+      "desc": "Code linter for JavaScript and TypeScript",
+      "unstable": true,
+      "watch": false,
+      "allow": []
+    }
+  },
+  "logger": {
+    "fullscreen": true,
+    "quiet": false,
+    "debug": true
+  },
+  "watcher": {
+    "interval": 350,
+    "exts": [
+      "js",
+      "jsx",
+      "ts",
+      "tsx",
+      "json"
+    ],
+    "match": [
+      "*.*"
+    ],
+    "skip": [
+      "*/.git/*",
+      "*/.idea/*",
+      "*/.vscode/*",
+      "*/.env/*"
+    ],
+    "legacy": true
+  }
+}

@@ -1,0 +1,169 @@
+swagger: "2.0"
+info:
+  version: "1.0.0"
+  title: "BFF Swagger api"
+  contact:
+    email: "natechawin.s@ava.fund"
+host: "localhost:8000"
+tags:
+- name: "News"
+  description: "Financial news"
+- name: "Home"
+  description: "Home"
+- name: "Research"
+  description: "Financial researches"
+- name: "Hello"
+  description: "Testing with Hello world"
+schemes:
+- "http"
+paths:
+  /v1/hello:
+    get:
+      tags:
+      - "Hello"
+      summary: "Hello world"
+      description: "Get Hello world"
+      operationId: "getHello"
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "successful operation"
+        "401":
+          description: "Unauthorized user"
+  /v1/news:
+    get:
+      tags:
+      - "News"
+      summary: "List news"
+      description: "List top 3 news"
+      operationId: "getNews"
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: object
+            properties:
+              results:
+                type: array
+                items:
+                  $ref: "#/definition/News"
+        "500":
+          description: "Internal error"
+  /v1/research:
+    get:
+      tags:
+      - "Research"
+      summary: "List news"
+      description: "List top 3 news"
+      operationId: "getResearch"
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: object
+            properties:
+              results:
+                type: array
+                items:
+                  $ref: "#/definition/Research"
+        "500":
+          description: "Internal error"
+  /v1/home/sections:
+    get:
+      tags:
+      - "Home"
+      summary: "List home section"
+      description: "List home sections"
+      operationId: "listHomeSections"
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: object
+            properties:
+              results:
+                type: array
+                items:
+                  $ref: "#/definition/Home"
+        "500":
+          description: "Internal error"
+
+definition:
+  News:
+    type: object
+    properties:
+      title:
+        type: string
+      items:
+        type: array
+        items:
+          $ref: "#/definition/NewsItem"
+  Research:
+    type: object
+    properties:
+      title:
+        type: string
+      items:
+        type: array
+        items:
+          $ref: "#/definition/ResearchItem"
+  Home:
+    type: object
+    properties:
+      sections:
+        type: array
+        items:
+          $ref: "#/definition/HomeSection"
+  HomeSection:
+    type: object
+    properties:
+      id: 
+        type: number
+      type: 
+        type: string
+      title: 
+        type: string
+        optional: true
+      url: 
+        type: string
+        optional: true
+  NewsItem:
+    type: object
+    properties:
+      id: 
+        type: number
+      thumbnailUrl: 
+        type: string
+      permalinkUrl: 
+        type: string
+      isNew: 
+        type: boolean
+  ResearchItem:
+    type: object
+    properties:
+      id:
+        type: number
+      thumbnailUrl:
+        type: string
+      symbols:
+        type: array
+        items:
+          type: string
+      title:
+        type: string
+      source:
+        type: string
+      date:
+        type: string
+
+
+externalDocs:
+  description: "Find out more about Swagger"
+  url: "http://swagger.io"

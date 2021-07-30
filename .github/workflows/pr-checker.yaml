@@ -1,0 +1,37 @@
+name: Deno
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: "ubuntu-20.04"
+    steps:
+      - name: Setup repo
+        uses: actions/checkout@v2.3.1
+        with:
+          fetch-depth: 0
+
+      - name: Setup Deno
+        uses: denoland/setup-deno@v1
+        with:
+          deno-version: "1.11.1"
+
+      - name: Verify formatting
+        run: deno fmt --check
+
+      - name: Run linter
+        run: deno lint
+
+      - name: Cache dependencies
+        run: deno cache ./deps.ts
+
+      - name: Run unit tests and coverage
+        run: deno test tests/unit/ --coverage=cov_profile --allow-env --allow-read --allow-run --allow-net
+      
+      - name: Show coverage
+        run: deno coverage cov_profile
+
+      - name: Run integration tests
+        run: deno test tests/integration/ --allow-env --allow-read --allow-run --allow-net

@@ -1,0 +1,19 @@
+version: '3.1'
+
+services:
+  deno:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/usr/src/app
+
+  swagger_ui:
+    container_name: swagger_ui_service
+    image: swaggerapi/swagger-ui
+    ports:
+      - "8105:8080"
+    volumes:
+      - ./api-swagger.yaml:/api-swagger.yaml
+    environment:
+      SWAGGER_JSON: /api-swagger.yaml
