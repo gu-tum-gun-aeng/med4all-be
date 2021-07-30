@@ -28,9 +28,13 @@ jobs:
         run: deno cache ./deps.ts
 
       - name: Run unit tests
+        env:
+          ENV: test
         run: deno test tests/unit --allow-env --allow-read --allow-run --allow-net
 
       - name: Run integration tests
+        env:
+          ENV: test
         run: deno test tests/integration --allow-env --allow-read --allow-run --allow-net
 
       - name: Bump version and push tag
