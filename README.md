@@ -51,5 +51,5 @@ The source code is invalid, as it does not match the expected hash in the lock f
 
 Try to recreate lock.json file by following the instructions below:
 
-  1. Delete lock.json file by command `rm -rf lock.json`
-  2. Run lock_update.sh
+1. Delete lock.json file by command `rm -rf lock.json`
+2. Run lock_update.sh
