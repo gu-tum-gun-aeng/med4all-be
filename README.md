@@ -1,5 +1,7 @@
 # Medicine For All - Backend
 
+![main](https://github.com/gu-tum-gun-aeng/med4all-be/actions/workflows/Deno-on-push-main/badge.svg)
+
 <br>
 
 # Development
