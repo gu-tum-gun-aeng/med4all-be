@@ -1,6 +1,6 @@
 # Medicine For All - Backend
 
-![main](https://github.com/gu-tum-gun-aeng/med4all-be/actions/workflows/Deno-on-push-main/badge.svg)
+![main](https://github.com/gu-tum-gun-aeng/med4all-be/actions/workflows/on-push-master.yaml/badge.svg)
 
 <br>
 
