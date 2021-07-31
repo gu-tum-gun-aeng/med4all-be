@@ -40,3 +40,16 @@ docker-compose up
      deno.path setting in VSCode.
   4. Open the VS Code command palette, and run the Deno:
      `Initialize Workspace Configuration command`.
+
+## Troubleshooting
+
+- If you face the error bellow while trying to compile or run tests
+
+```Error
+The source code is invalid, as it does not match the expected hash in the lock file.
+```
+
+Try to recreate lock.json file by following the instructions below:
+
+  1. Delete lock.json file by command `rm -rf lock.json`
+  2. Run lock_update.sh
