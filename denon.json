@@ -39,7 +39,7 @@
       "env": {
         "ENV": "test"
       },
-      "watch": false,
+      "watch": true,
       "tsconfig": "tsconfig.json",
       "lock": "lock.json"
     },
@@ -94,7 +94,7 @@
       "json"
     ],
     "match": [
-      "*.*"
+      "**/**"
     ],
     "skip": [
       "*/.git/*",
