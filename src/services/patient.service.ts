@@ -5,6 +5,6 @@ export const getPatients = async (): Promise<Patient[]> => {
   const getPatients = async () => await [];
   return await traceWrapper<Patient[]>(
     getPatients,
-    "externalApi",
+    "route",
   );
 };

@@ -1,5 +1,5 @@
 import type { RouterContext } from "../../deps.ts";
-import { getPatients } from "../services/externalApi.service.ts";
+import { getPatients } from "../services/patient.service.ts";
 import { responseOk } from "../utils/response.util.ts";
 
 const PatientController = {
