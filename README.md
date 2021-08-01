@@ -1,37 +1,36 @@
 # Medicine For All - Backend
 
 ![main](https://github.com/gu-tum-gun-aeng/med4all-be/actions/workflows/on-push-master.yaml/badge.svg)
+[![codecov](https://codecov.io/gh/gu-tum-gun-aeng/med4all-be/branch/main/graph/badge.svg?token=EC9IE2G5JM)](https://codecov.io/gh/gu-tum-gun-aeng/med4all-be)
 
-<br>
+## Development
 
-# Development
-
-## run deno locally
+### run deno locally
 
 - install denon using deno.land
 
-```
+```sh
 deno install -qAf --unstable https://deno.land/x/denon/denon.ts
 ```
 
 - start server with hot-reloading
 
-```
+```sh
 denon start
 ```
 
-## run deno locally with swagger
+### run deno locally with swagger
 
 use docker compose to spawn the swagger, then open `localhost:8105`
 
-```
+```sh
 docker-compose up
 ```
 
-## VS code integration
+### VS code integration
 
 - download plugin from
-  https://marketplace.visualstudio.com/items?itemName=denoland.vscode-deno
+  [here](https://marketplace.visualstudio.com/items?itemName=denoland.vscode-deno)
 
 - following the instructions below:
   1. Install the Deno CLI.
@@ -41,7 +40,7 @@ docker-compose up
   4. Open the VS Code command palette, and run the Deno:
      `Initialize Workspace Configuration command`.
 
-## Troubleshooting
+### Troubleshooting
 
 - If you face the error bellow while trying to compile or run tests
 
