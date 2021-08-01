@@ -1,7 +1,7 @@
 import { assertThrowsAsync } from "../../../deps.ts";
 import { assertSpyCall, assertSpyCalls } from "../../../deps.ts";
 import { spy, stub } from "../../../deps.ts";
-import { traceWrapper } from "../../../src/utils/trace.util.ts";
+import { traceWrapperAsync } from "../../../src/utils/trace.util.ts";
 import log from "../../../src/utils/logger.util.ts";
 
 Deno.test(
@@ -10,7 +10,7 @@ Deno.test(
     const stubLogTrace = stub(log, "trace");
     const fx = spy();
     try {
-      await traceWrapper(fx, "log");
+      await traceWrapperAsync(fx, "log");
       assertSpyCalls(fx, 1);
     } finally {
       stubLogTrace.restore();
@@ -21,7 +21,7 @@ Deno.test(
 Deno.test("should call trace 2 times when call trace wrapper", async () => {
   const stubLogTrace = stub(log, "trace");
   try {
-    await traceWrapper(async () => {}, "log");
+    await traceWrapperAsync(async () => {}, "log");
     assertSpyCalls(stubLogTrace, 2);
   } finally {
     stubLogTrace.restore();
@@ -34,7 +34,7 @@ Deno.test(
     const stubLogTrace = stub(log, "trace");
     const testing = async () => {};
     try {
-      await traceWrapper(testing, "test");
+      await traceWrapperAsync(testing, "test");
       assertSpyCall(stubLogTrace, 0, {
         args: [
           "[TESTING - START]",
@@ -54,7 +54,7 @@ Deno.test(
     const stubLogTrace = stub(log, "trace");
     const testing = async () => {};
     try {
-      await traceWrapper(testing, "test", "put-name");
+      await traceWrapperAsync(testing, "test", "put-name");
       assertSpyCall(stubLogTrace, 0, {
         args: [
           "[PUT-NAME - START]",
@@ -76,7 +76,7 @@ Deno.test("should get http object when call with request", async () => {
     headers: undefined,
   } as const;
   try {
-    await traceWrapper(async () => {}, "test", "http-object", mockRequest);
+    await traceWrapperAsync(async () => {}, "test", "http-object", mockRequest);
     assertSpyCall(stubLogTrace, 0, {
       args: [
         "[HTTP-OBJECT - START]",
@@ -105,7 +105,12 @@ Deno.test("should get error when call with request no url", async () => {
   try {
     await assertThrowsAsync(
       async () =>
-        await traceWrapper(async () => {}, "test", "http-object", mockRequest),
+        await traceWrapperAsync(
+          async () => {},
+          "test",
+          "http-object",
+          mockRequest,
+        ),
       TypeError,
       "Invalid URL",
     );

@@ -1,5 +1,5 @@
 import { Context, State } from "../../deps.ts";
-import { traceWrapper } from "../utils/trace.util.ts";
+import { traceWrapperAsync } from "../utils/trace.util.ts";
 
 /**
  *Logger Middleware function
@@ -14,5 +14,5 @@ export const logMiddleware = async (
 ): Promise<void> => {
   const url = ctx.request.url.toString();
   const parsedUrl = new URL(url);
-  await traceWrapper(next, "route", parsedUrl.pathname, ctx.request);
+  await traceWrapperAsync(next, "route", parsedUrl.pathname, ctx.request);
 };

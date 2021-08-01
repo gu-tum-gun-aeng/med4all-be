@@ -36,7 +36,7 @@ const getHttpObjectFromRequest = (request: Partial<Request>) => {
  * @param request Request
  * @returns Promise<void>
  */
-export const traceWrapper = async <T>(
+export const traceWrapperAsync = async <T>(
   // deno-lint-ignore no-explicit-any
   fx: (arg?: any) => Promise<T>,
   context: Context,
