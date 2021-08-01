@@ -1,4 +1,4 @@
-import { Patient } from "../models/patient.model.ts";
+import { Patient } from "../models/patient/patient.model.ts";
 import { traceWrapper } from "../utils/trace.util.ts";
 
 export const getPatients = async (): Promise<Patient[]> => {
