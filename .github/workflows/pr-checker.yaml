@@ -39,3 +39,8 @@ jobs:
         env:
           ENV: test
         run: deno test tests/integration/ --allow-env --allow-read --allow-run --allow-net
+
+      - name: Run codecov
+        uses: codecov/codecov-action@v1
+        with:
+          file: ./coverage.lcov

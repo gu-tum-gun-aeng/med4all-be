@@ -27,15 +27,20 @@ jobs:
       - name: Cache dependencies
         run: deno cache ./deps.ts
 
-      - name: Run unit tests
+      - name: Run unit tests and coverage
         env:
           ENV: test
-        run: deno test tests/unit --allow-env --allow-read --allow-run --allow-net
+        run: deno test tests/unit/ --coverage=cov_profile --allow-env --allow-read --allow-run --allow-net
 
       - name: Run integration tests
         env:
           ENV: test
         run: deno test tests/integration --allow-env --allow-read --allow-run --allow-net
+
+      - name: Run codecov
+        uses: codecov/codecov-action@v1
+        with:
+          file: ./coverage.lcov
 
       - name: Bump version and push tag
         id: tag_version
