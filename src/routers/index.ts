@@ -20,6 +20,7 @@ v1Router.get(
   "/healthz",
   ({ response }: RouterContext) => {
     response.status = Status.OK;
+    response.body = "Ok";
   },
 );
 v1Router.use("/v1", router.routes());
