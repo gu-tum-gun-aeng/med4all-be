@@ -37,6 +37,9 @@ jobs:
           ENV: test
         run: deno test tests/integration --allow-env --allow-read --allow-run --allow-net
 
+      - name: Create coverage report
+        run: deno coverage ./coverage --lcov > coverage.lcov
+
       - name: Run codecov
         uses: codecov/codecov-action@v1
         with:
