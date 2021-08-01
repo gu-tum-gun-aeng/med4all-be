@@ -8,8 +8,7 @@ export const responseOk = (response: Response, results: any) => {
   response.status = 200;
 };
 
-// deno-lint-ignore ban-types
-export type MyResponseBody = object;
+export type MyResponseBody = Record<string, unknown>;
 export type MyResponseBodyFunction = () =>
   | MyResponseBody
   | Promise<MyResponseBody>;
