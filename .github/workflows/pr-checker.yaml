@@ -31,6 +31,9 @@ jobs:
         env:
           ENV: test
         run: deno test tests/unit/ --coverage=cov_profile --allow-env --allow-read --allow-run --allow-net
+
+      - name: Create coverage report
+        run: deno coverage ./cov_profile --lcov > coverage.lcov
       
       - name: Show coverage
         run: deno coverage cov_profile
