@@ -8,8 +8,6 @@
 
 ## run deno locally
 
-- copy `.env.example` to be your environment for ex. `.env.dev`
-
 - install denon using deno.land
 
 ```
