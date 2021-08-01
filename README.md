@@ -19,6 +19,22 @@ deno install -qAf --unstable https://deno.land/x/denon/denon.ts
 denon start
 ```
 
+- run test in directories with hot-reloading
+
+```sh
+denon test [TEST_DIRECTORY...]
+```
+
+- run formatter and linter in watch mode
+
+```sh
+denon check
+```
+
+```sh
+denon lint
+```
+
 ### run deno locally with swagger
 
 use docker compose to spawn the swagger, then open `localhost:8105`
