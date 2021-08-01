@@ -1,28 +1,34 @@
-import PatientRouter from "./patient.router.ts";
+import PatientRouter from "./v1/patient.router.ts";
 import { Router, Status } from "../../deps.ts";
 
 import type { RouterContext } from "../../deps.ts";
 
-const router = new Router();
-
-function useSubRouter(router: Router, subRouter: Router): Router {
+const useSubRouter = (router: Router, subRouter: Router): Router => {
   router.use(subRouter.routes());
   router.use(subRouter.allowedMethods());
 
   return router;
-}
+};
 
-useSubRouter(router, PatientRouter);
+const setRootRouting = (router: Router) => {
+  router.get(
+    "/healthz",
+    ({ response }: RouterContext) => {
+      response.status = Status.OK;
+      response.body = "Ok";
+    },
+  );
+};
 
-const v1Router = new Router();
+const setV1Routing = (router: Router) => {
+  const patientRouter = useSubRouter(new Router(), PatientRouter);
 
-v1Router.get(
-  "/healthz",
-  ({ response }: RouterContext) => {
-    response.status = Status.OK;
-    response.body = "Ok";
-  },
-);
-v1Router.use("/v1", router.routes());
+  router.use("/v1", patientRouter.routes());
+};
 
-export default v1Router;
+const router = new Router();
+
+setRootRouting(router);
+setV1Routing(router);
+
+export default router;
