@@ -26,15 +26,23 @@
       "cmd": "deno test",
       "env": {
         "ENV": "test"
-      }
+      },
+      "watch": false
     },
-    "test:unit": {
+    "test-watch": {
+      "cmd": "deno test",
+      "env": {
+        "ENV": "test"
+      },
+      "watch": true
+    },
+    "test-unit": {
       "cmd": "deno test tests/unit",
       "env": {
         "ENV": "test"
       }
     },
-    "test:integration": {
+    "test-integration": {
       "cmd": "deno test tests/integration",
       "env": {
         "ENV": "test"

@@ -11,9 +11,6 @@ export const getPatients = async (): Promise<Patient[]> => {
   );
 };
 
-export const addPatients = async (name: string, age: number) => {
-  await patients.push({
-    name: name,
-    age: age,
-  });
+export const addPatients = async (patient: Patient) => {
+  await patients.push(patient);
 };
