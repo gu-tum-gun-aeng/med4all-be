@@ -1,5 +1,4 @@
 export interface S3DataInfo {
-    key: string
-    url: string
-  }
-  
+  key: string;
+  url: string;
+}

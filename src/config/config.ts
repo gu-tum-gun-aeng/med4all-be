@@ -1,5 +1,5 @@
 import { dotEnv } from "../../deps.ts";
-import { S3Config } from "./s3.ts"; 
+import { S3Config } from "./s3.ts";
 
 const env: string = Deno.env.toObject().ENV || "dev";
 const envPath: string = `.env/.env.${env}`.toString();
@@ -34,7 +34,7 @@ const config: ({
     secretKey: envConfig.S3_SECRET_KEY,
     bucketName: envConfig.S3_BUCKET_NAME,
     region: envConfig.S3_REGION,
-  }
+  },
 };
 
 export default config;
