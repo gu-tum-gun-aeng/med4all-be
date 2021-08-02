@@ -1,7 +1,7 @@
+import { PoolClient } from "../../deps.ts";
 import { Pool } from "../../deps.ts";
 
 export class PatientRepo {
-
   async getAll(): Promise<unknown[]> {
     const pool = new Pool({
       database: "med4all",
@@ -11,28 +11,22 @@ export class PatientRepo {
     }, 10); // Creates a pool with 10 available connections
     // Run once per server
 
-    const client = await pool.connect() // Run once per query 
+    const client = await pool.connect(); // Run once per query
 
-    const patients = await client.queryArray("SELECT * FROM patient;")
+    const patients = await client.queryArray("SELECT * FROM patient;");
 
-    await client.release() // Run once per query 
-    
-    await pool.end() // Run once per server
+    await client.release(); // Run once per query
 
-    return patients.rows
+    await pool.end(); // Run once per server
+
+    return patients.rows;
   }
-
-}
-
-class Pool {
-
 }
 
 interface DbUtil {}
 
 class DbUtil {
-
-  private pool: Pool
+  private pool: Pool;
 
   constructor() {
     this.pool = new Pool({
@@ -45,15 +39,11 @@ class DbUtil {
 
   // decons
 
-  async getConnection(): Promise<PoolClient> { return null; }
+  // async getConnection(): Promise<PoolClient> { return null; }
 
-  // async 
-
+  // async
 }
 
-class FooBarRepo {
-  dbUtil = ???
-
-  
-
-}
+// class FooBarRepo {
+//   dbUtil = ???
+// }

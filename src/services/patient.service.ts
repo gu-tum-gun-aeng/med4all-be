@@ -6,7 +6,7 @@ import { PatientRepo } from "../utils/db.util.ts";
 const patients: Patient[] = [];
 
 export const getPatients = async (): Promise<Patient[]> => {
-  console.log((await (new PatientRepo()).getAll()).length)
+  //console.log((await (new PatientRepo()).getAll()).length)
 
   return await traceWrapperAsync<Patient[]>(
     async () => await patients,
