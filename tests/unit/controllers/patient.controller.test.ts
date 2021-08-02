@@ -30,29 +30,29 @@ Deno.test("PatientController should throw error intearnal 500 if no image data",
       path: "uploads",
       status: 500,
       type: "internal error",
-    })
+    });
   }
 });
 
 Deno.test("PatientController should get response 200 ok if has image data", async () => {
   const stubS3ServiceUploadFile: any = stub(S3Service, "uploadFileToS3");
-  stubS3ServiceUploadFile.returns.push(["fake-response-from-s3"])
+  stubS3ServiceUploadFile.returns.push(["fake-response-from-s3"]);
 
   const mockContext = testing.createMockContext();
   (mockContext.request.body as any) = () => ({
     type: "form-data",
     value: {
       read: () => ({
-        files: [{ contentType: "image/jpeg" }]
-      })
+        files: [{ contentType: "image/jpeg" }],
+      }),
     },
   });
   try {
     await PatientController.uploadImagesByFormData(mockContext);
     assertEquals(mockContext.response.body, {
-      results: ["fake-response-from-s3"]
-    })
-    assertEquals(mockContext.response.status, 200)
+      results: ["fake-response-from-s3"],
+    });
+    assertEquals(mockContext.response.status, 200);
   } finally {
     stubS3ServiceUploadFile.restore();
   }
