@@ -7,10 +7,3 @@ Deno.test("when call /v1/patients, it should return list of patients", async () 
     .expect(200)
     .expect({ results: [] });
 });
-
-Deno.test("when call /v1/uploads with empty request, it should return empty list", async () => {
-  await superdeno(app.handle.bind(app))
-    .get("/v1/uploads")
-    .expect(200)
-    .expect({ results: [] });
-});
