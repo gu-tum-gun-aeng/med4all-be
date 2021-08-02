@@ -27,6 +27,9 @@ export {
   Client, Pool, PoolClient
 } from "https://deno.land/x/postgres@v0.11.3/mod.ts";
 
+export { v4 } from "https://deno.land/std@0.99.0/uuid/mod.ts";
+export { S3Bucket } from "https://deno.land/x/s3@0.4.1/mod.ts";
+
 /*
 Dev dependencies
 TODO: soon we have to separate this to dev_deps.ts and some how
