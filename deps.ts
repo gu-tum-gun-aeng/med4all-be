@@ -20,6 +20,9 @@ export {
   handlers,
   setup,
 } from "https://deno.land/std@0.99.0/log/mod.ts";
+export { 
+  Client, Pool, PoolClient
+} from "https://deno.land/x/postgres@v0.11.3/mod.ts";
 
 /*
 Dev dependencies
