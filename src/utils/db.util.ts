@@ -1,4 +1,3 @@
-import { PoolClient } from "../../deps.ts";
 import { Pool } from "../../deps.ts";
 
 export class PatientRepo {
@@ -22,28 +21,3 @@ export class PatientRepo {
     return patients.rows;
   }
 }
-
-interface DbUtil {}
-
-class DbUtil {
-  private pool: Pool;
-
-  constructor() {
-    this.pool = new Pool({
-      database: "med4all",
-      hostname: "localhost",
-      port: 5432,
-      user: "catfly",
-    }, 10); // Creates a pool with 10 available connections
-  }
-
-  // decons
-
-  // async getConnection(): Promise<PoolClient> { return null; }
-
-  // async
-}
-
-// class FooBarRepo {
-//   dbUtil = ???
-// }
