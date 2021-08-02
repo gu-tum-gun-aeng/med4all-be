@@ -23,6 +23,9 @@ export {
 } from "https://deno.land/std@0.99.0/log/mod.ts";
 export { v4 } from "https://deno.land/std@0.99.0/uuid/mod.ts";
 export { S3Bucket } from "https://deno.land/x/s3@0.4.1/mod.ts";
+export { 
+  Client, Pool, PoolClient
+} from "https://deno.land/x/postgres@v0.11.3/mod.ts";
 
 /*
 Dev dependencies
