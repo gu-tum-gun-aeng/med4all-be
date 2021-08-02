@@ -18,6 +18,7 @@ const PatientController = {
   },
 
   uploadImages: async (
+    // deno-lint-ignore no-explicit-any
     ctx: any,
     filterContentTypes: string[] = ["image/jpg", "image/jpeg", "image/png"],
     bodyType = "form-data",

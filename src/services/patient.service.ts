@@ -1,6 +1,5 @@
 import { Patient } from "../models/patient/patient.model.ts";
 import { traceWrapperAsync } from "../utils/trace.util.ts";
-import { PatientRepo } from "../utils/db.util.ts";
 
 //Todo: remove this list and add the data to db instead
 const patients: Patient[] = [];

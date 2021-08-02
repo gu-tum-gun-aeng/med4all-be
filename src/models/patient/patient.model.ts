@@ -4,7 +4,11 @@ export interface Patient {
   addressToSendMedicine: Address;
   personalId: string;
   medicalInfo: MedicalInfo;
+
+  // deno-lint-ignore no-explicit-any
   personalIdPicture: any;
+
+  // deno-lint-ignore no-explicit-any
   rapidTestPicture: any;
 }
 
