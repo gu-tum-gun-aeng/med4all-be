@@ -1,7 +1,7 @@
 // deno-lint-ignore-file no-explicit-any
 
 import { assertEquals } from "../../../deps.ts";
-import { spy, stub } from "../../../deps.ts";
+import { stub } from "../../../deps.ts";
 import { testing } from "../../../deps.ts";
 import PatientController from "../../../src/controllers/patient.controller.ts";
 import S3Service from "../../../src/services/s3.service.ts";
