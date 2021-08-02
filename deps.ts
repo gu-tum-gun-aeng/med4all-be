@@ -10,6 +10,8 @@ export {
 } from "https://deno.land/x/oak@v7.6.3/mod.ts";
 export { oakCors } from "https://deno.land/x/cors@v1.2.2/mod.ts";
 export type {
+  BodyFormData,
+  BodyType,
   FormDataFile,
   Response,
   RouterContext,
