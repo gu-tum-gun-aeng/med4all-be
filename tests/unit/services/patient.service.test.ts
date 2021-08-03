@@ -1,5 +1,6 @@
 import { assertEquals } from "../../../deps.ts";
-import { Patient } from "../../../src/models/patient.model.ts";
+import { Patient } from "../../../src/models/patient/patient.model.ts";
+
 
 import * as patientService from "../../../src/services/patient.service.ts";
 
