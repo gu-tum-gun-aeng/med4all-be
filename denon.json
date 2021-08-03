@@ -10,15 +10,15 @@
     "run"
   ],
   "unstable": true,
-  "lock": "lock.json",
+  "lock": "local_lock.json",
   "tsconfig": "tsconfig.json",
 
   "scripts": {
     "start": {
       "cmd": "deno run ./src/app.ts",
-      "desc": "Run the server in dev mode",
+      "desc": "Run the server in local mode",
       "env": {
-        "ENV": "dev",
+        "ENV": "local",
         "NO_COLOR": "true"
       }
     },
