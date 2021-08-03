@@ -1,16 +1,32 @@
-import { create, decode, verify } from "https://deno.land/x/djwt@v2.2/mod.ts";
+import {
+  create,
+  decode,
+  Payload,
+  verify,
+} from "https://deno.land/x/djwt@v2.2/mod.ts";
 
-type BaseRecord = Record<string, number | string>;
+const ISSUER_CLAIM = "med4all";
 
-export interface UserPayload extends BaseRecord {
+export interface TokenInfo {
   id: number;
+  ttlSeconds: number;
 }
 
 export const createUserToken = async (
-  userPayload: UserPayload,
+  tokenInfo: TokenInfo,
   key: string,
-): Promise<string> =>
-  await create({ alg: "HS512", typ: "JWT" }, userPayload, key);
+): Promise<string> => {
+  const issueDateTime = getNumericDateFrom(new Date().getTime());
 
-export const createToken = async (key: string): Promise<string> =>
-  await create({ alg: "HS512", typ: "JWT" }, { foo: "bar" }, key);
+  const payload: Payload = {
+    jti: tokenInfo.id.toString(),
+    iss: ISSUER_CLAIM,
+    ist: issueDateTime,
+    exp: issueDateTime + tokenInfo.ttlSeconds,
+  };
+
+  return await create({ alg: "HS512", typ: "JWT" }, payload, key);
+};
+
+const getNumericDateFrom = (dateTimeMillisecs: number) =>
+  dateTimeMillisecs / 1000;

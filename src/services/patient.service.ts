@@ -18,3 +18,7 @@ export default {
   getPatients,
   //addPatients,
 };
+
+export function patientService(arg0: string, arg1: number) {
+  throw new Error("Function not implemented.");
+}
