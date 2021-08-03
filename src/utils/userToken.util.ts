@@ -12,7 +12,7 @@ export interface TokenInfo {
   ttlSeconds: number;
 }
 
-export const createUserToken = async (
+export const createToken = async (
   tokenInfo: TokenInfo,
   key: string,
 ): Promise<string> => {
