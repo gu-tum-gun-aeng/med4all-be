@@ -1,23 +1,20 @@
-import { Patient } from "../models/patient/patient.model.ts";
 import { traceWrapperAsync } from "../utils/trace.util.ts";
-
-//Todo: remove this list and add the data to db instead
-const patients: Patient[] = [];
+import patientRepository from "../repositories/patient.repository.ts";
+import { Patient } from "../models/patient/patient.model.ts";
 
 export const getPatients = async (): Promise<Patient[]> => {
-  //console.log((await (new PatientRepo()).getAll()).length)
-
   return await traceWrapperAsync<Patient[]>(
-    async () => await patients,
+    () => patientRepository.getAll(),
     "route",
   );
 };
 
-export const addPatients = async (patient: Patient) => {
-  await patients.push(patient);
-};
+// TODO: Implement this to connect to db instead.
+// export const addPatients = async (patient: Patient) => {
+//   return await 0;
+// };
 
 export default {
   getPatients,
-  addPatients,
+  //addPatients,
 };

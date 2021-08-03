@@ -1,23 +1,48 @@
-import { Pool } from "../../deps.ts";
+import {
+  Pool,
+  PoolClient,
+  QueryArrayResult,
+  QueryObjectResult,
+} from "../../deps.ts";
+import configs from "../config/config.ts";
 
-export class PatientRepo {
-  async getAll(): Promise<unknown[]> {
-    const pool = new Pool({
-      database: "med4all",
-      hostname: "localhost",
-      port: 5432,
-      user: "catfly",
-    }, 10); // Creates a pool with 10 available connections
-    // Run once per server
+let pool: Pool;
 
-    const client = await pool.connect(); // Run once per query
+const DbUtil = {
+  initialize: () => {
+    pool = new Pool(
+      configs.dbConnectionString,
+      configs.dbConnectionPool,
+      true,
+    );
+  },
+  queryObject: async <T>(statement: string) => {
+    const client: PoolClient = await pool.connect();
+    let result: QueryObjectResult<T>;
+    try {
+      result = await client.queryObject<T>(
+        statement,
+      );
+      return result.rows;
+    } finally {
+      await client.release();
+    }
+  },
+  queryArray: async <T extends Array<unknown>>(statement: string) => {
+    const client: PoolClient = await pool.connect();
+    let result: QueryArrayResult<T>;
+    try {
+      result = await client.queryArray<T>(
+        statement,
+      );
+      return result.rows;
+    } finally {
+      await client.release();
+    }
+  },
+  terminate: async () => {
+    await pool.end();
+  },
+};
 
-    const patients = await client.queryArray("SELECT * FROM patient;");
-
-    await client.release(); // Run once per query
-
-    await pool.end(); // Run once per server
-
-    return patients.rows;
-  }
-}
+export default DbUtil;

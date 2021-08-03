@@ -1,15 +1,25 @@
 // deno-lint-ignore-file no-explicit-any
-
-import { assertEquals } from "../../../deps.ts";
-import { stub } from "../../../deps.ts";
+import { assertEquals, stub } from "../../../deps.ts";
 import { testing } from "../../../deps.ts";
 import PatientController from "../../../src/controllers/patient.controller.ts";
+import PatientRepository from "../../../src/repositories/patient.repository.ts";
+import { getMockPatients } from "../../mock/patient/patient.mock.ts";
 import S3Service from "../../../src/services/s3.service.ts";
 
-Deno.test("PatientController should response with mock data", async () => {
-  const mockContext = testing.createMockContext();
-  await PatientController.patients(mockContext);
-  assertEquals(mockContext.response.body, { results: [] });
+Deno.test("PatientController.patients should response with mock data", async () => {
+  const expectedResult = await getMockPatients();
+  const stubPatientRepository = stub(
+    PatientRepository,
+    "getAll",
+    [getMockPatients()],
+  );
+  try {
+    const mockContext = testing.createMockContext();
+    await PatientController.patients(mockContext);
+    assertEquals(mockContext.response.body, { results: expectedResult });
+  } finally {
+    stubPatientRepository.restore();
+  }
 });
 
 Deno.test("PatientController should throw error intearnal 500 if no image data", async () => {

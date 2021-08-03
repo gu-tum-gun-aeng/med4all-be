@@ -30,6 +30,10 @@ export {
   Pool,
   PoolClient,
 } from "https://deno.land/x/postgres@v0.11.3/mod.ts";
+export {
+  QueryArrayResult,
+  QueryObjectResult,
+} from "https://deno.land/x/postgres@v0.11.3/query/query.ts";
 
 /*
 Dev dependencies
