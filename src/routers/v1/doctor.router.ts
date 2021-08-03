@@ -1,7 +1,5 @@
-import { Router, Status } from "../../../deps.ts";
+import { Router } from "../../../deps.ts";
 import DoctorController from "../../controllers/doctor.controller.ts";
-
-import type { RouterContext } from "../../../deps.ts";
 
 const router = new Router();
 

@@ -23,10 +23,10 @@ const setRootRouting = (router: Router) => {
 const setV1Routing = (router: Router) => {
   const subRouters = [
     PatientRouter,
-    DoctorRouter
-  ]
+    DoctorRouter,
+  ];
 
-  const allRouter = subRouters.reduce(useSubRouter, new Router())
+  const allRouter = subRouters.reduce(useSubRouter, new Router());
 
   router.use("/v1", allRouter.routes());
 };
