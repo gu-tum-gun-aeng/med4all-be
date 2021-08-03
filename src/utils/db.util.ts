@@ -1,4 +1,4 @@
-import { QueryObjectResult } from "https://deno.land/x/postgres@v0.11.3/query/query.ts";
+import { QueryArrayResult, QueryObjectResult } from "https://deno.land/x/postgres@v0.11.3/query/query.ts";
 import { Pool, PoolClient } from "../../deps.ts";
 import configs from "../config/config.ts";
 
@@ -18,7 +18,20 @@ const DbUtil = {
         await client.release();
       }
      
+    },
+  queryArray: async <T extends Array<unknown>>(statement: string) => {
+    const client: PoolClient = await pool.connect();
+    let result: QueryArrayResult<T>;
+    try {
+      result = await client.queryArray<T>(
+        statement,
+      );
+      return result.rows;
+    } finally {
+      await client.release();
     }
+    
+  }
 }
 
 export default DbUtil;
