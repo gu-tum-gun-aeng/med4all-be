@@ -10,6 +10,7 @@ const ISSUER_CLAIM = "med4all";
 export interface TokenInfo {
   id: number;
   ttlSeconds: number;
+  hashAlgorithm: HashAlgorithm;
 }
 
 export const createToken = async (
@@ -25,8 +26,22 @@ export const createToken = async (
     exp: issueDateTime + tokenInfo.ttlSeconds,
   };
 
-  return await create({ alg: "HS512", typ: "JWT" }, payload, key);
+  return await create(
+    { alg: tokenInfo.hashAlgorithm, typ: "JWT" },
+    payload,
+    key,
+  );
 };
 
 const getNumericDateFrom = (dateTimeMillisecs: number) =>
   dateTimeMillisecs / 1000;
+
+export enum HashAlgorithm {
+  None = "none",
+  HS256 = "HS256",
+  HS512 = "HS512",
+  RS256 = "RS256",
+  RS512 = "RS512",
+  PS256 = "PS256",
+  PS512 = "PS512",
+}
