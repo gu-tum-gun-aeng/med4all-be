@@ -34,7 +34,8 @@ const config: ({
   protocol: envConfig.PROTOCOL,
   url: `${envConfig.PROTOCOL}://${envConfig.HOST}:${envConfig.PORT}`,
   dbConnectionPool: parseInt(envConfig.DB_CONNECTION_POOL),
-  dbConnectionString: `postgresql://${dbUsername}:${dbPassword}@${envConfig.DB_HOST}:${envConfig.DB_PORT}/${envConfig.DB_NAME}?sslmode=prefer`,
+  dbConnectionString:
+    `postgresql://${dbUsername}:${dbPassword}@${envConfig.DB_HOST}:${envConfig.DB_PORT}/${envConfig.DB_NAME}?sslmode=prefer`,
   s3: {
     accessKeyID: envConfig.S3_ACCESS_KEY_ID,
     secretKey: envConfig.S3_SECRET_KEY,

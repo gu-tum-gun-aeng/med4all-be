@@ -1,4 +1,3 @@
-
 import { Patient } from "../models/patient/patient.model.ts";
 import dbUtils from "../utils/db.util.ts";
 

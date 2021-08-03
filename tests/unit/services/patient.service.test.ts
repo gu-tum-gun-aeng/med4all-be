@@ -1,7 +1,6 @@
 import { assertEquals } from "../../../deps.ts";
 import { Patient } from "../../../src/models/patient/patient.model.ts";
 
-
 import * as patientService from "../../../src/services/patient.service.ts";
 
 Deno.test("addPatient should add given patientService and ready to get when given ", async () => {
@@ -16,8 +15,8 @@ Deno.test("addPatient should add given patientService and ready to get when give
     "certificate_picture_url": "http://some-url.com/some-path/some-name.jpg",
     "covid_test_picture_url": "http://some-url.com/some-path/some-name.jpg",
     "medical_info": {
-      "drug_allergy" : ["aspirin"]
-    }
+      "drug_allergy": ["aspirin"],
+    },
   };
 
   await patientService.addPatients(patientToInsert);

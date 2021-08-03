@@ -1,5 +1,9 @@
-
-import { Pool, PoolClient, QueryArrayResult, QueryObjectResult } from "../../deps.ts";
+import {
+  Pool,
+  PoolClient,
+  QueryArrayResult,
+  QueryObjectResult,
+} from "../../deps.ts";
 import configs from "../config/config.ts";
 
 const pool = new Pool(
