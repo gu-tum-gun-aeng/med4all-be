@@ -16,3 +16,8 @@ export const getPatients = async (): Promise<Patient[]> => {
 export const addPatients = async (patient: Patient) => {
   await patients.push(patient);
 };
+
+export default {
+  getPatients,
+  addPatients,
+};
