@@ -4,7 +4,7 @@ import { Patient } from "../models/patient/patient.model.ts";
 
 export const getPatients = async (): Promise<Patient[]> => {
   return await traceWrapperAsync<Patient[]>(
-    async () => await patientRepository.getAll(),
+    () => patientRepository.getAll(),
     "route",
   );
 };

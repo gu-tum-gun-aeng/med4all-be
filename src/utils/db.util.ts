@@ -6,13 +6,16 @@ import {
 } from "../../deps.ts";
 import configs from "../config/config.ts";
 
-const pool = new Pool(
-  configs.dbConnectionString,
-  configs.dbConnectionPool,
-  true,
-);
+let pool: Pool;
 
 const DbUtil = {
+  initialize: () => {
+    pool = new Pool(
+      configs.dbConnectionString,
+      configs.dbConnectionPool,
+      true,
+    );
+  },
   queryObject: async <T>(statement: string) => {
     const client: PoolClient = await pool.connect();
     let result: QueryObjectResult<T>;
@@ -37,6 +40,9 @@ const DbUtil = {
       await client.release();
     }
   },
+  terminate: async () => {
+    await pool.end();
+  }
 };
 
 export default DbUtil;
