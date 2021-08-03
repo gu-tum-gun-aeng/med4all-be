@@ -37,10 +37,10 @@ const config: ({
   dbConnectionString:
     `postgresql://${dbUsername}:${dbPassword}@${envConfig.DB_HOST}:${envConfig.DB_PORT}/${envConfig.DB_NAME}?sslmode=prefer`,
   s3: {
-    accessKeyID: envConfig.S3_ACCESS_KEY_ID,
-    secretKey: envConfig.S3_SECRET_KEY,
-    bucketName: envConfig.S3_BUCKET_NAME,
-    region: envConfig.S3_REGION,
+    accessKeyID: Deno.env.get("S3_ACCESS_KEY_ID") || envConfig.S3_ACCESS_KEY_ID,
+    secretKey: Deno.env.get("S3_SECRET_KEY") || envConfig.S3_SECRET_KEY,
+    bucketName: Deno.env.get("S3_BUCKET_NAME") || envConfig.S3_BUCKET_NAME,
+    region: Deno.env.get("S3_REGION") || envConfig.S3_REGION,
   },
 };
 
