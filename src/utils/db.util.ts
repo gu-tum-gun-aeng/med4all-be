@@ -1,8 +1,5 @@
-import {
-  QueryArrayResult,
-  QueryObjectResult,
-} from "https://deno.land/x/postgres@v0.11.3/query/query.ts";
-import { Pool, PoolClient } from "../../deps.ts";
+
+import { Pool, PoolClient, QueryArrayResult, QueryObjectResult } from "../../deps.ts";
 import configs from "../config/config.ts";
 
 const pool = new Pool(
