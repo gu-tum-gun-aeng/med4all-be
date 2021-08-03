@@ -5,6 +5,7 @@ import {
   verify,
 } from "https://deno.land/x/djwt@v2.2/mod.ts";
 
+// Todo: This should be a config.
 const ISSUER_CLAIM = "med4all";
 
 export interface TokenInfo {
@@ -33,8 +34,29 @@ export const createToken = async (
   );
 };
 
-const getNumericDateFrom = (dateTimeMillisecs: number) =>
+export const isValid = async (
+  token: string,
+  key: string,
+  hashAlgorithm: HashAlgorithm,
+): Promise<boolean> => {
+  try {
+    const payload = await verify(token, key, hashAlgorithm);
+
+    if (payload.exp == null || payload.exp! < currentNumericDate()) {
+      return false;
+    }
+
+    return true;
+  } catch (_) {
+    return false;
+  }
+};
+
+const getNumericDateFrom = (dateTimeMillisecs: number): number =>
   dateTimeMillisecs / 1000;
+
+const currentNumericDate = (): number =>
+  getNumericDateFrom(new Date().getTime());
 
 export enum HashAlgorithm {
   None = "none",
