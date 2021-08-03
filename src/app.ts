@@ -5,7 +5,6 @@ import log from "./utils/logger.util.ts";
 import configs from "./config/config.ts";
 import router from "./routers/index.ts";
 import dbUtils from "./utils/db.util.ts";
-import { Patient } from "./models/patient/patient.model.ts";
 
 const app: Application = new Application();
 const { url, port, logAppName } = configs;
@@ -37,10 +36,10 @@ const setupListener = async (app: Application, url: string, port: number) => {
 };
 
 const setUpDatabaseConnection = (env: string) => {
-  if(env != 'test') {
+  if (env != "test") {
     dbUtils.initialize();
   }
-}
+};
 
 setupMiddleware(app);
 setupRouter(app, router);

@@ -18,5 +18,4 @@ Deno.test("PatientController should response with mock data", async () => {
   } finally {
     stubPatientRepository.restore();
   }
- 
 });

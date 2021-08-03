@@ -5,7 +5,6 @@ import * as patientService from "../../../src/services/patient.service.ts";
 import { getMockPatients } from "../../mock/patient/patient.mock.ts";
 
 Deno.test("addPatient should add given patientService and ready to get when given ", async () => {
-
   const expectedResult = await getMockPatients();
   const stubPatientRepository = stub(
     PatientRepository,
@@ -18,5 +17,4 @@ Deno.test("addPatient should add given patientService and ready to get when give
   } finally {
     stubPatientRepository.restore();
   }
-
 });

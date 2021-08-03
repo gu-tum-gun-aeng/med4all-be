@@ -42,7 +42,7 @@ const DbUtil = {
   },
   terminate: async () => {
     await pool.end();
-  }
+  },
 };
 
 export default DbUtil;

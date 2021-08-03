@@ -10,6 +10,6 @@ export const getPatients = async (): Promise<Patient[]> => {
 };
 
 // TODO: Implement this to connect to db instead.
-export const addPatients = async (patient: Patient) => {
-  return await 0;
-};
+// export const addPatients = async (patient: Patient) => {
+//   return await 0;
+// };
