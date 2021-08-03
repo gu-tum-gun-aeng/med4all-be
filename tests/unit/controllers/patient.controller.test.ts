@@ -4,7 +4,7 @@ import PatientController from "../../../src/controllers/patient.controller.ts";
 import PatientRepository from "../../../src/repositories/patient.repository.ts";
 import { getMockPatients } from "../../mock/patient/patient.mock.ts";
 
-Deno.test("PatientController should response with mock data", async () => {
+Deno.test("PatientController.patients should response with mock data", async () => {
   const expectedResult = await getMockPatients();
   const stubPatientRepository = stub(
     PatientRepository,
