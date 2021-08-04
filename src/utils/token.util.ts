@@ -1,18 +1,13 @@
-import {
-  create,
-  decode,
-  Payload,
-  verify,
-} from "https://deno.land/x/djwt@v2.2/mod.ts";
+import { create, Payload, verify } from "https://deno.land/x/djwt@v2.2/mod.ts";
 
 // Todo: This should be a config.
 const ISSUER_CLAIM = "med4all";
 
-export interface TokenInfo {
+export type TokenInfo = {
   id: number;
   ttlSeconds: number;
   hashAlgorithm: HashAlgorithm;
-}
+};
 
 export const createToken = async (
   tokenInfo: TokenInfo,
