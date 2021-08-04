@@ -45,6 +45,7 @@ to lock.json
 
 export {
   assertEquals,
+  assertThrows,
   assertThrowsAsync,
 } from "https://deno.land/std@0.99.0/testing/asserts.ts";
 export { testing } from "https://deno.land/x/oak@v7.6.3/mod.ts";

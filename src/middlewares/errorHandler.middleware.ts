@@ -38,6 +38,7 @@ export const errorHandler = async (
     }
 
     if (allowEnvs.includes(env)) {
+      console.log(err)
       log.debug(err, `Error::${status}`);
     }
 
