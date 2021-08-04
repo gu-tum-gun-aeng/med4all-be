@@ -27,7 +27,7 @@ jobs:
       - name: Run unit tests and coverage
         env:
           ENV: test
-        run: deno test tests/unit/ --coverage=cov_profile --allow-env --allow-read --allow-run --allow-net
+        run: deno test tests/unit/ --import-map=importmap.json --coverage=cov_profile --allow-env --allow-read --allow-run --allow-net
 
       - name: Create coverage report
         run: deno coverage ./cov_profile --lcov > coverage.lcov
@@ -38,7 +38,7 @@ jobs:
       - name: Run integration tests
         env:
           ENV: test
-        run: deno test tests/integration/ --allow-env --allow-read --allow-run --allow-net
+        run: deno test tests/integration/ --import-map=importmap.json --allow-env --allow-read --allow-run --allow-net
 
       - name: Run codecov
         uses: codecov/codecov-action@v1
