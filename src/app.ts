@@ -43,7 +43,8 @@ const setUpDatabaseConnection = (env: string) => {
 
 setupMiddleware(app);
 setupRouter(app, router);
-await setupListener(app, url, port);
 setUpDatabaseConnection(configs.env);
+await setupListener(app, url, port);
+
 
 export default app;

@@ -3,6 +3,7 @@ import PatientService from "../services/patient.service.ts";
 import S3Service from "../services/s3.service.ts";
 import { responseOk } from "../utils/response.util.ts";
 import { throwError } from "../middlewares/errorHandler.middleware.ts";
+import { CreatePatientRequest } from "../models/request/patient.request.ts";
 
 const PatientController = {
   /**
@@ -13,6 +14,17 @@ const PatientController = {
   patients: async ({ response }: RouterContext): Promise<void> => {
     const patient = await PatientService.getPatients();
     responseOk(response, patient);
+  },
+
+  addPatient: async (
+    ctx: RouterContext,
+  ): Promise<void> => {
+    const createPatientRequest: CreatePatientRequest = await ctx.request.body({
+      type: "json",
+    }).value;
+
+    await PatientService.createPatient(createPatientRequest);
+    responseOk(ctx.response, createPatientRequest);
   },
 
   uploadImagesByFormData: async (

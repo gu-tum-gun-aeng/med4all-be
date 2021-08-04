@@ -6,6 +6,7 @@ import {
   QueryObjectResult,
 } from "../../deps.ts";
 import configs from "../config/config.ts";
+import { throwError } from "../middlewares/errorHandler.middleware.ts";
 
 let pool: Pool;
 
@@ -23,13 +24,25 @@ const DbUtil = {
     );
   },
   queryObject: async <T>(
-    query: Query,
+    sql: string//query: Query,
   ) => {
     const client: PoolClient = await pool.connect();
     let result: QueryObjectResult<T>;
     try {
-      result = await client.queryObject<T>(query.text, query.args);
+      result = await client.queryObject<T>(sql);
       return result.rows;
+    } finally {
+      await client.release();
+    }
+  },
+  queryOneObject: async <T>(
+    sql: string//query: Query,
+  ) => {
+    const client: PoolClient = await pool.connect();
+    let result: QueryObjectResult<T>;
+    try {
+      result = await client.queryObject<T>(sql);
+      return result.rows[0];
     } finally {
       await client.release();
     }
@@ -45,25 +58,22 @@ const DbUtil = {
     }
   },
   excuteTransactional: async <T extends Array<unknown>>(
-    statements: Query[],
+    statements: string[],
   ) => {
     const client: PoolClient = await pool.connect();
-    const transaction = client.createTransaction("transaction");
-    let results: T[][];
+    //const transaction = client.createTransaction("transaction");
     try {
-      await transaction.begin();
-      results = await Promise.all(statements.map(async (statement) => {
-        const result = await client.queryArray<T>(
-          statement.text,
-          statement.args,
-        );
-        return result.rows;
-      }));
-      transaction.commit();
-      return results;
+      //await transaction.begin();
+      for (let index = 0; index < statements.length; index++) {
+        const statement = statements[index];
+        console.log("#########################start:", statement);
+        await client.queryArray<T>(statement);
+        console.log("#########################end:", statement);
+      }
+     // await transaction.commit();
     } catch (e) {
-      await transaction.rollback();
-      throw e;
+     // await transaction.rollback();
+      throwError(e);
     } finally {
       await client.release();
     }
@@ -72,6 +82,7 @@ const DbUtil = {
     await pool.end();
   },
   toQuery: (strings: TemplateStringsArray, ...args: QueryArguments): Query => {
+    console.log("toQuery###########", JSON.stringify(strings), args)
     return {
       text: strings,
       args: args,

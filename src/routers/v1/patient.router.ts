@@ -5,6 +5,7 @@ const router = new Router();
 
 router
   .get("/patients", PatientController.patients)
+  .post("/patient", (ctx) => PatientController.addPatient(ctx))
   .post(
     "/patients/upload",
     (ctx) => PatientController.uploadImagesByFormData(ctx),
