@@ -2,7 +2,7 @@ import type { FormDataFile } from "../../deps.ts";
 import { S3Bucket } from "../../deps.ts";
 import config from "../config/config.ts";
 import { v4 } from "../../deps.ts";
-import { S3DataInfo } from "../models/s3/s3_data_info.model.ts";
+import { S3DataInfo } from "../models/s3/s3DataInfo.model.ts";
 
 const getBucket = (): S3Bucket => {
   return new S3Bucket({
