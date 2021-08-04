@@ -1,11 +1,13 @@
 import {
   Pool,
-  PoolClient,
+  PoolClient
+} from "postgres/mod.ts";
+import {
   QueryArguments,
   QueryArrayResult,
-  QueryObjectResult,
-} from "../../deps.ts";
-import configs from "../config/config.ts";
+  QueryObjectResult
+} from "postgres/query/query.ts"
+import configs from "src/config/config.ts";
 
 let pool: Pool;
 

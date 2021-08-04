@@ -1,8 +1,8 @@
-import type { FormDataFile, RouterContext } from "../../deps.ts";
-import PatientService from "../services/patient.service.ts";
-import S3Service from "../services/s3.service.ts";
-import { responseOk } from "../utils/response.util.ts";
-import { throwError } from "../middlewares/errorHandler.middleware.ts";
+import PatientService from "src/services/patient.service.ts";
+import S3Service from "src/services/s3.service.ts";
+import { responseOk } from "src/utils/response.util.ts";
+import { throwError } from "src/middlewares/errorHandler.middleware.ts";
+import { FormDataFile, RouterContext } from "oak/mod.ts";
 
 const PatientController = {
   /**

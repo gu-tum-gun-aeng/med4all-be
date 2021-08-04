@@ -1,7 +1,6 @@
-import PatientRouter from "./v1/patient.router.ts";
-import { Router, Status } from "../../deps.ts";
+import { Router, RouterContext, Status } from "oak/mod.ts";
 
-import type { RouterContext } from "../../deps.ts";
+import PatientRouter from "src/routers/v1/patient.router.ts";
 
 const useSubRouter = (router: Router, subRouter: Router): Router => {
   router.use(subRouter.routes());

@@ -1,8 +1,9 @@
-import { assertThrowsAsync } from "../../../deps.ts";
-import { assertSpyCall, assertSpyCalls } from "../../../deps.ts";
-import { spy, stub } from "../../../deps.ts";
-import { traceWrapperAsync } from "../../../src/utils/trace.util.ts";
-import log from "../../../src/utils/logger.util.ts";
+import { spy, stub } from "mock/stub.ts";
+import { assertSpyCall, assertSpyCalls } from "mock/asserts.ts";
+import { assertThrowsAsync } from "testing/asserts.ts";
+
+import { traceWrapperAsync } from "src/utils/trace.util.ts";
+import log from "src/utils/logger.util.ts";
 
 Deno.test(
   "should call callback function 1 time when call trace wrapper",

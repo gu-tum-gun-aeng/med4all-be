@@ -1,4 +1,4 @@
-import { create, Payload, verify } from "https://deno.land/x/djwt@v2.2/mod.ts";
+import { create, Payload, verify } from "djwt/mod.ts";
 
 // Todo: This should be a config.
 const ISSUER_CLAIM = "med4all";

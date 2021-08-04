@@ -1,6 +1,7 @@
-import { assertEquals } from "../../../deps.ts";
-import { getHostname, process } from "../../../src/utils/os.util.ts";
-import { stub } from "../../../deps.ts";
+import { stub } from "mock/stub.ts";
+import { assertEquals } from "testing/asserts.ts";
+
+import { getHostname, process } from "src/utils/os.util.ts";
 
 Deno.test("Get host hame", async () => {
   const stubProcessRun = stub(

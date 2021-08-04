@@ -1,10 +1,12 @@
-import { Application, oakCors, Router } from "../deps.ts";
-import { errorHandler } from "./middlewares/errorHandler.middleware.ts";
-import { logMiddleware } from "./middlewares/logger.middlewares.ts";
-import log from "./utils/logger.util.ts";
-import configs from "./config/config.ts";
-import router from "./routers/index.ts";
-import dbUtils from "./utils/db.util.ts";
+import {oakCors} from "cors/mod.ts";
+import {Application, Router} from "oak/mod.ts";
+
+import {errorHandler} from "src/middlewares/errorHandler.middleware.ts";
+import {logMiddleware} from "src/middlewares/logger.middlewares.ts";
+import configs from "src/config/config.ts";
+import router from "src/routers/index.ts";
+import dbUtils from "src/utils/db.util.ts";
+import log from "/src/utils/logger.util.ts";
 
 const app: Application = new Application();
 const { url, port, logAppName } = configs;

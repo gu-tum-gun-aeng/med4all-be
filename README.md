@@ -13,6 +13,12 @@
 deno install -qAf --unstable https://deno.land/x/denon/denon.ts
 ```
 
+- update deno dependency cache
+
+```sh
+denon cache-reload
+```
+
 - start server with hot-reloading
 
 ```sh

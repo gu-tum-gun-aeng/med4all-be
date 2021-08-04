@@ -1,10 +1,12 @@
 // deno-lint-ignore-file no-explicit-any
-import { assertEquals, stub } from "../../../deps.ts";
-import { testing } from "../../../deps.ts";
-import PatientController from "../../../src/controllers/patient.controller.ts";
-import PatientRepository from "../../../src/dataaccess/database/patient.repository.ts";
-import { getMockPatients } from "../../mock/patient/patient.mock.ts";
-import S3Service from "../../../src/services/s3.service.ts";
+import { stub } from "mock/stub.ts";
+import { testing } from "oak/mod.ts";
+import { assertEquals } from "testing/asserts.ts";
+
+import PatientController from "src/controllers/patient.controller.ts";
+import PatientRepository from "src/dataaccess/database/patient.repository.ts";
+import { getMockPatients } from "tests/mock/patient/patient.mock.ts";
+import S3Service from "src/services/s3.service.ts";
 
 Deno.test("PatientController.patients should response with mock data", async () => {
   const expectedResult = await getMockPatients();

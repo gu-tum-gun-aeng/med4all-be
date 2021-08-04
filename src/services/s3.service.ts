@@ -1,8 +1,8 @@
-import type { FormDataFile } from "../../deps.ts";
-import { S3Bucket } from "../../deps.ts";
-import config from "../config/config.ts";
-import { v4 } from "../../deps.ts";
-import { S3DataInfo } from "../models/s3/s3DataInfo.model.ts";
+import { v4 } from "uuid/mod.ts";
+import { FormDataFile } from "oak/mod.ts";
+import { S3Bucket } from "s3/mod.ts";
+import config from "src/config/config.ts";
+import { S3DataInfo } from "src/models/s3/s3DataInfo.model.ts";
 
 const getBucket = (): S3Bucket => {
   return new S3Bucket({

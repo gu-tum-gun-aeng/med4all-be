@@ -1,5 +1,5 @@
-import { Patient } from "../../models/patient/patient.model.ts";
-import dbUtils from "../../utils/db.util.ts";
+import { Patient } from "src/models/patient/patient.model.ts";
+import dbUtils from "src/utils/db.util.ts";
 
 const PatientRepository = {
   getAll: async () => {

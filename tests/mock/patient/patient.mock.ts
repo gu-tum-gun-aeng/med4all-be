@@ -1,4 +1,4 @@
-import { Patient } from "../../../src/models/patient/patient.model.ts";
+import { Patient } from "src/models/patient/patient.model.ts";
 
 export const getMockPatients = async (): Promise<Patient[]> => {
   return await [

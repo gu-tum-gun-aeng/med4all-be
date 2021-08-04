@@ -1,5 +1,5 @@
-import { dotEnv } from "../../deps.ts";
-import { S3Config } from "./s3.ts";
+import { config as dotEnv } from "dotenv/mod.ts"
+import { S3Config } from "src/config/s3.ts";
 
 const env: string = Deno.env.toObject().ENV || "dev";
 const envPath: string = `.env/.env.${env}`.toString();

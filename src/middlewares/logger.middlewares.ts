@@ -1,5 +1,5 @@
-import { Context, State } from "../../deps.ts";
-import { traceWrapperAsync } from "../utils/trace.util.ts";
+import { Context, State } from "oak/mod.ts";
+import { traceWrapperAsync } from "src/utils/trace.util.ts";
 
 /**
  *Logger Middleware function

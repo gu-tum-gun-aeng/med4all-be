@@ -10,8 +10,8 @@
     "run"
   ],
   "unstable": true,
-  "lock": "local_lock.json",
   "tsconfig": "tsconfig.json",
+  "importmap": "importmap.json",
 
   "scripts": {
     "start": {

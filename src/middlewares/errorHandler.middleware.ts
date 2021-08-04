@@ -1,7 +1,7 @@
-import configs from "../config/config.ts";
-import { Context, isHttpError, State, Status } from "../../deps.ts";
-import type { Err } from "../types/interface.type.ts";
-import log from "../utils/logger.util.ts";
+import { Context, isHttpError, State, Status } from "oak/mod.ts";
+import configs from "src/config/config.ts";
+import type { Err } from "src/types/interface.type.ts";
+import log from "src/utils/logger.util.ts";
 
 /**
  * Throws Error with provided params

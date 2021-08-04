@@ -1,4 +1,4 @@
-import { Response, Status } from "../../deps.ts";
+import { Response, Status } from "oak/mod.ts";
 
 // deno-lint-ignore no-explicit-any
 export const responseOk = (response: Response, results: any) => {

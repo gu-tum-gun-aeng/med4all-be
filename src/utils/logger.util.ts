@@ -1,7 +1,7 @@
-import { getLogger, handlers, setup } from "../../deps.ts";
-import configs from "../config/config.ts";
-import { getHostname } from "../utils/os.util.ts";
-import { HttpRequestTracing } from "../types/http.type.ts";
+import configs from "src/config/config.ts";
+import { getHostname } from "src/utils/os.util.ts";
+import { HttpRequestTracing } from "src/types/http.type.ts";
+import { getLogger, handlers, setup } from "log/mod.ts";
 
 const { env, logAppName } = configs;
 const hostname = await getHostname();

@@ -1,0 +1,20 @@
+{
+  "imports": {
+    "/": "./",
+    "./": "./",
+    "src/": "./src/",
+    "tests/": "./tests/",
+    "oak/": "https://deno.land/x/oak@v7.6.3/",
+    "cors/": "https://deno.land/x/cors@v1.2.2/",
+    "dotenv/": "https://deno.land/x/dotenv@v2.0.0/",
+    "log/": "https://deno.land/std@0.99.0/log/",
+    "uuid/": "https://deno.land/std@0.99.0/uuid/",
+    "s3/": "https://deno.land/x/s3@0.4.1/",
+    "postgres/": "https://deno.land/x/postgres@v0.11.3/",
+    "djwt/": "https://deno.land/x/djwt@v2.2/",
+
+    "testing/": "https://deno.land/std@0.99.0/testing/",
+    "superdeno/": "https://deno.land/x/superdeno@4.2.1/",
+    "mock/": "https://deno.land/x/mock@v0.10.0/"
+  }
+}

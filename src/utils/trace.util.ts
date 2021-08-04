@@ -1,7 +1,7 @@
-import { Request } from "../../deps.ts";
-import log from "../utils/logger.util.ts";
-import { HttpRequestTracing } from "../types/http.type.ts";
-import configs from "../config/config.ts";
+import { Request } from "oak/mod.ts";
+import log from "src/utils/logger.util.ts";
+import { HttpRequestTracing } from "src/types/http.type.ts";
+import configs from "src/config/config.ts";
 
 type Context = "route" | "externalApi" | "log" | "test";
 const { logAppName } = configs;

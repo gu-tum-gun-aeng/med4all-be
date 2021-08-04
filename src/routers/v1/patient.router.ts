@@ -1,5 +1,5 @@
-import { Router } from "../../../deps.ts";
-import PatientController from "../../controllers/patient.controller.ts";
+import { Router } from "oak/mod.ts";
+import PatientController from "src/controllers/patient.controller.ts";
 
 const router = new Router();
 
