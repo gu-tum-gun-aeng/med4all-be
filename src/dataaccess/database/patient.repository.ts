@@ -6,6 +6,7 @@ import {
 import { CreatePatientRequest } from "../../models/request/patient.request.ts";
 import dbUtils from "../../utils/db.util.ts";
 import config from "../../config/config.ts";
+import { throwError } from "../../middlewares/errorHandler.middleware.ts";
 
 const PatientRepository = {
   getAll: async () => {
@@ -25,12 +26,13 @@ const PatientRepository = {
         patient
     `;
   },
-  createPatient: async (patient: CreatePatientRequest) => {
+  createPatient: async (patient: CreatePatientRequest): Promise<number> => {
     const currentDateTime = format(new Date(), "yyyy-MM-dd HH:mm:ss.SSS");
     const patientId = await dbUtils.queryOneObject<{ value: BigInt }>`
       SELECT nextval('patient_patient_id_seq') as value
     `;
-    const insertPatient = dbUtils.toQuery`
+    if (patientId) {
+      const insertPatient = dbUtils.toQuery`
       INSERT INTO public.patient(
         patient_id,
         name, 
@@ -64,7 +66,7 @@ const PatientRepository = {
           ${config.appName},
           ${currentDateTime})
     `;
-    const insertAddress = dbUtils.toQuery`
+      const insertAddress = dbUtils.toQuery`
       INSERT INTO public.address(
         patient_id, 
         address, 
@@ -87,11 +89,22 @@ const PatientRepository = {
           ${currentDateTime}
           )
     `;
-    await dbUtils.excuteTransactional([
-      insertPatient,
-      insertAddress,
-    ]);
-    return Number(patientId.value);
+      await dbUtils.excuteTransactional([
+        insertPatient,
+        insertAddress,
+      ]);
+      return Number(patientId.value);
+    } else {
+      throwError({
+        status: 500,
+        name: "cannot get patientId",
+        path: "patient",
+        param: "",
+        message: "cannot get patientId",
+        type: "internal error",
+      });
+    }
+    return 0;
   },
 };
 
