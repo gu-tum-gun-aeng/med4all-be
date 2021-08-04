@@ -35,6 +35,7 @@ export {
   QueryObjectResult,
 } from "https://deno.land/x/postgres@v0.11.3/query/query.ts";
 export type { QueryArguments } from "https://deno.land/x/postgres@v0.11.3/query/query.ts";
+export { create, decode, verify } from "https://deno.land/x/djwt@v2.2/mod.ts";
 /*
 Dev dependencies
 TODO: soon we have to separate this to dev_deps.ts and some how
@@ -55,4 +56,3 @@ export {
   assertSpyCalls,
 } from "https://deno.land/x/mock@v0.10.0/asserts.ts";
 
-export { create, decode, verify } from "https://deno.land/x/djwt@v2.2/mod.ts";
