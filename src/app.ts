@@ -1,8 +1,8 @@
-import {oakCors} from "cors/mod.ts";
-import {Application, Router} from "oak/mod.ts";
+import { oakCors } from "cors/mod.ts";
+import { Application, Router } from "oak/mod.ts";
 
-import {errorHandler} from "src/middlewares/errorHandler.middleware.ts";
-import {logMiddleware} from "src/middlewares/logger.middlewares.ts";
+import { errorHandler } from "src/middlewares/errorHandler.middleware.ts";
+import { logMiddleware } from "src/middlewares/logger.middlewares.ts";
 import configs from "src/config/config.ts";
 import router from "src/routers/index.ts";
 import dbUtils from "src/utils/db.util.ts";
