@@ -1,5 +1,5 @@
 import { assertEquals, stub } from "../../../deps.ts";
-import patientRepository from "../../../src/repositories/patient.repository.ts";
+import patientRepository from "../../../src/dataaccess/database/patient.repository.ts";
 import DbUtil from "../../../src/utils/db.util.ts";
 import { getMockPatients } from "../../mock/patient/patient.mock.ts";
 

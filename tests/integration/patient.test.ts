@@ -1,6 +1,6 @@
 import { superdeno } from "../../deps.ts";
 import app from "../../src/app.ts";
-import PatientRepository from "../../src/repositories/patient.repository.ts";
+import PatientRepository from "../../src/dataaccess/database/patient.repository.ts";
 import { stub } from "../../deps.ts";
 import { getMockPatients } from "../mock/patient/patient.mock.ts";
 Deno.test("when call /v1/patients, it should return list of patients", async () => {

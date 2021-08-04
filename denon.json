@@ -74,7 +74,8 @@
       "cmd": "deno lint --quiet",
       "lock": null,
       "tsconfig": null,
-      "allow": []
+      "allow": [],
+      "watch": false
     }
   },
   "logger": {

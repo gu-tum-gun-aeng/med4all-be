@@ -2,7 +2,7 @@
 import { assertEquals, stub } from "../../../deps.ts";
 import { testing } from "../../../deps.ts";
 import PatientController from "../../../src/controllers/patient.controller.ts";
-import PatientRepository from "../../../src/repositories/patient.repository.ts";
+import PatientRepository from "../../../src/dataaccess/database/patient.repository.ts";
 import { getMockPatients } from "../../mock/patient/patient.mock.ts";
 import S3Service from "../../../src/services/s3.service.ts";
 

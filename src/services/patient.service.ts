@@ -1,5 +1,5 @@
 import { traceWrapperAsync } from "../utils/trace.util.ts";
-import patientRepository from "../repositories/patient.repository.ts";
+import patientRepository from "../dataaccess/database/patient.repository.ts";
 import { Patient } from "../models/patient/patient.model.ts";
 
 export const getPatients = async (): Promise<Patient[]> => {
