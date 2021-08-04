@@ -55,4 +55,3 @@ export {
   assertSpyCall,
   assertSpyCalls,
 } from "https://deno.land/x/mock@v0.10.0/asserts.ts";
-
