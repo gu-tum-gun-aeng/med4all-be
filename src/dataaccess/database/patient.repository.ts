@@ -85,7 +85,7 @@ const PatientRepository = {
           ${currentDateTime}
           )
     `;
-    const result = await dbUtils.excuteTransactional([
+    dbUtils.excuteTransactional([
       insertPatient,
       insertAddress,
     ]);
