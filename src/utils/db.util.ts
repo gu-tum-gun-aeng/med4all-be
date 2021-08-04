@@ -6,6 +6,7 @@ import {
   QueryObjectResult,
 } from "../../deps.ts";
 import configs from "../config/config.ts";
+import { throwError } from "../middlewares/errorHandler.middleware.ts";
 
 let pool: Pool;
 
@@ -23,22 +24,39 @@ const DbUtil = {
     );
   },
   queryObject: async <T>(
-    query: Query,
+    sql: TemplateStringsArray,
+    ...args: QueryArguments
   ) => {
     const client: PoolClient = await pool.connect();
     let result: QueryObjectResult<T>;
     try {
-      result = await client.queryObject<T>(query.text, query.args);
+      result = await client.queryObject<T>(sql, ...args);
       return result.rows;
     } finally {
       await client.release();
     }
   },
-  queryArray: async <T extends Array<unknown>>(query: Query) => {
+  queryOneObject: async <T>(
+    sql: TemplateStringsArray,
+    ...args: QueryArguments
+  ): Promise<T | undefined> => {
+    const client: PoolClient = await pool.connect();
+    let result: QueryObjectResult<T>;
+    try {
+      result = await client.queryObject<T>(sql, ...args);
+      return result.rows.length > 0 ? result.rows[0] : undefined;
+    } finally {
+      await client.release();
+    }
+  },
+  queryArray: async <T extends Array<unknown>>(
+    sql: TemplateStringsArray,
+    ...args: QueryArguments
+  ) => {
     const client: PoolClient = await pool.connect();
     let result: QueryArrayResult<T>;
     try {
-      result = await client.queryArray<T>(query.text, query.args);
+      result = await client.queryArray<T>(sql, ...args);
       return result.rows;
     } finally {
       await client.release();
@@ -49,21 +67,20 @@ const DbUtil = {
   ) => {
     const client: PoolClient = await pool.connect();
     const transaction = client.createTransaction("transaction");
-    let results: T[][];
     try {
       await transaction.begin();
-      results = await Promise.all(statements.map(async (statement) => {
-        const result = await client.queryArray<T>(
+      const results = Promise.all(statements.map(async (statement) => {
+        const result = await transaction.queryArray<T>(
           statement.text,
-          statement.args,
+          ...statement.args,
         );
         return result.rows;
       }));
-      transaction.commit();
+      await transaction.commit();
       return results;
     } catch (e) {
       await transaction.rollback();
-      throw e;
+      throwError(e);
     } finally {
       await client.release();
     }
