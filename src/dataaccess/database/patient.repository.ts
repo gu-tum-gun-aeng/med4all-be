@@ -1,13 +1,15 @@
 import { format } from "../../../deps.ts";
-import { DiagnosticStatus, Patient } from "../../models/patient/patient.model.ts";
+import {
+  DiagnosticStatus,
+  Patient,
+} from "../../models/patient/patient.model.ts";
 import { CreatePatientRequest } from "../../models/request/patient.request.ts";
 import dbUtils from "../../utils/db.util.ts";
 import config from "../../config/config.ts";
 
 const PatientRepository = {
   getAll: async () => {
-    return await dbUtils.queryObject<Patient>
-      `SELECT 
+    return await dbUtils.queryObject<Patient>`SELECT 
         patient_id, 
         name, 
         age, 
@@ -25,8 +27,8 @@ const PatientRepository = {
   },
   createPatient: async (patient: CreatePatientRequest) => {
     const currentDateTime = format(new Date(), "yyyy-MM-dd HH:mm:ss.SSS");
-    const patientId = await dbUtils.queryOneObject<{ nextval: number }>`
-      SELECT nextval('patient_patient_id_seq')
+    const patientId = await dbUtils.queryOneObject<{ value: BigInt }>`
+      SELECT nextval('patient_patient_id_seq') as value
     `;
     const insertPatient = dbUtils.toQuery`
       INSERT INTO public.patient(
@@ -46,7 +48,7 @@ const PatientRepository = {
         created_by,
         created_when)
         VALUES (
-          ${patientId.nextval},
+          ${patientId.value},
           ${patient.patientName},
           ${patient.age},
           ${patient.weightKg},
@@ -74,7 +76,7 @@ const PatientRepository = {
         created_by, 
         created_when)
         VALUES (
-          ${patientId.nextval}, 
+          ${patientId.value}, 
           ${patient.address}, 
           ${patient.district}, 
           ${patient.province}, 
@@ -85,11 +87,11 @@ const PatientRepository = {
           ${currentDateTime}
           )
     `;
-    dbUtils.excuteTransactional([
+    await dbUtils.excuteTransactional([
       insertPatient,
       insertAddress,
     ]);
-    return;
+    return Number(patientId.value);
   },
 };
 

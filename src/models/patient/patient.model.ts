@@ -17,5 +17,5 @@ type Json = Record<string, unknown>;
 export enum DiagnosticStatus {
   Waiting = 0,
   Diagnosing = 1,
-  Completed = 2
+  Completed = 2,
 }

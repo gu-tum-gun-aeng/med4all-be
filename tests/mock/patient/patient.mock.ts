@@ -15,6 +15,7 @@ export const getMockPatients = async (): Promise<Patient[]> => {
       "medical_info": {
         "drug_allergy": ["aspirin"],
       },
+      "diagnostic_status_id": 1,
     },
     {
       "patient_id": 67890,
@@ -27,6 +28,7 @@ export const getMockPatients = async (): Promise<Patient[]> => {
       "certificate_picture_url": "http://some-url.com/some-path/some-name.jpg",
       "covid_test_picture_url": "http://some-url.com/some-path/some-name.jpg",
       "medical_info": {},
+      "diagnostic_status_id": 1,
     },
   ];
 };

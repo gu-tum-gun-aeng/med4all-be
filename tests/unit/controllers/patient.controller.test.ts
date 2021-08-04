@@ -5,6 +5,7 @@ import PatientController from "../../../src/controllers/patient.controller.ts";
 import PatientRepository from "../../../src/dataaccess/database/patient.repository.ts";
 import { getMockPatients } from "../../mock/patient/patient.mock.ts";
 import S3Service from "../../../src/services/s3.service.ts";
+import { patientRequestMock } from "../../mock/patient/patient.request.mock.ts";
 
 Deno.test("PatientController.patients should response with mock data", async () => {
   const expectedResult = await getMockPatients();
@@ -17,6 +18,30 @@ Deno.test("PatientController.patients should response with mock data", async () 
     const mockContext = testing.createMockContext();
     await PatientController.patients(mockContext);
     assertEquals(mockContext.response.body, { results: expectedResult });
+  } finally {
+    stubPatientRepository.restore();
+  }
+});
+
+Deno.test("PatientController.createPatient should response with expected patientId", async () => {
+  const expectedResult = 10;
+  const stubPatientRepository = stub(
+    PatientRepository,
+    "createPatient",
+    [await expectedResult],
+  );
+  try {
+    const mockContext = testing.createMockContext();
+    (mockContext.request.body as any) = () => ({
+      type: "json",
+      value: {
+        read: () => patientRequestMock,
+      },
+    });
+    await PatientController.createPatient(mockContext);
+    assertEquals(mockContext.response.body, {
+      results: { patientId: expectedResult },
+    });
   } finally {
     stubPatientRepository.restore();
   }

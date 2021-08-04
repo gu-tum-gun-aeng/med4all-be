@@ -4,6 +4,7 @@ import S3Service from "../services/s3.service.ts";
 import { responseOk } from "../utils/response.util.ts";
 import { throwError } from "../middlewares/errorHandler.middleware.ts";
 import { CreatePatientRequest } from "../models/request/patient.request.ts";
+import { CreatePatientResponse } from "../models/response/patient.response.ts";
 
 const PatientController = {
   /**
@@ -16,15 +17,18 @@ const PatientController = {
     responseOk(response, patient);
   },
 
-  addPatient: async (
+  createPatient: async (
     ctx: RouterContext,
   ): Promise<void> => {
     const createPatientRequest: CreatePatientRequest = await ctx.request.body({
       type: "json",
     }).value;
 
-    await PatientService.createPatient(createPatientRequest);
-    responseOk(ctx.response, createPatientRequest);
+    const patientId = await PatientService.createPatient(createPatientRequest);
+    const response: CreatePatientResponse = {
+      patientId,
+    };
+    responseOk(ctx.response, response);
   },
 
   uploadImagesByFormData: async (

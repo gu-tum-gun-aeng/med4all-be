@@ -46,5 +46,4 @@ setupRouter(app, router);
 setUpDatabaseConnection(configs.env);
 await setupListener(app, url, port);
 
-
 export default app;

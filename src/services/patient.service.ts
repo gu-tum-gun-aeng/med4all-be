@@ -11,22 +11,13 @@ export const getPatients = async (): Promise<Patient[]> => {
 };
 
 export const createPatient = async (patient: CreatePatientRequest) => {
-  return await traceWrapperAsync<unknown>(
+  return await traceWrapperAsync<number>(
     () => patientRepository.createPatient(patient),
     "route",
   );
 };
 
-// TODO: Implement this to connect to db instead.
-// export const addPatients = async (patient: Patient) => {
-//   return await 0;
-// };
-
 export default {
   getPatients,
   createPatient,
 };
-
-// export function patientService(arg0: string, arg1: number) {
-//   throw new Error("Function not implemented.");
-// }

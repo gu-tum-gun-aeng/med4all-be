@@ -39,12 +39,12 @@ const DbUtil = {
   queryOneObject: async <T>(
     sql: TemplateStringsArray,
     ...args: QueryArguments
-  ) => {
+  ): Promise<T | undefined> => {
     const client: PoolClient = await pool.connect();
     let result: QueryObjectResult<T>;
     try {
       result = await client.queryObject<T>(sql, ...args);
-      return result.rows[0];
+      return result.rows.length > 0 ? result.rows[0] : undefined;
     } finally {
       await client.release();
     }
@@ -70,7 +70,10 @@ const DbUtil = {
     try {
       await transaction.begin();
       const results = Promise.all(statements.map(async (statement) => {
-        const result = await transaction.queryArray<T>(statement.text, ...statement.args);
+        const result = await transaction.queryArray<T>(
+          statement.text,
+          ...statement.args,
+        );
         return result.rows;
       }));
       await transaction.commit();

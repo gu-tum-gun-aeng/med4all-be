@@ -10,6 +10,6 @@ export type CreatePatientRequest = {
   address: string;
   district: string;
   province: string;
-  zipCode: string;
+  zipCode: number;
   medicalInfo?: Record<string, unknown>;
 };
