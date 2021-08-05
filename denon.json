@@ -57,12 +57,6 @@
         "NO_COLOR": "true"
       }
     },
-    "check": {
-      "cmd": "deno fmt --check --quiet",
-      "lock": null,
-      "tsconfig": null,
-      "allow": []
-    },
     "fmt": {
       "cmd": "deno fmt --quiet",
       "lock": null,
@@ -76,7 +70,38 @@
       "tsconfig": null,
       "allow": [],
       "watch": false
-    }
+    },
+    "check": [
+      {
+        "cmd": "deno fmt --quiet",
+        "lock": null,
+        "tsconfig": null,
+        "allow": [],
+        "watch": false
+      },
+      {
+        "cmd": "deno lint --quiet",
+        "lock": null,
+        "tsconfig": null,
+        "allow": [],
+        "watch": false
+      },
+      {
+        "cmd": "deno test",
+        "env": {
+          "ENV": "test"
+        },
+        "allow": [
+          "net",
+          "env",
+          "read",
+          "write",
+          "plugin",
+          "run"
+        ],
+        "watch": false
+      }
+    ]
   },
   "logger": {
     "fullscreen": true,
