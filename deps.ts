@@ -36,9 +36,10 @@ export {
 } from "https://deno.land/x/postgres@v0.11.3/query/query.ts";
 export type { QueryArguments } from "https://deno.land/x/postgres@v0.11.3/query/query.ts";
 export { create, decode, verify } from "https://deno.land/x/djwt@v2.2/mod.ts";
+export { format, parse } from "https://deno.land/std@0.103.0/datetime/mod.ts";
+export * from "https://deno.land/x/validasaur@v0.15.0/mod.ts";
 import ky from "https://cdn.skypack.dev/ky?dts";
 export { ky };
-export { format, parse } from "https://deno.land/std@0.103.0/datetime/mod.ts";
 /*
 Dev dependencies
 TODO: soon we have to separate this to dev_deps.ts and some how
@@ -48,7 +49,6 @@ to lock.json
 
 export {
   assertEquals,
-  assertThrows,
   assertThrowsAsync,
 } from "https://deno.land/std@0.99.0/testing/asserts.ts";
 export { testing } from "https://deno.land/x/oak@v7.6.3/mod.ts";

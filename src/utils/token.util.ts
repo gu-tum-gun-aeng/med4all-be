@@ -37,20 +37,24 @@ export const isValid = async (
   try {
     const payload = await verify(token, key, hashAlgorithm);
 
-    if (payload.exp == null || payload.exp! < currentNumericDate()) {
-      return false;
-    }
-
-    return true;
+    return isNotExpired(payload) && isIssuerValid(payload);
   } catch (_) {
     return false;
   }
+
+  function isNotExpired(payload: Payload): boolean {
+    return payload.exp != null && payload.exp! >= currentNumericDate();
+  }
+
+  function isIssuerValid(payload: Payload): boolean {
+    return payload.iss != null && payload.iss! == ISSUER_CLAIM;
+  }
 };
 
-const getNumericDateFrom = (dateTimeMillisecs: number): number =>
+export const getNumericDateFrom = (dateTimeMillisecs: number): number =>
   dateTimeMillisecs / 1000;
 
-const currentNumericDate = (): number =>
+export const currentNumericDate = (): number =>
   getNumericDateFrom(new Date().getTime());
 
 export enum HashAlgorithm {

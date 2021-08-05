@@ -5,6 +5,10 @@ import PatientController from "../../../src/controllers/patient.controller.ts";
 import PatientRepository from "../../../src/dataaccess/database/patient.repository.ts";
 import { getMockPatients } from "../../mock/patient/patient.mock.ts";
 import S3Service from "../../../src/services/s3.service.ts";
+import {
+  patientRequestMock,
+  patientRequestMockInvalid,
+} from "../../mock/patient/patient.request.mock.ts";
 
 Deno.test("PatientController.patients should response with mock data", async () => {
   const expectedResult = await getMockPatients();
@@ -19,6 +23,50 @@ Deno.test("PatientController.patients should response with mock data", async () 
     assertEquals(mockContext.response.body, { results: expectedResult });
   } finally {
     stubPatientRepository.restore();
+  }
+});
+
+Deno.test("PatientController.createPatient should response with expected patientId", async () => {
+  const expectedResult = 10;
+  const stubPatientRepository = stub(
+    PatientRepository,
+    "createPatient",
+    [await expectedResult],
+  );
+  try {
+    const mockContext = testing.createMockContext();
+    (mockContext.request.body as any) = () => ({
+      type: "json",
+      value: patientRequestMock,
+    });
+    await PatientController.createPatient(mockContext);
+    assertEquals(mockContext.response.body, {
+      results: { patientId: expectedResult },
+    });
+  } finally {
+    stubPatientRepository.restore();
+  }
+});
+
+Deno.test("PatientController.createPatient should response error if request is not valid", async () => {
+  const mockContext = testing.createMockContext();
+  (mockContext.request.body as any) = () => ({
+    type: "json",
+    value: patientRequestMockInvalid,
+  });
+  try {
+    await PatientController.createPatient(mockContext);
+  } catch (error) {
+    assertEquals(error, {
+      status: 500,
+      name: "validation errors",
+      path: "createPatient",
+      param:
+        '{"patientName":"","age":0,"weightKg":50,"heightCm":160,"certificateId":"0000000000000","certificateTypeId":1,"certificatePictureUrl":"some-string-without-http","covidTestPictureUrl":"http://some-url.com/some-path/some-file.jpg","address":"address 1","district":"district1","province":"bangkok","zipCode":102200,"medicalInfo":{"value1":["test"],"value2":true}}',
+      message:
+        '{"patientName":{"required":"patientName is required"},"age":{"minNumber":"age cannot be lower than 15"},"certificatePictureUrl":{"startsWith":"certificatePictureUrl is invalid"},"zipCode":{"maxNumber":"zipCode cannot be higher than 99999"}}',
+      type: "internal error",
+    });
   }
 });
 

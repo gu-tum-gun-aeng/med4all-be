@@ -3,6 +3,12 @@ import PatientService from "../services/patient.service.ts";
 import S3Service from "../services/s3.service.ts";
 import { responseOk } from "../utils/response.util.ts";
 import { throwError } from "../middlewares/errorHandler.middleware.ts";
+import {
+  CreatePatientRequest,
+  CreatePatientRequestValidationSchema,
+} from "../models/request/patient.request.ts";
+import { CreatePatientResponse } from "../models/response/patient.response.ts";
+import { validateAndThrow } from "../utils/validation.util.ts";
 
 const PatientController = {
   /**
@@ -13,6 +19,26 @@ const PatientController = {
   patients: async ({ response }: RouterContext): Promise<void> => {
     const patient = await PatientService.getPatients();
     responseOk(response, patient);
+  },
+
+  createPatient: async (
+    ctx: RouterContext,
+  ): Promise<void> => {
+    const createPatientRequest: CreatePatientRequest = await ctx.request.body({
+      type: "json",
+    }).value;
+
+    await validateAndThrow(
+      createPatientRequest,
+      CreatePatientRequestValidationSchema,
+      "createPatient",
+    );
+
+    const patientId = await PatientService.createPatient(createPatientRequest);
+    const response: CreatePatientResponse = {
+      patientId,
+    };
+    responseOk(ctx.response, response);
   },
 
   uploadImagesByFormData: async (
