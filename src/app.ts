@@ -7,26 +7,40 @@ import router from "./routers/index.ts";
 import dbUtils from "./utils/db.util.ts";
 
 const app: Application = new Application();
-const { url, port, logAppName } = configs;
+await start(app);
 
-const setupMiddleware = (app: Application) => {
+async function start(app: Application) {
+  const { url, port, logAppName } = configs;
+
+  setupMiddleware(app);
+  setupRouter(app, router);
+  setUpDatabaseConnection(configs.env);
+  await setupListener(app, url, port, logAppName);
+}
+
+function setupMiddleware(app: Application) {
   app.use(oakCors());
   app.use(logMiddleware);
   app.use(errorHandler);
-};
+}
 
-const setupRouter = (app: Application, router: Router) => {
+function setupRouter(app: Application, router: Router) {
   app.use(router.routes());
   app.use(router.allowedMethods());
-};
+}
 
-const setUpDatabaseConnection = (env: string) => {
+function setUpDatabaseConnection(env: string) {
   if (env != "test") {
     dbUtils.initialize();
   }
-};
+}
 
-const setupListener = async (app: Application, url: string, port: number) => {
+async function setupListener(
+  app: Application,
+  url: string,
+  port: number,
+  logAppName: string,
+) {
   app.addEventListener("listen", () => {
     // FIXME: Change back to log.info
     console.log(
@@ -39,11 +53,6 @@ const setupListener = async (app: Application, url: string, port: number) => {
     log.info(`start server`, `${logAppName}::start_server`);
     await app.listen({ port });
   }
-};
-
-setupMiddleware(app);
-setupRouter(app, router);
-setUpDatabaseConnection(configs.env);
-await setupListener(app, url, port);
+}
 
 export default app;
