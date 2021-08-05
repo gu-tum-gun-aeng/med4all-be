@@ -1,5 +1,6 @@
 import DoctorRepository from "../dataaccess/database/doctor.repository.ts";
 import NexmoService from "../dataaccess/service/nexmo/nexmo.service.ts";
+import { throwError } from "../middlewares/errorHandler.middleware.ts";
 import { traceWrapperAsync } from "../utils/trace.util.ts";
 
 const requestOtp = async (
@@ -7,14 +8,30 @@ const requestOtp = async (
 ): Promise<string> => {
   const isDoctor = await DoctorRepository.isDoctor(telephoneWithCountryCode);
   // TODO: properly declare custom error type
-  if (!isDoctor) throw new Error("You are not the doctor.");
+  if (!isDoctor) {
+    throwError({
+      status: 400,
+      name: "You are not the doctor.",
+      path: "doctors/otp/request",
+      param: "",
+      message: "You are not the doctor.",
+      type: "bad request"
+    })
+  }
 
   const requestOtpResult = await NexmoService.requestOtp(
     telephoneWithCountryCode,
   );
 
   if (requestOtpResult.status != "0") {
-    throw new Error(requestOtpResult.error_text);
+    throwError({
+      status: 400,
+      name: requestOtpResult.error_text!,
+      path: "doctors/otp/request",
+      param: "",
+      message: requestOtpResult.error_text!,
+      type: "bad request"
+    })
   }
 
   return traceWrapperAsync<string>(
@@ -26,7 +43,14 @@ const requestOtp = async (
 const verifyOtp = async (requestId: string, code: string): Promise<boolean> => {
   const requestOtpResult = await NexmoService.verifyOtp(code, requestId);
   if (requestOtpResult.status != "0") {
-    throw new Error(requestOtpResult.error_text);
+    throwError({
+      status: 400,
+      name: requestOtpResult.error_text!,
+      path: "doctors/otp/verify",
+      param: "",
+      message: requestOtpResult.error_text!,
+      type: "bad request"
+    })
   }
 
   return traceWrapperAsync<boolean>(
@@ -40,11 +64,18 @@ const getIdByTelephone = async (
 ): Promise<number> => {
   const id = await DoctorRepository.getIdByTelePhone(telephoneWithCountryCode);
   if (!id) {
-    throw new Error("You are not the doctor.");
+    throwError({
+      status: 400,
+      name: "You are not the doctor.",
+      path: "doctors/otp/request",
+      param: "",
+      message: "You are not the doctor.",
+      type: "bad request"
+    })
   }
 
   return traceWrapperAsync<number>(
-    () => Promise.resolve(id),
+    () => Promise.resolve(id!),
     "route",
   );
 };
