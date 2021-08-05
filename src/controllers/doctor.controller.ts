@@ -57,14 +57,14 @@ const DoctorController = {
 
     const tokenInfo: tokenUtil.TokenInfo = {
       id: id.toString(),
-      ttlSeconds: config.djwt.ttlSeconds,
+      ttlSeconds: config.jwt.ttlSeconds,
       hashAlgorithm: USE_HASH_ALG,
     };
 
-    const token = await tokenUtil.createToken(tokenInfo, config.djwt.key);
+    const token = await tokenUtil.createToken(tokenInfo, config.jwt.key);
     const payload = await tokenUtil.verify(
       token,
-      config.djwt.key,
+      config.jwt.key,
       USE_HASH_ALG,
     );
 
