@@ -9,7 +9,7 @@ const NexmoService = {
     telephoneWithCountryCode: string,
   ): Promise<RequestOtpResponse> => {
     const url =
-      `${config.nexmo.requesOtptUrl}?api_key=${config.nexmo.apiKey}&api_secret=${config.nexmo.ApiSecret}&number=${telephoneWithCountryCode}&brand=${config.nexmo.brand}`;
+      `${config.nexmo.requesOtptUrl}?api_key=${config.nexmo.apiKey}&api_secret=${config.nexmo.ApiSecret}&number=${telephoneWithCountryCode}&brand=${config.nexmo.brand}&workflow_id=${config.nexmo.workflowId}&pin_expiry=${config.nexmo.pinExpire}`;
     return get(url).json<RequestOtpResponse>();
   },
   verifyOtp: (code: string, requestId: string): Promise<VerifyOtpResponse> => {
