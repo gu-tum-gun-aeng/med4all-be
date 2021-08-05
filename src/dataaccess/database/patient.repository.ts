@@ -6,6 +6,7 @@ import { CreatePatientRequest } from "../../models/patient/request/patient.reque
 import dbUtils from "../../utils/db.util.ts";
 import config from "../../config/config.ts";
 import { throwError } from "../../middlewares/errorHandler.middleware.ts";
+import { CreatePatientResultRequest } from "../../models/patient/request/patientResult.request.ts";
 
 const PatientRepository = {
   getAll: async () => {
@@ -63,7 +64,7 @@ const PatientRepository = {
       SELECT nextval('patient_patient_id_seq') as value
     `;
     if (patientId) {
-      const insertPatient = dbUtils.toQuery`
+      const insertPatientSQL = dbUtils.toQuery`
       INSERT INTO public.patient(
         patient_id,
         name, 
@@ -97,7 +98,7 @@ const PatientRepository = {
           ${config.appName},
           ${currentDateTime})
     `;
-      const insertAddress = dbUtils.toQuery`
+      const insertAddressSQL = dbUtils.toQuery`
       INSERT INTO public.address(
         patient_id, 
         address, 
@@ -121,8 +122,8 @@ const PatientRepository = {
           )
     `;
       await dbUtils.excuteTransactional([
-        insertPatient,
-        insertAddress,
+        insertPatientSQL,
+        insertAddressSQL,
       ]);
       result = Number(patientId.value);
     } else {
@@ -136,6 +137,49 @@ const PatientRepository = {
       });
     }
     return result;
+  },
+
+  createPatientResultAndUpdatePaientDiagnosticStatus: async (
+    patientResult: CreatePatientResultRequest,
+  ): Promise<void> => {
+    const currentDateTime = (new Date()).toISOString();
+    const insertPatientResultSQL = dbUtils.toQuery`
+    INSERT INTO 
+      patient_result (
+        patient_id, 
+        doctor_id, 
+        is_approved, 
+        reject_reason_id, 
+        remark, 
+        last_modified_by, 
+        last_modified_when, 
+        created_by, 
+        created_when
+      )
+    VALUES (
+      ${patientResult.patientId},
+      ${patientResult.doctorId},
+      ${patientResult.isApproved},
+      ${patientResult.rejectReasonId},
+      ${patientResult.remark},
+      ${patientResult.doctorId},
+      ${currentDateTime},
+      ${patientResult.doctorId},
+      ${currentDateTime}
+    );
+    `;
+
+    const updatePatientDiagnosticStatusSQL = dbUtils.toQuery`
+      UPDATE patient
+      SET diagnostic_status_id = ${DiagnosticStatus.Completed}
+      WHERE patient_id = ${patientResult.patientId};
+    `;
+
+    await dbUtils.excuteTransactional([
+      insertPatientResultSQL,
+      updatePatientDiagnosticStatusSQL,
+    ]);
+    return;
   },
 };
 
