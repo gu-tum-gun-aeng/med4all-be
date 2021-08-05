@@ -31,7 +31,7 @@ const DoctorController = {
     const id = await DoctorService.getIdByTelephone(telephone);
 
     const tokenInfo: tokenUtil.TokenInfo = {
-      id: id,
+      id: id.toString(),
       ttlSeconds: config.djwt.ttlSeconds,
       hashAlgorithm: tokenUtil.HashAlgorithm.HS512,
     };

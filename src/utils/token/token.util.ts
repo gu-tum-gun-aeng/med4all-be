@@ -1,11 +1,11 @@
-import { create, Payload, verify } from "https://deno.land/x/djwt@v2.2/mod.ts";
+import * as jwt from "https://deno.land/x/djwt@v2.2/mod.ts";
 import { currentSecondsSinceEpoch } from "../date.util.ts";
 
 // Todo: This should be a config.
 const ISSUER_CLAIM = "med4all";
 
 export type TokenInfo = {
-  id: number;
+  id: string;
   ttlSeconds: number;
   hashAlgorithm: HashAlgorithm;
 };
@@ -16,14 +16,14 @@ export const createToken = async (
 ): Promise<string> => {
   const issueDateTime = currentSecondsSinceEpoch();
 
-  const payload: Payload = {
-    jti: tokenInfo.id.toString(),
+  const payload: jwt.Payload = {
+    jti: tokenInfo.id,
     iss: ISSUER_CLAIM,
     ist: issueDateTime,
     exp: issueDateTime + tokenInfo.ttlSeconds,
   };
 
-  return await create(
+  return await jwt.create(
     { alg: tokenInfo.hashAlgorithm, typ: "JWT" },
     payload,
     key,
@@ -31,24 +31,31 @@ export const createToken = async (
 };
 
 export const isValid = async (
+  idToVerify: string,
   token: string,
   key: string,
   hashAlgorithm: HashAlgorithm,
 ): Promise<boolean> => {
   try {
-    const payload = await verify(token, key, hashAlgorithm);
+    const payload = await jwt.verify(token, key, hashAlgorithm);
 
-    return isNotExpired(payload) && isIssuerValid(payload);
+    return isIssuerValid(payload) &&
+      isNotExpired(payload) &&
+      isJtiMatch(payload, idToVerify);
   } catch (_) {
     return false;
   }
 
-  function isNotExpired(payload: Payload): boolean {
-    return payload.exp != null && payload.exp! >= currentSecondsSinceEpoch();
+  function isIssuerValid(payload: jwt.Payload): boolean {
+    return payload.iss !== null && payload.iss! === ISSUER_CLAIM;
   }
 
-  function isIssuerValid(payload: Payload): boolean {
-    return payload.iss != null && payload.iss! == ISSUER_CLAIM;
+  function isNotExpired(payload: jwt.Payload): boolean {
+    return payload.exp !== null && payload.exp! >= currentSecondsSinceEpoch();
+  }
+
+  function isJtiMatch(payload: jwt.Payload, idToVerify: string): boolean {
+    return payload.jti !== null && payload.jti! === idToVerify;
   }
 };
 
