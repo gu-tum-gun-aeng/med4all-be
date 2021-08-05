@@ -10,6 +10,13 @@ export const getPatients = async (): Promise<Patient[]> => {
   );
 };
 
+export const getFirstPendingPatient = async () => {
+  return await traceWrapperAsync<Patient | undefined>(
+    () => patientRepository.getFirstPendingPatient(),
+    "route",
+  );
+};
+
 export const createPatient = async (patient: CreatePatientRequest) => {
   return await traceWrapperAsync<number>(
     () => patientRepository.createPatient(patient),
@@ -19,5 +26,6 @@ export const createPatient = async (patient: CreatePatientRequest) => {
 
 export default {
   getPatients,
+  getFirstPendingPatient,
   createPatient,
 };

@@ -21,6 +21,13 @@ const PatientController = {
     responseOk(response, patient);
   },
 
+  getFirstPendingPatient: async (
+    { response }: RouterContext,
+  ): Promise<void> => {
+    const patient = await PatientService.getFirstPendingPatient();
+    responseOk(response, patient);
+  },
+
   createPatient: async (
     ctx: RouterContext,
   ): Promise<void> => {

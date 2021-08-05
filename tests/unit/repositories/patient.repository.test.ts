@@ -1,8 +1,11 @@
-import { assertEquals, stub } from "../../../deps.ts";
+import { assertEquals, assertSpyCalls, stub } from "../../../deps.ts";
 import patientRepository from "../../../src/dataaccess/database/patient.repository.ts";
 import DbUtil from "../../../src/utils/db.util.ts";
 import { Query } from "../../../src/utils/db.util.ts";
-import { getMockPatients } from "../../mock/patient/patient.mock.ts";
+import {
+  getMockOnePatient,
+  getMockPatients,
+} from "../../mock/patient/patient.mock.ts";
 import {
   getPatientIdMock,
   patientRequestMock,
@@ -20,6 +23,23 @@ Deno.test("getAll should return list of all patients correctly", async () => {
     assertEquals(actualResult, expectedResult);
   } finally {
     stubPatientRepository.restore();
+  }
+});
+
+Deno.test("getFirstPendingPatient should return only 1 patient", async () => {
+  const expectedResult = await getMockOnePatient();
+  const stubPatient = stub(
+    DbUtil,
+    "queryOneObject",
+    [getMockOnePatient()],
+  );
+
+  try {
+    const actualResult = await patientRepository.getFirstPendingPatient();
+    assertEquals(actualResult, expectedResult);
+    assertSpyCalls(stubPatient, 1);
+  } finally {
+    stubPatient.restore();
   }
 });
 

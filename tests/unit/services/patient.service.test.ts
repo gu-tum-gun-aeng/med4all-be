@@ -2,7 +2,10 @@ import { assertEquals, stub } from "../../../deps.ts";
 import PatientRepository from "../../../src/dataaccess/database/patient.repository.ts";
 
 import * as patientService from "../../../src/services/patient.service.ts";
-import { getMockPatients } from "../../mock/patient/patient.mock.ts";
+import {
+  getMockOnePatient,
+  getMockPatients,
+} from "../../mock/patient/patient.mock.ts";
 import { patientRequestMock } from "../../mock/patient/patient.request.mock.ts";
 
 Deno.test("getPatients should return list of all patients correctly", async () => {
@@ -14,6 +17,21 @@ Deno.test("getPatients should return list of all patients correctly", async () =
   );
   try {
     const actualResult = await patientService.getPatients();
+    assertEquals(actualResult, expectedResult);
+  } finally {
+    stubPatientRepository.restore();
+  }
+});
+
+Deno.test("getFirstPendingPatient should return 1 patient", async () => {
+  const expectedResult = await getMockOnePatient();
+  const stubPatientRepository = stub(
+    PatientRepository,
+    "getFirstPendingPatient",
+    [getMockOnePatient()],
+  );
+  try {
+    const actualResult = await patientService.getFirstPendingPatient();
     assertEquals(actualResult, expectedResult);
   } finally {
     stubPatientRepository.restore();

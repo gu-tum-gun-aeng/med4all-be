@@ -3,7 +3,10 @@ import { assertEquals, stub } from "../../../deps.ts";
 import { testing } from "../../../deps.ts";
 import PatientController from "../../../src/controllers/patient.controller.ts";
 import PatientRepository from "../../../src/dataaccess/database/patient.repository.ts";
-import { getMockPatients } from "../../mock/patient/patient.mock.ts";
+import {
+  getMockOnePatient,
+  getMockPatients,
+} from "../../mock/patient/patient.mock.ts";
 import S3Service from "../../../src/services/s3.service.ts";
 import {
   patientRequestMock,
@@ -20,6 +23,22 @@ Deno.test("PatientController.patients should response with mock data", async () 
   try {
     const mockContext = testing.createMockContext();
     await PatientController.patients(mockContext);
+    assertEquals(mockContext.response.body, { results: expectedResult });
+  } finally {
+    stubPatientRepository.restore();
+  }
+});
+
+Deno.test("PatientController.getFirstPendingPatient should response with only 1 patient", async () => {
+  const expectedResult = await getMockOnePatient();
+  const stubPatientRepository = stub(
+    PatientRepository,
+    "getFirstPendingPatient",
+    [getMockOnePatient()],
+  );
+  try {
+    const mockContext = testing.createMockContext();
+    await PatientController.getFirstPendingPatient(mockContext);
     assertEquals(mockContext.response.body, { results: expectedResult });
   } finally {
     stubPatientRepository.restore();

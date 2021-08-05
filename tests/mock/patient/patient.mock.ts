@@ -32,3 +32,19 @@ export const getMockPatients = async (): Promise<Patient[]> => {
     },
   ];
 };
+
+export const getMockOnePatient = async (): Promise<Patient> => {
+  return await {
+    "patient_id": 67890,
+    "name": "Test Patient2",
+    "age": 31,
+    "weight_kg": 75,
+    "height_cm": 150,
+    "certificate_id": "0000000000000",
+    "certificate_type_id": 1,
+    "certificate_picture_url": "http://some-url.com/some-path/some-name.jpg",
+    "covid_test_picture_url": "http://some-url.com/some-path/some-name.jpg",
+    "medical_info": {},
+    "diagnostic_status_id": 1,
+  };
+};
