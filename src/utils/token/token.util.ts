@@ -1,8 +1,8 @@
 import * as Djwt from "https://deno.land/x/djwt@v2.2/mod.ts";
 import { currentSecondsSinceEpoch } from "../date.util.ts";
+import config from "../../config/config.ts";
 
-// Todo: This should be a config.
-const ISSUER_CLAIM = "med4all";
+const ISSUER_CLAIM = config.appName;
 
 export type TokenInfo = {
   id: string;
