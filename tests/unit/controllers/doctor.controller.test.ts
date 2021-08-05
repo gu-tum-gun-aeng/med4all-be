@@ -16,9 +16,7 @@ Deno.test("DoctorController.requestOtp should response with 200 ok", async () =>
   const mockContext = testing.createMockContext();
   (mockContext.request.body as any) = () => ({
     type: "json",
-    value: {
-      read: () => ({ "telephone": "0818126666" }),
-    },
+    value: { "telephone": "0818126666" },
   });
 
   try {
@@ -50,11 +48,9 @@ Deno.test("DoctorController.verifyOtp should response with 200 ok", async () => 
   (mockContext.request.body as any) = () => ({
     type: "json",
     value: {
-      read: () => ({
-        "telephone": "0818126666",
-        "requestId": "REQUEST_ID",
-        "code": "1911",
-      }),
+      "telephone": "0818126666",
+      "requestId": "REQUEST_ID",
+      "code": "1911",
     },
   });
 

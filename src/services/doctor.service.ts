@@ -15,8 +15,8 @@ const requestOtp = async (
       path: "doctors/otp/request",
       param: "",
       message: "You are not the doctor.",
-      type: "bad request"
-    })
+      type: "bad request",
+    });
   }
 
   const requestOtpResult = await NexmoService.requestOtp(
@@ -30,8 +30,8 @@ const requestOtp = async (
       path: "doctors/otp/request",
       param: "",
       message: requestOtpResult.error_text!,
-      type: "bad request"
-    })
+      type: "bad request",
+    });
   }
 
   return traceWrapperAsync<string>(
@@ -49,8 +49,8 @@ const verifyOtp = async (requestId: string, code: string): Promise<boolean> => {
       path: "doctors/otp/verify",
       param: "",
       message: requestOtpResult.error_text!,
-      type: "bad request"
-    })
+      type: "bad request",
+    });
   }
 
   return traceWrapperAsync<boolean>(
@@ -70,8 +70,8 @@ const getIdByTelephone = async (
       path: "doctors/otp/request",
       param: "",
       message: "You are not the doctor.",
-      type: "bad request"
-    })
+      type: "bad request",
+    });
   }
 
   return traceWrapperAsync<number>(

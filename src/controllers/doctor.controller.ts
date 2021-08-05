@@ -8,27 +8,50 @@ import { TokenOtpResponse } from "../models/doctor/response/token.otp.response.m
 import config from "../config/config.ts";
 import * as dateUtils from "../utils/date.util.ts";
 import { throwError } from "../middlewares/errorHandler.middleware.ts";
+import {
+  RequestOtpRequest,
+  RequestOtpRequestValidationSchema,
+} from "../models/doctor/request/request.otp.request.model.ts";
+import {
+  VerifyOtpRequest,
+  VerifyOtpRequestValidationSchema,
+} from "../models/doctor/request/verfity.otp.request.model.ts";
+import { validateAndThrow } from "../utils/validation.util.ts";
 
 const DoctorController = {
-  requestOtp: async ({ request, response }: RouterContext): Promise<void> => {
-    const { telephone } = await request.body({ type: "json" })
+  requestOtp: async (ctx: RouterContext): Promise<void> => {
+    const req: RequestOtpRequest = await ctx.request.body({ type: "json" })
       .value;
 
-    const requestId = await DoctorService.requestOtp(telephone);
+    await validateAndThrow(
+      req,
+      RequestOtpRequestValidationSchema,
+      "RequestOtpRequest",
+    );
+
+    const telephoneTh = `66${req.telephone.slice(1)}`;
+    const requestId = await DoctorService.requestOtp(telephoneTh);
     const res: RequestOtpResponse = {
       requestId,
     };
 
-    responseOk(response, res);
+    responseOk(ctx.response, res);
   },
 
-  verifyOtp: async ({ request, response }: RouterContext): Promise<void> => {
-    const { telephone, requestId, code } = await request.body({
+  verifyOtp: async (ctx: RouterContext): Promise<void> => {
+    const req: VerifyOtpRequest = await ctx.request.body({
       type: "json",
     }).value;
 
-    const _ = await DoctorService.verifyOtp(requestId, code);
-    const id = await DoctorService.getIdByTelephone(telephone);
+    await validateAndThrow(
+      req,
+      VerifyOtpRequestValidationSchema,
+      "VerifyOtpRequest",
+    );
+
+    const telephoneTh = `66${req.telephone.slice(1)}`;
+    const _ = await DoctorService.verifyOtp(req.requestId, req.code);
+    const id = await DoctorService.getIdByTelephone(telephoneTh);
 
     const tokenInfo: tokenUtil.TokenInfo = {
       id: id,
@@ -62,7 +85,7 @@ const DoctorController = {
       token,
     };
 
-    responseOk(response, res);
+    responseOk(ctx.response, res);
   },
 };
 
