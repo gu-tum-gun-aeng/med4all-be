@@ -64,8 +64,6 @@ Deno.test("DoctorController.verifyOtp should response with 200 ok", async () => 
   } finally {
     stubVerifyOtp.restore();
     stubGetIdByTelephone.restore();
-    // stubCreateToken.restore()
-    // stubVerifyToken.restore()
     stubInsertToken.restore();
   }
 });

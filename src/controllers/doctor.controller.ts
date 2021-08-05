@@ -7,6 +7,7 @@ import * as tokenUtil from "../utils/token/token.util.ts";
 import { TokenOtpResponse } from "../models/doctor/response/token.otp.response.model.ts";
 import config from "../config/config.ts";
 import * as dateUtils from "../utils/date.util.ts";
+import { throwError } from "../middlewares/errorHandler.middleware.ts";
 
 const DoctorController = {
   requestOtp: async ({ request, response }: RouterContext): Promise<void> => {
@@ -42,7 +43,17 @@ const DoctorController = {
       tokenUtil.HashAlgorithm.HS512,
     );
 
-    if (!payload.exp) throw new Error("invalid timesatamp");
+    if (!payload.exp) {
+      throwError({
+        status: 500,
+        name: "token exp not found",
+        path: "/doctors/otp/verify",
+        param: "",
+        message: "token exp not found",
+        type: "internal error",
+      });
+      return;
+    }
     const expDate = dateUtils.toDate(payload.exp);
     const expDateFormat = expDate.toISOString();
     await DoctorTokenService.insert(token, expDateFormat);
