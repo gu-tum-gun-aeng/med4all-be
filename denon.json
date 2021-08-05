@@ -10,7 +10,7 @@
     "run"
   ],
   "unstable": true,
-  "lock": "local_lock.json",
+  "lock": "lock.json",
   "tsconfig": "tsconfig.json",
 
   "scripts": {

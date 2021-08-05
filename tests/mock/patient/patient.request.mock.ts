@@ -1,4 +1,4 @@
-import { CreatePatientRequest } from "../../../src/models/request/patient.request.ts";
+import { CreatePatientRequest } from "../../../src/models/patient/request/patient.request.ts";
 
 export const patientRequestMock: CreatePatientRequest = {
   "patientName": "Test",

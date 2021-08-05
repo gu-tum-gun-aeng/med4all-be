@@ -6,8 +6,8 @@ import { throwError } from "../middlewares/errorHandler.middleware.ts";
 import {
   CreatePatientRequest,
   CreatePatientRequestValidationSchema,
-} from "../models/request/patient.request.ts";
-import { CreatePatientResponse } from "../models/response/patient.response.ts";
+} from "../models/patient/request/patient.request.ts";
+import { CreatePatientResponse } from "../models/patient/response/patient.response.ts";
 import { validateAndThrow } from "../utils/validation.util.ts";
 
 const PatientController = {
