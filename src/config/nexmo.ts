@@ -4,6 +4,6 @@ export interface NexmoApiConfig {
   apiKey: string;
   ApiSecret: string;
   brand: string;
-  workflowId: string,
-  pinExpire: string
+  workflowId: string;
+  pinExpire: string;
 }

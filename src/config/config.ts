@@ -49,11 +49,14 @@ const config: ({
   nexmo: {
     apiKey: Deno.env.get("NEXMO_API_KEY") || envConfig.NEXMO_API_KEY,
     ApiSecret: Deno.env.get("NEXMO_API_SECRET") || envConfig.NEXMO_API_SECRET,
-    requesOtptUrl: Deno.env.get("REQUEST_OTP_URL") || envConfig.REQUEST_OTP_URL,
-    verifyOtpUrl: Deno.env.get("VERIFY_OTP_URL") || envConfig.VERIFY_OTP_URL,
-    brand: Deno.env.get("BRAND") || envConfig.BRAND,
-    workflowId: Deno.env.get("WORKFLOW_ID") || envConfig.WORKFLOW_ID,
-    pinExpire: Deno.env.get("PIN_EXPIRE") || envConfig.PIN_EXPIRE,
+    requesOtptUrl: Deno.env.get("NEXMO_REQUEST_OTP_URL") ||
+      envConfig.NEXMO_REQUEST_OTP_URL,
+    verifyOtpUrl: Deno.env.get("NEXMO_VERIFY_OTP_URL") ||
+      envConfig.NEXMO_VERIFY_OTP_URL,
+    brand: Deno.env.get("NEXMO_BRAND") || envConfig.NEXMO_BRAND,
+    workflowId: Deno.env.get("NEXMO_WORKFLOW_ID") ||
+      envConfig.NEXMO_WORKFLOW_ID,
+    pinExpire: Deno.env.get("NEXMO_PIN_EXPIRE") || envConfig.NEXMO_PIN_EXPIRE,
   },
   djwt: {
     key: Deno.env.get("DJWT_KEY") || envConfig.DJWT_KEY,
