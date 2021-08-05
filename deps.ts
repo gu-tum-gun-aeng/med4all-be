@@ -17,7 +17,7 @@ export type {
   RouterContext,
   State,
 } from "https://deno.land/x/oak@v7.6.3/mod.ts";
-export { config as dotEnv } from "https://deno.land/x/dotenv@v2.0.0/mod.ts";
+export { config as dotenv } from "https://deno.land/x/dotenv@v2.0.0/mod.ts";
 export {
   getLogger,
   handlers,
