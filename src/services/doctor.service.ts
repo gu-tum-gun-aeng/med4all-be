@@ -35,7 +35,9 @@ const verifyOtp = async (requestId: string, code: string): Promise<boolean> => {
   );
 };
 
-const getIdByTelephone = async (telephoneWithCountryCode: string): Promise<number> => {
+const getIdByTelephone = async (
+  telephoneWithCountryCode: string,
+): Promise<number> => {
   const id = await DoctorRepository.getIdByTelePhone(telephoneWithCountryCode);
   if (!id) {
     throw new Error("You are not the doctor.");

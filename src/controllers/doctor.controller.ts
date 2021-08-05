@@ -1,10 +1,13 @@
-import type { RouterContext } from "../../deps.ts";
+import { RouterContext } from "../../deps.ts";
 import { responseOk } from "../utils/response.util.ts";
 import DoctorService from "../services/doctor.service.ts";
+import DoctorTokenService from "../services/doctor.token.service.ts";
 import { RequestOtpResponse } from "../models/doctor/response/request.otp.response.model.ts";
 import * as tokenUtil from "../utils/token.util.ts";
 import { TokenOtpResponse } from "../models/doctor/response/token.otp.response.model.ts";
 import config from "../config/config.ts";
+import { verify } from "https://deno.land/x/djwt@v2.2/mod.ts";
+import * as dateUtils from "../utils/date.util.ts"
 
 const DoctorController = {
   requestOtp: async ({ request, response }: RouterContext): Promise<void> => {
@@ -34,6 +37,12 @@ const DoctorController = {
     };
 
     const token = await tokenUtil.createToken(tokenInfo, config.djwt.key);
+    const payload = await verify(token, config.djwt.key, tokenUtil.HashAlgorithm.HS512)
+
+    if(!payload.exp) throw new Error("invalid timesatamp");
+    const expDate = dateUtils.toDate(payload.exp)
+    const expDateFormat = dateUtils.parseFormat(expDate)
+    await DoctorTokenService.insert(token, expDateFormat)
 
     const res: TokenOtpResponse = {
       token,
