@@ -6,7 +6,6 @@ import { RequestOtpResponse } from "../models/doctor/response/request.otp.respon
 import * as tokenUtil from "../utils/token.util.ts";
 import { TokenOtpResponse } from "../models/doctor/response/token.otp.response.model.ts";
 import config from "../config/config.ts";
-import { verify } from "https://deno.land/x/djwt@v2.2/mod.ts";
 import * as dateUtils from "../utils/date.util.ts";
 
 const DoctorController = {
@@ -37,7 +36,7 @@ const DoctorController = {
     };
 
     const token = await tokenUtil.createToken(tokenInfo, config.djwt.key);
-    const payload = await verify(
+    const payload = await tokenUtil.verify(
       token,
       config.djwt.key,
       tokenUtil.HashAlgorithm.HS512,
