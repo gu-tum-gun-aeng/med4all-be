@@ -1,13 +1,13 @@
 import PatientRouter from "./v1/patient.router.ts";
+import DoctorRouter from "./v1/doctor.router.ts";
 import { Router, Status } from "../../deps.ts";
 
 import type { RouterContext } from "../../deps.ts";
 
 const useSubRouter = (router: Router, subRouter: Router): Router => {
-  router.use(subRouter.routes());
-  router.use(subRouter.allowedMethods());
-
-  return router;
+  return router
+    .use(subRouter.routes())
+    .use(subRouter.allowedMethods());
 };
 
 const setRootRouting = (router: Router) => {
@@ -21,9 +21,14 @@ const setRootRouting = (router: Router) => {
 };
 
 const setV1Routing = (router: Router) => {
-  const patientRouter = useSubRouter(new Router(), PatientRouter);
+  const subRouters = [
+    PatientRouter,
+    DoctorRouter,
+  ];
 
-  router.use("/v1", patientRouter.routes());
+  const allRouter = subRouters.reduce(useSubRouter, new Router());
+
+  router.use("/v1", allRouter.routes());
 };
 
 const router = new Router();

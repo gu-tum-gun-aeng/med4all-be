@@ -3,3 +3,5 @@
 .idea
 cov_profile
 .env.dev
+.env.local
+local_lock.json

@@ -31,11 +31,14 @@ export const errorHandler = async (
     const status = err.status || err.statusCode || Status.InternalServerError;
     const { env } = configs;
 
+    const allowEnvs = ["dev", "local"];
+
     if (!isHttpError(err)) {
-      message = env === "dev" ? message : "Internal Server Error";
+      message = allowEnvs.includes(env) ? message : "Internal Server Error";
     }
 
-    if (env === "dev") {
+    if (allowEnvs.includes(env)) {
+      console.log(err);
       log.debug(err, `Error::${status}`);
     }
 

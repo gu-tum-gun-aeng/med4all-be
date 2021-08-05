@@ -20,6 +20,12 @@ const setupRouter = (app: Application, router: Router) => {
   app.use(router.allowedMethods());
 };
 
+const setUpDatabaseConnection = (env: string) => {
+  if (env != "test") {
+    dbUtils.initialize();
+  }
+};
+
 const setupListener = async (app: Application, url: string, port: number) => {
   app.addEventListener("listen", () => {
     // FIXME: Change back to log.info
@@ -32,12 +38,6 @@ const setupListener = async (app: Application, url: string, port: number) => {
   if (import.meta.main) {
     log.info(`start server`, `${logAppName}::start_server`);
     await app.listen({ port });
-  }
-};
-
-const setUpDatabaseConnection = (env: string) => {
-  if (env != "test") {
-    dbUtils.initialize();
   }
 };
 

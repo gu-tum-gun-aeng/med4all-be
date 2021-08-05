@@ -1,5 +1,7 @@
 import { dotEnv } from "../../deps.ts";
 import { S3Config } from "./s3.ts";
+import { NexmoApiConfig } from "./nexmo.ts";
+import { Djwt } from "./djwt.ts";
 
 const env: string = Deno.env.toObject().ENV || "dev";
 const envPath: string = `.env/.env.${env}`.toString();
@@ -24,6 +26,8 @@ const config: ({
   dbConnectionPool: number;
   dbConnectionString: string;
   s3: S3Config;
+  nexmo: NexmoApiConfig;
+  djwt: Djwt;
 }) = {
   env,
   appName: envConfig.APP_NAME,
@@ -41,6 +45,19 @@ const config: ({
     secretKey: Deno.env.get("S3_SECRET_KEY") || envConfig.S3_SECRET_KEY,
     bucketName: Deno.env.get("S3_BUCKET_NAME") || envConfig.S3_BUCKET_NAME,
     region: Deno.env.get("S3_REGION") || envConfig.S3_REGION,
+  },
+  nexmo: {
+    apiKey: Deno.env.get("NEXMO_API_KEY") || envConfig.NEXMO_API_KEY,
+    ApiSecret: Deno.env.get("NEXMO_API_SECRET") || envConfig.NEXMO_API_SECRET,
+    requesOtptUrl: Deno.env.get("REQUEST_OTP_URL") || envConfig.REQUEST_OTP_URL,
+    verifyOtpUrl: Deno.env.get("VERIFY_OTP_URL") || envConfig.VERIFY_OTP_URL,
+    brand: Deno.env.get("BRAND") || envConfig.BRAND,
+  },
+  djwt: {
+    key: Deno.env.get("DJWT_KEY") || envConfig.DJWT_KEY,
+    ttlSeconds: parseInt(
+      Deno.env.get("DJWT_TTL_SECONDS") || envConfig.DJWT_TTL_SECONDS,
+    ),
   },
 };
 

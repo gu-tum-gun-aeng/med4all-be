@@ -38,6 +38,8 @@ export type { QueryArguments } from "https://deno.land/x/postgres@v0.11.3/query/
 export { create, decode, verify } from "https://deno.land/x/djwt@v2.2/mod.ts";
 export { format, parse } from "https://deno.land/std@0.103.0/datetime/mod.ts";
 export * from "https://deno.land/x/validasaur@v0.15.0/mod.ts";
+import ky from "https://cdn.skypack.dev/ky?dts";
+export { ky };
 /*
 Dev dependencies
 TODO: soon we have to separate this to dev_deps.ts and some how

@@ -23,19 +23,6 @@ const DbUtil = {
       true,
     );
   },
-  queryObject: async <T>(
-    sql: TemplateStringsArray,
-    ...args: QueryArguments
-  ) => {
-    const client: PoolClient = await pool.connect();
-    let result: QueryObjectResult<T>;
-    try {
-      result = await client.queryObject<T>(sql, ...args);
-      return result.rows;
-    } finally {
-      await client.release();
-    }
-  },
   queryOneObject: async <T>(
     sql: TemplateStringsArray,
     ...args: QueryArguments
@@ -45,6 +32,19 @@ const DbUtil = {
     try {
       result = await client.queryObject<T>(sql, ...args);
       return result.rows.length > 0 ? result.rows[0] : undefined;
+    } finally {
+      await client.release();
+    }
+  },
+  queryObject: async <T>(
+    sql: TemplateStringsArray,
+    ...args: QueryArguments
+  ) => {
+    const client: PoolClient = await pool.connect();
+    let result: QueryObjectResult<T>;
+    try {
+      result = await client.queryObject<T>(sql, ...args);
+      return result.rows;
     } finally {
       await client.release();
     }
