@@ -5,6 +5,7 @@ import {
   minNumber,
   required,
   startsWith,
+  ValidationRules,
 } from "../../../deps.ts";
 export type CreatePatientRequest = {
   patientName: string;
@@ -22,7 +23,7 @@ export type CreatePatientRequest = {
   medicalInfo?: Record<string, unknown>;
 };
 
-export const CreatePatientRequestValidationSchema = {
+export const CreatePatientRequestValidationSchema: ValidationRules = {
   patientName: [required, minLength(1)],
   age: [required, isNumber, minNumber(15)],
   weightKg: [required, isNumber],
