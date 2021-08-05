@@ -1,5 +1,6 @@
 import { assertEquals } from "../../../deps.ts";
 import { create, Payload, verify } from "https://deno.land/x/djwt@v2.2/mod.ts";
+import config from "../../../src/config/config.ts";
 import * as tokenUtil from "../../../src/utils/token/token.util.ts";
 import { currentSecondsSinceEpoch } from "../../../src/utils/date.util.ts";
 
@@ -18,7 +19,7 @@ Deno.test("createToken should create valid Token with given token id when call",
 });
 
 Deno.test("isValid should return true when given token is not expired and issuer cliam is correct", async () => {
-  const key = "someKey";
+  const key = config.djwt.key;
   const tokenInfo = {
     id: "123",
     ttlSeconds: 60,
@@ -37,10 +38,10 @@ Deno.test("isValid should return true when given token is not expired and issuer
 });
 
 Deno.test("isValid should return false when given token is already expired", async () => {
-  const key = "someKey";
+  const key = config.djwt.key;
   const tokenInfo = {
     id: "123",
-    ttlSeconds: 0,
+    ttlSeconds: -10,
     hashAlgorithm: tokenUtil.HashAlgorithm.HS512,
   };
 
