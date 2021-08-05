@@ -18,6 +18,8 @@ import {
 } from "../models/doctor/request/verfity.otp.request.model.ts";
 import { validateAndThrow } from "../utils/validation.util.ts";
 
+const USE_HASH_ALG = tokenUtil.HashAlgorithm.HS512;
+
 const DoctorController = {
   requestOtp: async (ctx: RouterContext): Promise<void> => {
     const req: RequestOtpRequest = await ctx.request.body({ type: "json" })
@@ -54,16 +56,16 @@ const DoctorController = {
     const id = await DoctorService.getIdByTelephone(telephoneTh);
 
     const tokenInfo: tokenUtil.TokenInfo = {
-      id: id,
+      id: id.toString(),
       ttlSeconds: config.djwt.ttlSeconds,
-      hashAlgorithm: tokenUtil.HashAlgorithm.HS512,
+      hashAlgorithm: USE_HASH_ALG,
     };
 
     const token = await tokenUtil.createToken(tokenInfo, config.djwt.key);
     const payload = await tokenUtil.verify(
       token,
       config.djwt.key,
-      tokenUtil.HashAlgorithm.HS512,
+      USE_HASH_ALG,
     );
 
     if (!payload.exp) {

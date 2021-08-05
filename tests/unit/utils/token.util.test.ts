@@ -7,7 +7,7 @@ import { currentSecondsSinceEpoch } from "../../../src/utils/date.util.ts";
 Deno.test("createToken should create valid Token with given token id when call", async () => {
   const key = "someKey";
   const tokenInfo = {
-    id: 123,
+    id: "123",
     ttlSeconds: 60,
     hashAlgorithm: tokenUtil.HashAlgorithm.HS512,
   };
@@ -21,13 +21,14 @@ Deno.test("createToken should create valid Token with given token id when call",
 Deno.test("isValid should return true when given token is not expired and issuer cliam is correct", async () => {
   const key = config.djwt.key;
   const tokenInfo = {
-    id: 123,
+    id: "123",
     ttlSeconds: 60,
     hashAlgorithm: tokenUtil.HashAlgorithm.HS512,
   };
 
   const token = await tokenUtil.createToken(tokenInfo, key);
   const isValid = await tokenUtil.isValid(
+    "123",
     token,
     key,
     tokenUtil.HashAlgorithm.HS512,
@@ -39,13 +40,14 @@ Deno.test("isValid should return true when given token is not expired and issuer
 Deno.test("isValid should return false when given token is already expired", async () => {
   const key = config.djwt.key;
   const tokenInfo = {
-    id: 123,
+    id: "123",
     ttlSeconds: -10,
     hashAlgorithm: tokenUtil.HashAlgorithm.HS512,
   };
 
   const token = await tokenUtil.createToken(tokenInfo, key);
   const isValid = await tokenUtil.isValid(
+    "123",
     token,
     key,
     tokenUtil.HashAlgorithm.HS512,
@@ -72,6 +74,26 @@ Deno.test("isValid should return false when given token issuer claim is incorrec
   );
 
   const isValid = await tokenUtil.isValid(
+    "1",
+    token,
+    key,
+    tokenUtil.HashAlgorithm.HS512,
+  );
+
+  assertEquals(isValid, false);
+});
+
+Deno.test("isValid should return false when given token id to check is not match", async () => {
+  const key = "someKey";
+  const tokenInfo = {
+    id: "someId",
+    ttlSeconds: 60,
+    hashAlgorithm: tokenUtil.HashAlgorithm.HS512,
+  };
+
+  const token = await tokenUtil.createToken(tokenInfo, key);
+  const isValid = await tokenUtil.isValid(
+    "someOtherId",
     token,
     key,
     tokenUtil.HashAlgorithm.HS512,
