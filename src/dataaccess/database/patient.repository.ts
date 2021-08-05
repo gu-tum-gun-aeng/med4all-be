@@ -35,14 +35,14 @@ const PatientRepository = {
               SELECT patient_id
               FROM   patient
               WHERE  diagnostic_status_id = ${DiagnosticStatus.Waiting} OR (
-            diagnostic_status_id = ${DiagnosticStatus.Diagnosing} AND
-            DATE_PART('day', current_timestamp - last_modified_when) * 24 + 
-                    DATE_PART('hour', current_timestamp - last_modified_when) >= ${patientDiagnosingTimeout}
-          )
-          ORDER BY last_modified_when ASC
+                diagnostic_status_id = ${DiagnosticStatus.Diagnosing} AND
+                  DATE_PART('day', current_timestamp - last_modified_when) * 24 + 
+                  DATE_PART('hour', current_timestamp - last_modified_when) >= ${patientDiagnosingTimeout}
+              )
+              ORDER BY last_modified_when ASC
               LIMIT  1
               FOR UPDATE SKIP LOCKED
-              )
+      )
       RETURNING  patient_id, 
       name, 
       age, 
