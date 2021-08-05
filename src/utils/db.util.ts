@@ -49,19 +49,6 @@ const DbUtil = {
       await client.release();
     }
   },
-  queryOneObject: async <T>(
-    sql: TemplateStringsArray,
-    ...args: QueryArguments
-  ): Promise<T | undefined> => {
-    const client: PoolClient = await pool.connect();
-    let result: QueryObjectResult<T>;
-    try {
-      result = await client.queryObject<T>(sql, ...args);
-      return result.rows.length > 0 ? result.rows[0] : undefined;
-    } finally {
-      await client.release();
-    }
-  },
   queryArray: async <T extends Array<unknown>>(
     sql: TemplateStringsArray,
     ...args: QueryArguments
