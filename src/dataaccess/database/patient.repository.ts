@@ -1,4 +1,3 @@
-import { format } from "../../../deps.ts";
 import {
   DiagnosticStatus,
   Patient,
@@ -28,7 +27,7 @@ const PatientRepository = {
   },
   createPatient: async (patient: CreatePatientRequest): Promise<number> => {
     let result = -1;
-    const currentDateTime = format(new Date(), "yyyy-MM-dd HH:mm:ss.SSS");
+    const currentDateTime = (new Date()).toISOString();
     const patientId = await dbUtils.queryOneObject<{ value: BigInt }>`
       SELECT nextval('patient_patient_id_seq') as value
     `;
