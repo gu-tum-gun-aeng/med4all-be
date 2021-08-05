@@ -1,6 +1,6 @@
 import { assertEquals } from "../../../deps.ts";
 import { create, Payload, verify } from "https://deno.land/x/djwt@v2.2/mod.ts";
-import * as tokenUtil from "../../../src/utils/token.util.ts";
+import * as tokenUtil from "../../../src/utils/token/token.util.ts";
 
 Deno.test("createToken should create valid Token with given token id when call", async () => {
   const key = "someKey";

@@ -3,7 +3,7 @@ import { responseOk } from "../utils/response.util.ts";
 import DoctorService from "../services/doctor.service.ts";
 import DoctorTokenService from "../services/doctor.token.service.ts";
 import { RequestOtpResponse } from "../models/doctor/response/request.otp.response.model.ts";
-import * as tokenUtil from "../utils/token.util.ts";
+import * as tokenUtil from "../utils/token/token.util.ts";
 import { TokenOtpResponse } from "../models/doctor/response/token.otp.response.model.ts";
 import config from "../config/config.ts";
 import { verify } from "https://deno.land/x/djwt@v2.2/mod.ts";
