@@ -56,7 +56,6 @@ export const isValid = async (
 
   function isJtiMatch(payload: Djwt.Payload, idToVerify: string): boolean {
     return payload.jti !== null && payload.jti! === idToVerify;
-
   }
 };
 
