@@ -10,6 +10,10 @@ router
   .post(
     "/patients/upload",
     (ctx) => PatientController.uploadImagesByFormData(ctx),
+  )
+  .post(
+    "/patients/result",
+    (ctx) => PatientController.createPatientResult(ctx),
   );
 
 export default router;

@@ -2,6 +2,7 @@ import { traceWrapperAsync } from "../utils/trace.util.ts";
 import patientRepository from "../dataaccess/database/patient.repository.ts";
 import { Patient } from "../models/patient/patient.model.ts";
 import { CreatePatientRequest } from "../models/patient/request/patient.request.ts";
+import { CreatePatientResultRequest } from "../models/patient/request/patientResult.request.ts";
 
 export const getPatients = async (): Promise<Patient[]> => {
   return await traceWrapperAsync<Patient[]>(
@@ -24,8 +25,21 @@ export const createPatient = async (patient: CreatePatientRequest) => {
   );
 };
 
+export const createPatientResult = async (
+  patient: CreatePatientResultRequest,
+) => {
+  return await traceWrapperAsync<void>(
+    () =>
+      patientRepository.createPatientResultAndUpdatePaientDiagnosticStatus(
+        patient,
+      ),
+    "route",
+  );
+};
+
 export default {
   getPatients,
   getFirstWaitingPatient,
   createPatient,
+  createPatientResult,
 };

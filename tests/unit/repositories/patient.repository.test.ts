@@ -1,5 +1,6 @@
 import { assertEquals, assertSpyCalls, stub } from "../../../deps.ts";
 import patientRepository from "../../../src/dataaccess/database/patient.repository.ts";
+import { DiagnosticStatus } from "../../../src/models/patient/patient.model.ts";
 import DbUtil from "../../../src/utils/db.util.ts";
 import { Query } from "../../../src/utils/db.util.ts";
 import {
@@ -10,6 +11,9 @@ import {
   getPatientIdMock,
   patientRequestMock,
 } from "../../mock/patient/patient.request.mock.ts";
+import {
+  patientResultRequestMock,
+} from "../../mock/patient/patientResult.request.mock.ts";
 
 Deno.test("getAll should return list of all patients correctly", async () => {
   const expectedResult = await getMockPatients();
@@ -67,6 +71,42 @@ Deno.test("createPatient should insert patient and address to database", async (
     assertEquals(queryAddress.args[0], 10n);
   } finally {
     stubPatientId.restore();
+    stubExecuteTransactional.restore();
+  }
+});
+
+Deno.test("createPatientResultAndUpdatePaientDiagnosticStatus should insert patient result and update patient diagnostic status", async () => {
+  const stubExecuteTransactional = stub(
+    DbUtil,
+    "excuteTransactional",
+    [await undefined],
+  );
+
+  try {
+    await patientRepository.createPatientResultAndUpdatePaientDiagnosticStatus(
+      patientResultRequestMock,
+    );
+    const queryInsertPatientResult: Query =
+      stubExecuteTransactional.calls[0].args[0][0];
+    const queryUpdatePatientDiagnosticStatus: Query =
+      stubExecuteTransactional.calls[0].args[0][1];
+    assertEquals(
+      queryInsertPatientResult.args[0],
+      patientResultRequestMock.patientId,
+    );
+    assertEquals(
+      queryInsertPatientResult.args[1],
+      patientResultRequestMock.doctorId,
+    );
+    assertEquals(
+      queryUpdatePatientDiagnosticStatus.args[0],
+      DiagnosticStatus.Completed,
+    );
+    assertEquals(
+      queryUpdatePatientDiagnosticStatus.args[1],
+      patientResultRequestMock.patientId,
+    );
+  } finally {
     stubExecuteTransactional.restore();
   }
 });

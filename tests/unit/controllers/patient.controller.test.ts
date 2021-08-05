@@ -12,6 +12,9 @@ import {
   patientRequestMock,
   patientRequestMockInvalid,
 } from "../../mock/patient/patient.request.mock.ts";
+import {
+  patientResultRequestMockInvalid,
+} from "../../mock/patient/patientResult.request.mock.ts";
 
 Deno.test("PatientController.patients should response with mock data", async () => {
   const expectedResult = await getMockPatients();
@@ -132,5 +135,33 @@ Deno.test("PatientController should get response 200 ok if has image data", asyn
     assertEquals(mockContext.response.status, 200);
   } finally {
     stubS3ServiceUploadFile.restore();
+  }
+});
+
+Deno.test("PatientController.createPatientResult should throw error intearnal 500 if patientId is string not a number", async () => {
+  const stubPatientController = stub(
+    PatientController,
+    "createPatientResult",
+    [await undefined],
+  );
+  const mockContext = testing.createMockContext();
+  (mockContext.request.body as any) = () => ({
+    type: "json",
+    value: patientResultRequestMockInvalid,
+  });
+  try {
+    await PatientController.createPatientResult(mockContext);
+  } catch (error) {
+    assertEquals(error, {
+      message: '{"patientId":{"isNumber":"patientId must be a number"}}',
+      name: "validation errors",
+      param:
+        '{"patientId":"36","doctorId":100,"isApproved":true,"rejectReasonId":20}',
+      path: "createPatientResult",
+      type: "internal error",
+      status: 500,
+    });
+  } finally {
+    stubPatientController.restore();
   }
 });
