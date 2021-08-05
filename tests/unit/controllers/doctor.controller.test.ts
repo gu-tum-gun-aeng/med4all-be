@@ -10,7 +10,7 @@ Deno.test("DoctorController.requestOtp should response with 200 ok", async () =>
     "requestOtp",
     [await Promise.resolve(true)],
   );
-  
+
   const expectedResult = "success";
   const mockContext = testing.createMockContext();
   (mockContext.request.body as object) = () => ({
@@ -24,7 +24,7 @@ Deno.test("DoctorController.requestOtp should response with 200 ok", async () =>
     await DoctorController.requestOtp(mockContext);
     assertEquals(mockContext.response.body, { results: expectedResult });
   } finally {
-    stubDoctorService.restore()
+    stubDoctorService.restore();
   }
 });
 

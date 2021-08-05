@@ -11,12 +11,12 @@ Deno.test("when call /v1/doctors/otp/request, it should return 200 OK", async ()
 
   try {
     await superdeno(app.handle.bind(app))
-    .post("/v1/doctors/otp/request")
-    .send({ "telephone": "0818126865" })
-    .expect(200)
-    .expect({ results: "success" });
+      .post("/v1/doctors/otp/request")
+      .send({ "telephone": "0818126865" })
+      .expect(200)
+      .expect({ results: "success" });
   } finally {
-    stubDoctorRepository.restore()
+    stubDoctorRepository.restore();
   }
 });
 
