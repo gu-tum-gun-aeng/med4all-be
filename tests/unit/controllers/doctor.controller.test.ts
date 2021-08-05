@@ -2,7 +2,6 @@ import { assertEquals, stub } from "../../../deps.ts";
 import { testing } from "../../../deps.ts";
 import DoctorController from "../../../src/controllers/doctor.controller.ts";
 import DoctorService from "../../../src/services/doctor.service.ts";
-import * as tokenUtil from "../../../src/utils/token.util.ts";
 import DoctorTokenService from "../../../src/services/doctor.token.service.ts";
 
 Deno.test("DoctorController.requestOtp should response with 200 ok", async () => {

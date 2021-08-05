@@ -2,7 +2,7 @@ import {
   DiagnosticStatus,
   Patient,
 } from "../../models/patient/patient.model.ts";
-import { CreatePatientRequest } from "../../models/request/patient.request.ts";
+import { CreatePatientRequest } from "../../models/patient/request/patient.request.ts";
 import dbUtils from "../../utils/db.util.ts";
 import config from "../../config/config.ts";
 import { throwError } from "../../middlewares/errorHandler.middleware.ts";

@@ -6,7 +6,7 @@ import {
   required,
   startsWith,
   ValidationRules,
-} from "../../../deps.ts";
+} from "../../../../deps.ts";
 export type CreatePatientRequest = {
   patientName: string;
   age: number;

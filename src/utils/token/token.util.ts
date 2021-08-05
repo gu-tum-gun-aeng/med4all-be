@@ -1,4 +1,5 @@
 import * as Djwt from "https://deno.land/x/djwt@v2.2/mod.ts";
+import { currentSecondsSinceEpoch } from "../date.util.ts";
 
 // Todo: This should be a config.
 const ISSUER_CLAIM = "med4all";
@@ -13,7 +14,7 @@ export const createToken = async (
   tokenInfo: TokenInfo,
   key: string,
 ): Promise<string> => {
-  const issueDateTime = getNumericDateFrom(new Date().getTime());
+  const issueDateTime = currentSecondsSinceEpoch();
 
   const payload: Djwt.Payload = {
     jti: tokenInfo.id.toString(),
@@ -43,7 +44,7 @@ export const isValid = async (
   }
 
   function isNotExpired(payload: Djwt.Payload): boolean {
-    return payload.exp != null && payload.exp! >= currentNumericDate();
+    return payload.exp != null && payload.exp! >= currentSecondsSinceEpoch();
   }
 
   function isIssuerValid(payload: Djwt.Payload): boolean {

@@ -1,7 +1,8 @@
 import { assertEquals } from "../../../deps.ts";
 import { create, Payload, verify } from "https://deno.land/x/djwt@v2.2/mod.ts";
-import * as tokenUtil from "../../../src/utils/token.util.ts";
 import config from "../../../src/config/config.ts"
+import * as tokenUtil from "../../../src/utils/token/token.util.ts";
+import { currentSecondsSinceEpoch } from "../../../src/utils/date.util.ts";
 
 Deno.test("createToken should create valid Token with given token id when call", async () => {
   const key = "someKey";
@@ -56,7 +57,7 @@ Deno.test("isValid should return false when given token is already expired", asy
 Deno.test("isValid should return false when given token issuer claim is incorrect", async () => {
   const key = "someKey";
 
-  const issueDateTime = tokenUtil.getNumericDateFrom(new Date().getTime());
+  const issueDateTime = currentSecondsSinceEpoch();
   const payload: Payload = {
     jti: "1",
     iss: "some other issuer",
