@@ -1,4 +1,4 @@
-import { create, Payload, verify } from "https://deno.land/x/djwt@v2.2/mod.ts";
+import * as Djwt from "https://deno.land/x/djwt@v2.2/mod.ts";
 import { currentSecondsSinceEpoch } from "../date.util.ts";
 
 // Todo: This should be a config.
@@ -16,14 +16,14 @@ export const createToken = async (
 ): Promise<string> => {
   const issueDateTime = currentSecondsSinceEpoch();
 
-  const payload: Payload = {
+  const payload: Djwt.Payload = {
     jti: tokenInfo.id.toString(),
     iss: ISSUER_CLAIM,
     ist: issueDateTime,
     exp: issueDateTime + tokenInfo.ttlSeconds,
   };
 
-  return await create(
+  return await Djwt.create(
     { alg: tokenInfo.hashAlgorithm, typ: "JWT" },
     payload,
     key,
@@ -36,21 +36,35 @@ export const isValid = async (
   hashAlgorithm: HashAlgorithm,
 ): Promise<boolean> => {
   try {
-    const payload = await verify(token, key, hashAlgorithm);
+    const payload = await Djwt.verify(token, key, hashAlgorithm);
 
     return isNotExpired(payload) && isIssuerValid(payload);
   } catch (_) {
     return false;
   }
 
-  function isNotExpired(payload: Payload): boolean {
+  function isNotExpired(payload: Djwt.Payload): boolean {
     return payload.exp != null && payload.exp! >= currentSecondsSinceEpoch();
   }
 
-  function isIssuerValid(payload: Payload): boolean {
+  function isIssuerValid(payload: Djwt.Payload): boolean {
     return payload.iss != null && payload.iss! == ISSUER_CLAIM;
   }
 };
+
+export const verify = (
+  token: string,
+  key: string,
+  hashAlgorithm: HashAlgorithm,
+): Promise<Djwt.Payload> => {
+  return Djwt.verify(token, key, hashAlgorithm);
+};
+
+export const getNumericDateFrom = (dateTimeMillisecs: number): number =>
+  dateTimeMillisecs / 1000;
+
+export const currentNumericDate = (): number =>
+  getNumericDateFrom(new Date().getTime());
 
 export enum HashAlgorithm {
   None = "none",
