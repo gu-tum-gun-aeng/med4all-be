@@ -8,6 +8,8 @@ import { TokenOtpResponse } from "../models/doctor/response/token.otp.response.m
 import config from "../config/config.ts";
 import * as dateUtils from "../utils/date.util.ts";
 
+const USE_HASH_ALG = tokenUtil.HashAlgorithm.HS512;
+
 const DoctorController = {
   requestOtp: async ({ request, response }: RouterContext): Promise<void> => {
     const { telephone } = await request.body({ type: "json" })
@@ -32,14 +34,14 @@ const DoctorController = {
     const tokenInfo: tokenUtil.TokenInfo = {
       id: id.toString(),
       ttlSeconds: config.djwt.ttlSeconds,
-      hashAlgorithm: tokenUtil.HashAlgorithm.HS512,
+      hashAlgorithm: USE_HASH_ALG,
     };
 
     const token = await tokenUtil.createToken(tokenInfo, config.djwt.key);
     const payload = await tokenUtil.verify(
       token,
       config.djwt.key,
-      tokenUtil.HashAlgorithm.HS512,
+      USE_HASH_ALG,
     );
 
     if (!payload.exp) throw new Error("invalid timesatamp");
