@@ -4,15 +4,14 @@ import { getNexmoApiConfig, NexmoApiConfig } from "./nexmo.config.ts";
 import { getJwtConfig, JwtConfig } from "./jwt.config.ts";
 import { DotenvConfig } from "https://deno.land/x/dotenv@v2.0.0/mod.ts"; // Todo: should move to deps
 
+// Todo: should consider to change ENV to more specific name
+// Todo: should consider to remove default dev env
 const env: string = Deno.env.toObject().ENV || "dev";
 const dotenvConfig = createDotenvFor(env);
 
 /**
  * Configuration
  */
-const dbUsername = Deno.env.get("DB_USERNAME") || dotenvConfig.DB_USERNAME;
-const dbPassword = Deno.env.get("DB_PASSWORD") || dotenvConfig.DB_PASSWORD;
-
 const config: ({
   env: string;
   appName: string;
@@ -33,12 +32,11 @@ const config: ({
   logAppName: dotenvConfig.LOG_APP_NAME,
   ip: dotenvConfig.IP,
   host: dotenvConfig.HOST,
-  port: Number(dotenvConfig.PORT) || 8000,
+  port: getConfigPort(dotenvConfig),
   protocol: dotenvConfig.PROTOCOL,
-  url: `${dotenvConfig.PROTOCOL}://${dotenvConfig.HOST}:${dotenvConfig.PORT}`,
+  url: getUrl(dotenvConfig),
   dbConnectionPool: parseInt(dotenvConfig.DB_CONNECTION_POOL),
-  dbConnectionString:
-    `postgresql://${dbUsername}:${dbPassword}@${dotenvConfig.DB_HOST}:${dotenvConfig.DB_PORT}/${dotenvConfig.DB_NAME}?sslmode=prefer`,
+  dbConnectionString: getDbConnectionString(dotenvConfig),
   s3: getS3Config(dotenvConfig),
   nexmo: getNexmoApiConfig(dotenvConfig),
   jwt: getJwtConfig(dotenvConfig),
@@ -50,6 +48,21 @@ function createDotenvFor(targetEnv: string): DotenvConfig {
   return dotenv({
     path: envPath,
   });
+}
+
+function getConfigPort(dotenvConfig: DotenvConfig): number {
+  return Number(dotenvConfig.PORT) || 8000;
+}
+
+function getUrl(dotenvConfig: DotenvConfig): string {
+  return `${dotenvConfig.PROTOCOL}://${dotenvConfig.HOST}:${dotenvConfig.PORT}`;
+}
+
+function getDbConnectionString(dotenvConfig: DotenvConfig): string {
+  const dbUsername = Deno.env.get("DB_USERNAME") || dotenvConfig.DB_USERNAME;
+  const dbPassword = Deno.env.get("DB_PASSWORD") || dotenvConfig.DB_PASSWORD;
+
+  return `postgresql://${dbUsername}:${dbPassword}@${dotenvConfig.DB_HOST}:${dotenvConfig.DB_PORT}/${dotenvConfig.DB_NAME}?sslmode=prefer`;
 }
 
 export default config;
