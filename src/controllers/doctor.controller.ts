@@ -41,7 +41,7 @@ const DoctorController = {
 
     if(!payload.exp) throw new Error("invalid timesatamp");
     const expDate = dateUtils.toDate(payload.exp)
-    const expDateFormat = dateUtils.parseFormat(expDate)
+    const expDateFormat = expDate.toISOString()
     await DoctorTokenService.insert(token, expDateFormat)
 
     const res: TokenOtpResponse = {
