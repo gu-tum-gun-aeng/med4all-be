@@ -22,6 +22,7 @@ scripts:
     lock: lock.json
     unstable: true
     cachedOnly: true
+    gitHook: pre-push
     env:
       ENV: test
 
