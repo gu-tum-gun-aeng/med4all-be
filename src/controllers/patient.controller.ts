@@ -3,8 +3,12 @@ import PatientService from "../services/patient.service.ts";
 import S3Service from "../services/s3.service.ts";
 import { responseOk } from "../utils/response.util.ts";
 import { throwError } from "../middlewares/errorHandler.middleware.ts";
-import { CreatePatientRequest } from "../models/request/patient.request.ts";
+import {
+  CreatePatientRequest,
+  CreatePatientRequestValidationSchema,
+} from "../models/request/patient.request.ts";
 import { CreatePatientResponse } from "../models/response/patient.response.ts";
+import { validateAndThrow } from "../utils/validation.util.ts";
 
 const PatientController = {
   /**
@@ -23,6 +27,12 @@ const PatientController = {
     const createPatientRequest: CreatePatientRequest = await ctx.request.body({
       type: "json",
     }).value;
+
+    await validateAndThrow(
+      createPatientRequest,
+      CreatePatientRequestValidationSchema,
+      "createPatient",
+    );
 
     const patientId = await PatientService.createPatient(createPatientRequest);
     const response: CreatePatientResponse = {
