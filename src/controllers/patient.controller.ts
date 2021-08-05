@@ -7,7 +7,12 @@ import {
   CreatePatientRequest,
   CreatePatientRequestValidationSchema,
 } from "../models/patient/request/patient.request.ts";
+import {
+  CreatePatientResultRequest,
+  CreatePatientResultRequestValidationSchema,
+} from "../models/patient/request/patientResult.request.ts";
 import { CreatePatientResponse } from "../models/patient/response/patient.response.ts";
+import { CreatePatientResultResponse } from "../models/patient/response/patientResult.response.ts";
 import { validateAndThrow } from "../utils/validation.util.ts";
 
 const PatientController = {
@@ -73,6 +78,27 @@ const PatientController = {
     }
     const s3Response = await S3Service.uploadFileToS3(images);
     responseOk(ctx.response, s3Response);
+  },
+
+  createPatientResult: async (
+    ctx: RouterContext,
+  ): Promise<void> => {
+    const createPatientResultRequest: CreatePatientResultRequest = await ctx
+      .request.body({
+        type: "json",
+      }).value;
+
+    await validateAndThrow(
+      createPatientResultRequest,
+      CreatePatientResultRequestValidationSchema,
+      "createPatientResult",
+    );
+
+    await PatientService.createPatientResult(createPatientResultRequest);
+    const response: CreatePatientResultResponse = {
+      isSuccess: true,
+    };
+    responseOk(ctx.response, response);
   },
 };
 

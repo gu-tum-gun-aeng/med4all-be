@@ -7,6 +7,7 @@ import {
   getMockPatients,
 } from "../mock/patient/patient.mock.ts";
 import { patientRequestMock } from "../mock/patient/patient.request.mock.ts";
+import { patientResultRequestMock } from "../mock/patient/patientResult.request.mock.ts";
 Deno.test("when call /v1/patients, it should return list of patients", async () => {
   const expectedResult = await getMockPatients();
   const stubPatientRepository = stub(
@@ -57,5 +58,23 @@ Deno.test("when call post /v1/patient, it should return result with patientId", 
       .expect({ results: { patientId: expectedResult } });
   } finally {
     stubPatientRepository.restore();
+  }
+});
+
+Deno.test("when call post /v1/patients/result, it should return isSuccess = True", async () => {
+  const stubPatientResultRepository = stub(
+    PatientRepository,
+    "createPatientResultAndUpdatePaientDiagnosticStatus",
+    [await undefined],
+  );
+
+  try {
+    await superdeno(app.handle.bind(app))
+      .post("/v1/patients/result")
+      .send(patientResultRequestMock)
+      .expect(200)
+      .expect({ results: { isSuccess: true } });
+  } finally {
+    stubPatientResultRepository.restore();
   }
 });

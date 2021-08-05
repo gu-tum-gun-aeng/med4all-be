@@ -18,7 +18,7 @@
       "cmd": "deno run ./src/app.ts",
       "desc": "Run the server in local mode",
       "env": {
-        "ENV": "local",
+        "ENV": "dev",
         "NO_COLOR": "true"
       }
     },
