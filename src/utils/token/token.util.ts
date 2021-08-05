@@ -1,4 +1,5 @@
 import { create, Payload, verify } from "https://deno.land/x/djwt@v2.2/mod.ts";
+import { currentNumericDate, getNumericDateFrom } from "../date.util.ts";
 
 // Todo: This should be a config.
 const ISSUER_CLAIM = "med4all";
@@ -50,12 +51,6 @@ export const isValid = async (
     return payload.iss != null && payload.iss! == ISSUER_CLAIM;
   }
 };
-
-export const getNumericDateFrom = (dateTimeMillisecs: number): number =>
-  dateTimeMillisecs / 1000;
-
-export const currentNumericDate = (): number =>
-  getNumericDateFrom(new Date().getTime());
 
 export enum HashAlgorithm {
   None = "none",
