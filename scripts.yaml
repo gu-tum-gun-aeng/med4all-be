@@ -1,0 +1,48 @@
+allow:
+  - net
+  - env
+  - read
+  - write
+  - plugin
+  - run
+
+scripts:
+  start:
+    cmd: denon run ./src/app.ts
+
+  test:watch:
+    cmd: denon test
+    env:
+      ENV: test
+
+  test:
+    cmd:
+      - deno test ./tests/unit
+      - deno test ./tests/integration
+    lock: lock.json
+    unstable: true
+    cachedOnly: true
+    env:
+      ENV: test
+
+  test-unit:
+    cmd: deno test tests/unit
+    lock: lock.json
+    unstable: true
+    cachedOnly: true
+    env: 
+      ENV: test
+
+  test-integration:
+    cmd: deno test ./tests/integration --unstable
+    lock: lock.json
+    env:
+      ENV: test
+
+  format:
+    cmd: deno fmt
+    gitHook: pre-commit
+
+  lint:
+    cmd: deno lint
+    gitHook: pre-commit
