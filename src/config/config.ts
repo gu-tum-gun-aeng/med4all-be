@@ -1,6 +1,6 @@
 import { dotenv } from "../../deps.ts";
-import { getS3Config, S3Config } from "./s3.ts";
-import { getNexmoApiConfig, NexmoApiConfig } from "./nexmo.ts";
+import { getS3Config, S3Config } from "./s3.config.ts";
+import { getNexmoApiConfig, NexmoApiConfig } from "./nexmo.config.ts";
 import { getJwtConfig, JwtConfig } from "./jwt.config.ts";
 import { DotenvConfig } from "https://deno.land/x/dotenv@v2.0.0/mod.ts"; // Todo: should move to deps
 
