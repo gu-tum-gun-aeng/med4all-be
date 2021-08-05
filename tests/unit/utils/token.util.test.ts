@@ -1,6 +1,6 @@
 import { assertEquals } from "../../../deps.ts";
 import { create, Payload, verify } from "https://deno.land/x/djwt@v2.2/mod.ts";
-import config from "../../../src/config/config.ts"
+import config from "../../../src/config/config.ts";
 import * as tokenUtil from "../../../src/utils/token/token.util.ts";
 import { currentSecondsSinceEpoch } from "../../../src/utils/date.util.ts";
 

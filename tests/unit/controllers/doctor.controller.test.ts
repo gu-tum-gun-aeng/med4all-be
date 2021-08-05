@@ -1,3 +1,4 @@
+// deno-lint-ignore-file no-explicit-any
 import { assertEquals, stub } from "../../../deps.ts";
 import { testing } from "../../../deps.ts";
 import DoctorController from "../../../src/controllers/doctor.controller.ts";
@@ -11,9 +12,9 @@ Deno.test("DoctorController.requestOtp should response with 200 ok", async () =>
     [await Promise.resolve("REQUEST_ID")],
   );
 
-  const expectedResult = {"requestId": "REQUEST_ID"};
+  const expectedResult = { "requestId": "REQUEST_ID" };
   const mockContext = testing.createMockContext();
-  (mockContext.request.body as object) = () => ({
+  (mockContext.request.body as any) = () => ({
     type: "json",
     value: {
       read: () => ({ "telephone": "0818126666" }),
@@ -46,7 +47,7 @@ Deno.test("DoctorController.verifyOtp should response with 200 ok", async () => 
   );
 
   const mockContext = testing.createMockContext();
-  (mockContext.request.body as object) = () => ({
+  (mockContext.request.body as any) = () => ({
     type: "json",
     value: {
       read: () => ({
@@ -61,10 +62,10 @@ Deno.test("DoctorController.verifyOtp should response with 200 ok", async () => 
     await DoctorController.verifyOtp(mockContext);
     assertEquals(mockContext.response.status, 200);
   } finally {
-    stubVerifyOtp.restore()
-    stubGetIdByTelephone.restore()
+    stubVerifyOtp.restore();
+    stubGetIdByTelephone.restore();
     // stubCreateToken.restore()
     // stubVerifyToken.restore()
-    stubInsertToken.restore()
+    stubInsertToken.restore();
   }
 });

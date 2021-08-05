@@ -52,9 +52,13 @@ export const isValid = async (
   }
 };
 
-export const verify = (token: string, key: string, hashAlgorithm: HashAlgorithm): Promise<Djwt.Payload>  => {
-  return Djwt.verify(token, key, hashAlgorithm)
-}
+export const verify = (
+  token: string,
+  key: string,
+  hashAlgorithm: HashAlgorithm,
+): Promise<Djwt.Payload> => {
+  return Djwt.verify(token, key, hashAlgorithm);
+};
 
 export const getNumericDateFrom = (dateTimeMillisecs: number): number =>
   dateTimeMillisecs / 1000;
