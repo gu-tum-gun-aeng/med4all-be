@@ -29,16 +29,16 @@ Deno.test("PatientController.patients should response with mock data", async () 
   }
 });
 
-Deno.test("PatientController.getFirstPendingPatient should response with only 1 patient", async () => {
+Deno.test("PatientController.getFirstWaitingPatient should response with only 1 patient", async () => {
   const expectedResult = await getMockOnePatient();
   const stubPatientRepository = stub(
     PatientRepository,
-    "getFirstPendingPatient",
+    "getFirstWaitingPatient",
     [getMockOnePatient()],
   );
   try {
     const mockContext = testing.createMockContext();
-    await PatientController.getFirstPendingPatient(mockContext);
+    await PatientController.getFirstWaitingPatient(mockContext);
     assertEquals(mockContext.response.body, { results: expectedResult });
   } finally {
     stubPatientRepository.restore();

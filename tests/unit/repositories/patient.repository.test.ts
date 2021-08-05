@@ -26,7 +26,7 @@ Deno.test("getAll should return list of all patients correctly", async () => {
   }
 });
 
-Deno.test("getFirstPendingPatient should return only 1 patient", async () => {
+Deno.test("getFirstWaitingPatient should return only 1 patient", async () => {
   const expectedResult = await getMockOnePatient();
   const stubPatient = stub(
     DbUtil,
@@ -35,7 +35,7 @@ Deno.test("getFirstPendingPatient should return only 1 patient", async () => {
   );
 
   try {
-    const actualResult = await patientRepository.getFirstPendingPatient();
+    const actualResult = await patientRepository.getFirstWaitingPatient();
     assertEquals(actualResult, expectedResult);
     assertSpyCalls(stubPatient, 1);
   } finally {

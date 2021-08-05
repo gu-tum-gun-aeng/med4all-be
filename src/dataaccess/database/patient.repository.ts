@@ -25,7 +25,7 @@ const PatientRepository = {
         patient
     `;
   },
-  getFirstPendingPatient: async () => {
+  getFirstWaitingPatient: async () => {
     const patientDiagnosingTimeout = 8; //Hours
     return await dbUtils.queryOneObject<Patient>`
       UPDATE patient

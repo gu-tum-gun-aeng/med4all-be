@@ -5,7 +5,7 @@ const router = new Router();
 
 router
   .get("/patients", PatientController.patients)
-  .get("/patients/pending", PatientController.getFirstPendingPatient)
+  .get("/patients/waiting", PatientController.getFirstWaitingPatient)
   .post("/patients", (ctx) => PatientController.createPatient(ctx))
   .post(
     "/patients/upload",

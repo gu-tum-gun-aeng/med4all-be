@@ -24,16 +24,16 @@ Deno.test("when call /v1/patients, it should return list of patients", async () 
   }
 });
 
-Deno.test("when call /v1/patients/pending, it should return 1 pending patient", async () => {
+Deno.test("when call /v1/patients/waiting, it should return 1 waiting patient", async () => {
   const expectedResult = await getMockOnePatient();
   const stubPatientRepository = stub(
     PatientRepository,
-    "getFirstPendingPatient",
+    "getFirstWaitingPatient",
     [getMockOnePatient()],
   );
   try {
     await superdeno(app.handle.bind(app))
-      .get("/v1/patients/pending")
+      .get("/v1/patients/waiting")
       .expect(200)
       .expect({ results: expectedResult });
   } finally {

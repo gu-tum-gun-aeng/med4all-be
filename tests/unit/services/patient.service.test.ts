@@ -23,15 +23,15 @@ Deno.test("getPatients should return list of all patients correctly", async () =
   }
 });
 
-Deno.test("getFirstPendingPatient should return 1 patient", async () => {
+Deno.test("getFirstWaitingPatient should return 1 patient", async () => {
   const expectedResult = await getMockOnePatient();
   const stubPatientRepository = stub(
     PatientRepository,
-    "getFirstPendingPatient",
+    "getFirstWaitingPatient",
     [getMockOnePatient()],
   );
   try {
-    const actualResult = await patientService.getFirstPendingPatient();
+    const actualResult = await patientService.getFirstWaitingPatient();
     assertEquals(actualResult, expectedResult);
   } finally {
     stubPatientRepository.restore();
