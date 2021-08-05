@@ -2,24 +2,47 @@ import DoctorRepository from "../dataaccess/database/doctor.repository.ts";
 import NexmoService from "../dataaccess/service/nexmo/nexmo.service.ts";
 import { traceWrapperAsync } from "../utils/trace.util.ts";
 
-const requestOtp = async (telephone: string): Promise<boolean> => {
-  const isDoctor = await DoctorRepository.isDoctor(telephone)
+const requestOtp = async (
+  telephoneWithCountryCode: string,
+): Promise<string> => {
+  const isDoctor = await DoctorRepository.isDoctor(telephoneWithCountryCode);
   // TODO: properly declare custom error type
-  if (!isDoctor) throw new Error("You are not the doctor.")
+  if (!isDoctor) throw new Error("You are not the doctor.");
 
-  const requestOtpResult = await NexmoService.requestOtp(telephone)
+  const requestOtpResult = await NexmoService.requestOtp(
+    telephoneWithCountryCode,
+  );
 
-  const isSuccess = requestOtpResult
+  if (requestOtpResult.status != "0") {
+    throw new Error(requestOtpResult.error_text);
+  }
 
-  return await traceWrapperAsync<boolean>(
-    () => Promise.resolve(isSuccess),
+  return traceWrapperAsync<string>(
+    () => Promise.resolve(requestOtpResult.request_id),
     "route",
   );
 };
 
-const verifyOtp = async (telephone: string, code: string): Promise<boolean> => {
-  return await traceWrapperAsync<boolean>(
+const verifyOtp = async (requestId: string, code: string): Promise<boolean> => {
+  const requestOtpResult = await NexmoService.verifyOtp(code, requestId);
+  if (requestOtpResult.status != "0") {
+    throw new Error(requestOtpResult.error_text);
+  }
+
+  return traceWrapperAsync<boolean>(
     () => Promise.resolve(true),
+    "route",
+  );
+};
+
+const getIdByTelephone = async (telephoneWithCountryCode: string): Promise<number> => {
+  const id = await DoctorRepository.getIdByTelePhone(telephoneWithCountryCode);
+  if (!id) {
+    throw new Error("You are not the doctor.");
+  }
+
+  return traceWrapperAsync<number>(
+    () => Promise.resolve(id),
     "route",
   );
 };
@@ -27,4 +50,5 @@ const verifyOtp = async (telephone: string, code: string): Promise<boolean> => {
 export default {
   requestOtp,
   verifyOtp,
+  getIdByTelephone,
 };
