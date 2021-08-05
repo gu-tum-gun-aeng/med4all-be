@@ -52,6 +52,8 @@ const config: ({
     requesOtptUrl: Deno.env.get("REQUEST_OTP_URL") || envConfig.REQUEST_OTP_URL,
     verifyOtpUrl: Deno.env.get("VERIFY_OTP_URL") || envConfig.VERIFY_OTP_URL,
     brand: Deno.env.get("BRAND") || envConfig.BRAND,
+    workflowId: Deno.env.get("WORKFLOW_ID") || envConfig.WORKFLOW_ID,
+    pinExpire: Deno.env.get("PIN_EXPIRE") || envConfig.PIN_EXPIRE,
   },
   djwt: {
     key: Deno.env.get("DJWT_KEY") || envConfig.DJWT_KEY,
