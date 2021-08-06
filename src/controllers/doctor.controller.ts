@@ -79,6 +79,7 @@ const DoctorController = {
       });
       return;
     }
+
     const expDate = dateUtils.toDate(payload.exp);
     const expDateFormat = expDate.toISOString();
     await DoctorTokenService.insert(token, expDateFormat);

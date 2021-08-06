@@ -14,5 +14,6 @@ export const logMiddleware = async (
 ): Promise<void> => {
   const url = ctx.request.url.toString();
   const parsedUrl = new URL(url);
+
   await traceWrapperAsync(next, "route", parsedUrl.pathname, ctx.request);
 };

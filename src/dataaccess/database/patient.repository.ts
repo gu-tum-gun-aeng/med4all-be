@@ -26,6 +26,7 @@ const PatientRepository = {
         patient
     `;
   },
+
   getFirstWaitingPatient: async () => {
     const patientDiagnosingTimeout = 8; //Hours
     return await dbUtils.queryOneObject<Patient>`
@@ -57,6 +58,7 @@ const PatientRepository = {
       diagnostic_status_id;
     `; // We use 'FOR UPDATE SKIP LOCKED' to prevent race condition.
   },
+
   createPatient: async (patient: CreatePatientRequest): Promise<number> => {
     let result = -1;
     const currentDateTime = (new Date()).toISOString();
@@ -136,6 +138,7 @@ const PatientRepository = {
         type: "internal error",
       });
     }
+
     return result;
   },
 

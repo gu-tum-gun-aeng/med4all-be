@@ -65,6 +65,7 @@ const PatientController = {
     const images = imageData?.files?.filter((file: FormDataFile) =>
       filterContentTypes.some((contentType) => contentType == file.contentType)
     );
+
     if (!images) {
       throwError({
         status: 500,
@@ -74,8 +75,10 @@ const PatientController = {
         message: "images not found",
         type: "internal error",
       });
+
       return;
     }
+
     const s3Response = await S3Service.uploadFileToS3(images);
     responseOk(ctx.response, s3Response);
   },

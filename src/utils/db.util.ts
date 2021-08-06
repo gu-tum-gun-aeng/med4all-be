@@ -57,6 +57,7 @@ const DbUtil = {
     let result: QueryArrayResult<T>;
     try {
       result = await client.queryArray<T>(sql, ...args);
+
       return result.rows;
     } finally {
       await client.release();
@@ -74,9 +75,12 @@ const DbUtil = {
           statement.text,
           ...statement.args,
         );
+
         return result.rows;
       }));
+
       await transaction.commit();
+
       return results;
     } catch (e) {
       await transaction.rollback();
