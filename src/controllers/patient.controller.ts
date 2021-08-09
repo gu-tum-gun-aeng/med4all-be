@@ -1,4 +1,4 @@
-import type { FormDataFile, RouterContext } from "../../deps.ts";
+import type { FormDataFile } from "../../deps.ts";
 import PatientService from "../services/patient.service.ts";
 import S3Service from "../services/s3.service.ts";
 import { responseOk } from "../utils/response.util.ts";
@@ -14,6 +14,7 @@ import {
 import { CreatePatientResponse } from "../models/patient/response/patient.response.ts";
 import { CreatePatientResultResponse } from "../models/patient/response/patientResult.response.ts";
 import { validateAndThrow } from "../utils/validation.util.ts";
+import Context from "../types/context.type.ts";
 
 const PatientController = {
   /**
@@ -21,20 +22,20 @@ const PatientController = {
    * @param response
    * @returns Promise<void>
    */
-  patients: async ({ response }: RouterContext): Promise<void> => {
+  patients: async ({ response }: Context): Promise<void> => {
     const patient = await PatientService.getPatients();
     responseOk(response, patient);
   },
 
   getFirstWaitingPatient: async (
-    { response }: RouterContext,
+    { response }: Context,
   ): Promise<void> => {
     const patient = await PatientService.getFirstWaitingPatient();
     responseOk(response, patient);
   },
 
   createPatient: async (
-    ctx: RouterContext,
+    ctx: Context,
   ): Promise<void> => {
     const createPatientRequest: CreatePatientRequest = await ctx.request.body({
       type: "json",
@@ -46,7 +47,10 @@ const PatientController = {
       "createPatient",
     );
 
-    const patientId = await PatientService.createPatient(createPatientRequest);
+    const patientId = await PatientService.createPatient(
+      createPatientRequest,
+      ctx.userId!,
+    );
     const response: CreatePatientResponse = {
       patientId,
     };
@@ -54,7 +58,7 @@ const PatientController = {
   },
 
   uploadImagesByFormData: async (
-    ctx: RouterContext,
+    ctx: Context,
     filterContentTypes: string[] = ["image/jpg", "image/jpeg", "image/png"],
   ): Promise<void> => {
     const fileDataFromRequestBody = await ctx.request.body({
@@ -84,7 +88,7 @@ const PatientController = {
   },
 
   createPatientResult: async (
-    ctx: RouterContext,
+    ctx: Context,
   ): Promise<void> => {
     const createPatientResultRequest: CreatePatientResultRequest = await ctx
       .request.body({
@@ -97,7 +101,10 @@ const PatientController = {
       "createPatientResult",
     );
 
-    await PatientService.createPatientResult(createPatientResultRequest);
+    await PatientService.createPatientResult(
+      createPatientResultRequest,
+      ctx.userId!,
+    );
     const response: CreatePatientResultResponse = {
       isSuccess: true,
     };

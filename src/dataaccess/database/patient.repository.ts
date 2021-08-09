@@ -4,7 +4,6 @@ import {
 } from "../../models/patient/patient.model.ts";
 import { CreatePatientRequest } from "../../models/patient/request/patient.request.ts";
 import dbUtils from "../../utils/db.util.ts";
-import config from "../../config/config.ts";
 import { throwError } from "../../middlewares/errorHandler.middleware.ts";
 import { CreatePatientResultRequest } from "../../models/patient/request/patientResult.request.ts";
 
@@ -59,7 +58,10 @@ const PatientRepository = {
     `; // We use 'FOR UPDATE SKIP LOCKED' to prevent race condition.
   },
 
-  createPatient: async (patient: CreatePatientRequest): Promise<number> => {
+  createPatient: async (
+    patient: CreatePatientRequest,
+    createdByUserId: string,
+  ): Promise<number> => {
     let result = -1;
     const currentDateTime = (new Date()).toISOString();
     const patientId = await dbUtils.queryOneObject<{ value: BigInt }>`
@@ -95,9 +97,9 @@ const PatientRepository = {
           ${patient.covidTestPictureUrl},
           ${patient.medicalInfo},
           ${DiagnosticStatus.Waiting},
-          ${config.appName},
+          ${createdByUserId},
           ${currentDateTime},
-          ${config.appName},
+          ${createdByUserId},
           ${currentDateTime})
     `;
       const insertAddressSQL = dbUtils.toQuery`
@@ -117,9 +119,9 @@ const PatientRepository = {
           ${patient.district}, 
           ${patient.province}, 
           ${patient.zipCode}, 
-          ${config.appName}, 
+          ${createdByUserId}, 
           ${currentDateTime}, 
-          ${config.appName}, 
+          ${createdByUserId}, 
           ${currentDateTime}
           )
     `;
@@ -144,6 +146,7 @@ const PatientRepository = {
 
   createPatientResultAndUpdatePaientDiagnosticStatus: async (
     patientResult: CreatePatientResultRequest,
+    createdByUserId: string,
   ): Promise<void> => {
     const currentDateTime = (new Date()).toISOString();
     const insertPatientResultSQL = dbUtils.toQuery`
@@ -165,16 +168,19 @@ const PatientRepository = {
       ${patientResult.isApproved},
       ${patientResult.rejectReasonId},
       ${patientResult.remark},
-      ${patientResult.doctorId},
+      ${createdByUserId},
       ${currentDateTime},
-      ${patientResult.doctorId},
+      ${createdByUserId},
       ${currentDateTime}
     );
     `;
 
     const updatePatientDiagnosticStatusSQL = dbUtils.toQuery`
       UPDATE patient
-      SET diagnostic_status_id = ${DiagnosticStatus.Completed}
+      SET 
+        diagnostic_status_id = ${DiagnosticStatus.Completed},
+        last_modified_by = ${createdByUserId},
+        last_modified_when = ${currentDateTime}
       WHERE patient_id = ${patientResult.patientId};
     `;
 

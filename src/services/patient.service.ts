@@ -18,20 +18,25 @@ export const getFirstWaitingPatient = async () => {
   );
 };
 
-export const createPatient = async (patient: CreatePatientRequest) => {
+export const createPatient = async (
+  patient: CreatePatientRequest,
+  createdByUserId: string,
+) => {
   return await traceWrapperAsync<number>(
-    () => patientRepository.createPatient(patient),
+    () => patientRepository.createPatient(patient, createdByUserId),
     "route",
   );
 };
 
 export const createPatientResult = async (
   patient: CreatePatientResultRequest,
+  createdByUserId: string,
 ) => {
   return await traceWrapperAsync<void>(
     () =>
       patientRepository.createPatientResultAndUpdatePaientDiagnosticStatus(
         patient,
+        createdByUserId,
       ),
     "route",
   );

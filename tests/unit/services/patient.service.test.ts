@@ -46,7 +46,10 @@ Deno.test("createPatient should return patientId correctly", async () => {
     [await expectedResult],
   );
   try {
-    const actualResult = await patientService.createPatient(patientRequestMock);
+    const actualResult = await patientService.createPatient(
+      patientRequestMock,
+      "20",
+    );
     assertEquals(actualResult, expectedResult);
   } finally {
     stubPatientRepository.restore();

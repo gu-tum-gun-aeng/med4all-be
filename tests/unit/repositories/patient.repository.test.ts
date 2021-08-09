@@ -63,6 +63,7 @@ Deno.test("createPatient should insert patient and address to database", async (
   try {
     const actualResult = await patientRepository.createPatient(
       patientRequestMock,
+      "20",
     );
     assertEquals(actualResult, expectedResult);
     const queryPatient: Query = stubExecuteTransactional.calls[0].args[0][0];
@@ -85,6 +86,7 @@ Deno.test("createPatientResultAndUpdatePaientDiagnosticStatus should insert pati
   try {
     await patientRepository.createPatientResultAndUpdatePaientDiagnosticStatus(
       patientResultRequestMock,
+      "20",
     );
     const queryInsertPatientResult: Query =
       stubExecuteTransactional.calls[0].args[0][0];
@@ -104,6 +106,10 @@ Deno.test("createPatientResultAndUpdatePaientDiagnosticStatus should insert pati
     );
     assertEquals(
       queryUpdatePatientDiagnosticStatus.args[1],
+      "20",
+    );
+    assertEquals(
+      queryUpdatePatientDiagnosticStatus.args[3],
       patientResultRequestMock.patientId,
     );
   } finally {
