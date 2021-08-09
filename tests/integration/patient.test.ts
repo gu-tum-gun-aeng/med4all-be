@@ -34,6 +34,20 @@ Deno.test("when call /v1/patients, it should return list of patients", async () 
   }
 });
 
+Deno.test("when call /v1/patients with invalid token, it should return 401", async () => {
+  const mockToken = "FAKE_TOKEN"
+  await superdeno(app.handle.bind(app))
+    .get("/v1/patients")
+    .set("Authorization", `${mockToken}`)
+    .expect(401)
+});
+
+Deno.test("when call /v1/patients without Authorization header, it should return 401", async () => {
+  await superdeno(app.handle.bind(app))
+    .get("/v1/patients")
+    .expect(401)
+});
+
 Deno.test("when call /v1/patients/waiting, it should return 1 waiting patient", async () => {
   const expectedResult = await getMockOnePatient();
   const stubPatientRepository = stub(

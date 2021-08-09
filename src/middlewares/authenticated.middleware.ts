@@ -1,6 +1,7 @@
 import Context from "../types/context.type.ts"
 import * as tokenUtil from "../utils/token/token.util.ts"
 import config from "../config/config.ts"
+import { Err } from "../types/interface.type.ts"
 
 export const authenticated = async (
   ctx: Context,
@@ -16,9 +17,25 @@ export const authenticated = async (
       ctx.userId = payload.jti || ""
       await next()
     } catch {
-      throw new Error("Invalid token")
+      const err: Err = {
+        status: 401,
+        name: "Invalid token",
+        path: request.url.pathname,
+        param: "",
+        message: "Invalid token",
+        type: ""
+      } 
+      throw err
     }
   } else {
-    throw new Error("Unauthorized")
+    const err: Err = {
+      status: 401,
+      name: "Unauthorized",
+      path: request.url.pathname,
+      param: "",
+      message: "Unauthorized",
+      type: ""
+    } 
+    throw err
   }
 }
