@@ -8,12 +8,7 @@ export const authenticated = async (
 ): Promise<void> => {
   const request =  ctx.request
   const authHeader = request.headers.get("Authorization")
-
-  console.log("HEADER", authHeader)
-
   const token = authHeader
-
-  console.log("TOKEN", token)
 
   if (token) {
     try {
