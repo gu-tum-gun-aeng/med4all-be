@@ -1,19 +1,29 @@
 import { Router } from "../../../deps.ts";
 import PatientController from "../../controllers/patient.controller.ts";
-import { authenticated }  from "../../middlewares/authenticated.middleware.ts"
+import { authenticated } from "../../middlewares/authenticated.middleware.ts";
 
 const router = new Router();
 
 router
   .get("/patients", authenticated, PatientController.patients)
-  .get("/patients/waiting",  authenticated, PatientController.getFirstWaitingPatient)
-  .post("/patients",  authenticated, (ctx) => PatientController.createPatient(ctx))
+  .get(
+    "/patients/waiting",
+    authenticated,
+    PatientController.getFirstWaitingPatient,
+  )
   .post(
-    "/patients/upload", authenticated,
+    "/patients",
+    authenticated,
+    (ctx) => PatientController.createPatient(ctx),
+  )
+  .post(
+    "/patients/upload",
+    authenticated,
     (ctx) => PatientController.uploadImagesByFormData(ctx),
   )
   .post(
-    "/patients/result", authenticated,
+    "/patients/result",
+    authenticated,
     (ctx) => PatientController.createPatientResult(ctx),
   );
 

@@ -1,21 +1,25 @@
-import Context from "../types/context.type.ts"
-import * as tokenUtil from "../utils/token/token.util.ts"
-import config from "../config/config.ts"
-import { Err } from "../types/interface.type.ts"
+import Context from "../types/context.type.ts";
+import * as tokenUtil from "../utils/token/token.util.ts";
+import config from "../config/config.ts";
+import { Err } from "../types/interface.type.ts";
 
 export const authenticated = async (
   ctx: Context,
   next: () => Promise<unknown>,
 ): Promise<void> => {
-  const request =  ctx.request
-  const authHeader = request.headers.get("Authorization")
-  const token = authHeader
+  const request = ctx.request;
+  const authHeader = request.headers.get("Authorization");
+  const token = authHeader;
 
   if (token) {
     try {
-      const payload = await tokenUtil.verify(token, config.jwt.key, tokenUtil.HashAlgorithm.HS512)
-      ctx.userId = payload.jti || ""
-      await next()
+      const payload = await tokenUtil.verify(
+        token,
+        config.jwt.key,
+        tokenUtil.HashAlgorithm.HS512,
+      );
+      ctx.userId = payload.jti || "";
+      await next();
     } catch {
       const err: Err = {
         status: 401,
@@ -23,9 +27,9 @@ export const authenticated = async (
         path: request.url.pathname,
         param: "",
         message: "Invalid token",
-        type: ""
-      } 
-      throw err
+        type: "",
+      };
+      throw err;
     }
   } else {
     const err: Err = {
@@ -34,8 +38,8 @@ export const authenticated = async (
       path: request.url.pathname,
       param: "",
       message: "Unauthorized",
-      type: ""
-    } 
-    throw err
+      type: "",
+    };
+    throw err;
   }
-}
+};

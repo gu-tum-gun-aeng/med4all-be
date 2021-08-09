@@ -8,8 +8,8 @@ import {
 } from "../mock/patient/patient.mock.ts";
 import { patientRequestMock } from "../mock/patient/patient.request.mock.ts";
 import { patientResultRequestMock } from "../mock/patient/patientResult.request.mock.ts";
-import * as tokenUtil from "../../src/utils/token/token.util.ts"
-import config from  "../../src/config/config.ts"
+import * as tokenUtil from "../../src/utils/token/token.util.ts";
+import config from "../../src/config/config.ts";
 
 Deno.test("when call /v1/patients, it should return list of patients", async () => {
   const expectedResult = await getMockPatients();
@@ -20,9 +20,9 @@ Deno.test("when call /v1/patients, it should return list of patients", async () 
   );
   const mockToken = await tokenUtil.createToken({
     id: "1",
-    hashAlgorithm: tokenUtil.HashAlgorithm.HS512, 
-    ttlSeconds: 60
-  }, config.jwt.key)
+    hashAlgorithm: tokenUtil.HashAlgorithm.HS512,
+    ttlSeconds: 60,
+  }, config.jwt.key);
   try {
     await superdeno(app.handle.bind(app))
       .get("/v1/patients")
@@ -35,17 +35,17 @@ Deno.test("when call /v1/patients, it should return list of patients", async () 
 });
 
 Deno.test("when call /v1/patients with invalid token, it should return 401", async () => {
-  const mockToken = "FAKE_TOKEN"
+  const mockToken = "FAKE_TOKEN";
   await superdeno(app.handle.bind(app))
     .get("/v1/patients")
     .set("Authorization", mockToken)
-    .expect(401)
+    .expect(401);
 });
 
 Deno.test("when call /v1/patients without Authorization header, it should return 401", async () => {
   await superdeno(app.handle.bind(app))
     .get("/v1/patients")
-    .expect(401)
+    .expect(401);
 });
 
 Deno.test("when call /v1/patients/waiting, it should return 1 waiting patient", async () => {
@@ -57,9 +57,9 @@ Deno.test("when call /v1/patients/waiting, it should return 1 waiting patient", 
   );
   const mockToken = await tokenUtil.createToken({
     id: "1",
-    hashAlgorithm: tokenUtil.HashAlgorithm.HS512, 
-    ttlSeconds: 60
-  }, config.jwt.key)
+    hashAlgorithm: tokenUtil.HashAlgorithm.HS512,
+    ttlSeconds: 60,
+  }, config.jwt.key);
   try {
     await superdeno(app.handle.bind(app))
       .get("/v1/patients/waiting")
@@ -80,9 +80,9 @@ Deno.test("when call post /v1/patient, it should return result with patientId", 
   );
   const mockToken = await tokenUtil.createToken({
     id: "1",
-    hashAlgorithm: tokenUtil.HashAlgorithm.HS512, 
-    ttlSeconds: 60
-  }, config.jwt.key)
+    hashAlgorithm: tokenUtil.HashAlgorithm.HS512,
+    ttlSeconds: 60,
+  }, config.jwt.key);
   try {
     await superdeno(app.handle.bind(app))
       .post("/v1/patients")
@@ -103,9 +103,9 @@ Deno.test("when call post /v1/patients/result, it should return isSuccess = True
   );
   const mockToken = await tokenUtil.createToken({
     id: "1",
-    hashAlgorithm: tokenUtil.HashAlgorithm.HS512, 
-    ttlSeconds: 60
-  }, config.jwt.key)
+    hashAlgorithm: tokenUtil.HashAlgorithm.HS512,
+    ttlSeconds: 60,
+  }, config.jwt.key);
 
   try {
     await superdeno(app.handle.bind(app))
