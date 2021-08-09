@@ -8,8 +8,8 @@ export const authenticated = async (
   next: () => Promise<unknown>,
 ): Promise<void> => {
   const request = ctx.request;
-  const authHeader = request.headers.get("Authorization");
-  const token = authHeader;
+  const authHeader = request.headers.get("Authorization") || "";
+  const token = authHeader.replace(/^bearer/i, "").trim();
 
   if (token) {
     try {
