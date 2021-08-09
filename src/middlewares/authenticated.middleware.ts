@@ -1,10 +1,9 @@
-import { Context, State } from "../../deps.ts";
+import Context from "../types/context.type.ts"
 import * as tokenUtil from "../utils/token/token.util.ts"
 import config from "../config/config.ts"
 
 export const authenticated = async (
-  // deno-lint-ignore no-explicit-any
-  ctx: Context<State, Record<string, any>>,
+  ctx: Context,
   next: () => Promise<unknown>,
 ): Promise<void> => {
   const request =  ctx.request
@@ -19,6 +18,7 @@ export const authenticated = async (
   if (token) {
     try {
       const payload = await tokenUtil.verify(token, config.jwt.key, tokenUtil.HashAlgorithm.HS512)
+      ctx.userId = payload.jti || ""
       await next()
     } catch {
       throw new Error("Invalid token")
