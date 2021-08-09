@@ -26,7 +26,7 @@ Deno.test("when call /v1/patients, it should return list of patients", async () 
   try {
     await superdeno(app.handle.bind(app))
       .get("/v1/patients")
-      .set("Authorization", `${mockToken}`)
+      .set("Authorization", mockToken)
       .expect(200)
       .expect({ results: expectedResult });
   } finally {
@@ -38,7 +38,7 @@ Deno.test("when call /v1/patients with invalid token, it should return 401", asy
   const mockToken = "FAKE_TOKEN"
   await superdeno(app.handle.bind(app))
     .get("/v1/patients")
-    .set("Authorization", `${mockToken}`)
+    .set("Authorization", mockToken)
     .expect(401)
 });
 
@@ -55,9 +55,15 @@ Deno.test("when call /v1/patients/waiting, it should return 1 waiting patient", 
     "getFirstWaitingPatient",
     [getMockOnePatient()],
   );
+  const mockToken = await tokenUtil.createToken({
+    id: "1",
+    hashAlgorithm: tokenUtil.HashAlgorithm.HS512, 
+    ttlSeconds: 60
+  }, config.jwt.key)
   try {
     await superdeno(app.handle.bind(app))
       .get("/v1/patients/waiting")
+      .set("Authorization", mockToken)
       .expect(200)
       .expect({ results: expectedResult });
   } finally {
@@ -72,10 +78,15 @@ Deno.test("when call post /v1/patient, it should return result with patientId", 
     "createPatient",
     [await expectedResult],
   );
-
+  const mockToken = await tokenUtil.createToken({
+    id: "1",
+    hashAlgorithm: tokenUtil.HashAlgorithm.HS512, 
+    ttlSeconds: 60
+  }, config.jwt.key)
   try {
     await superdeno(app.handle.bind(app))
       .post("/v1/patients")
+      .set("Authorization", mockToken)
       .send(patientRequestMock)
       .expect(200)
       .expect({ results: { patientId: expectedResult } });
@@ -90,10 +101,16 @@ Deno.test("when call post /v1/patients/result, it should return isSuccess = True
     "createPatientResultAndUpdatePaientDiagnosticStatus",
     [await undefined],
   );
+  const mockToken = await tokenUtil.createToken({
+    id: "1",
+    hashAlgorithm: tokenUtil.HashAlgorithm.HS512, 
+    ttlSeconds: 60
+  }, config.jwt.key)
 
   try {
     await superdeno(app.handle.bind(app))
       .post("/v1/patients/result")
+      .set("Authorization", mockToken)
       .send(patientResultRequestMock)
       .expect(200)
       .expect({ results: { isSuccess: true } });
