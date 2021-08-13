@@ -6,7 +6,7 @@ import { traceWrapperAsync } from "../utils/trace.util.ts";
 const requestOtp = async (
   telephoneWithCountryCode: string,
 ): Promise<string> => {
-  const isVolunteer = await VolunteerRepository.isVolunteer(
+  const isVolunteer = await VolunteerRepository.isExist(
     telephoneWithCountryCode,
   );
   // TODO: properly declare custom error type

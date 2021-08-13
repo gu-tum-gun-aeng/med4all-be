@@ -36,7 +36,7 @@ const getHttpObjectFromRequest = (request: Partial<Request>) => {
  * @param request Request
  * @returns Promise<void>
  */
-// TODO: ESSENTIAL: Fix this wrapper to handle success and failure of `fx`. Hint: copy this function from med4all-waiting-list-agent
+// TODO: ESSENTIAL: #23 Fix this wrapper to handle success and failure of `fx`. Hint: copy this function from med4all-waiting-list-agent
 export const traceWrapperAsync = async <T>(
   // deno-lint-ignore no-explicit-any
   fx: (arg?: any) => Promise<T>,

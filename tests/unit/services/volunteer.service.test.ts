@@ -13,7 +13,7 @@ Deno.test("requestOtp should return true when given valid phone number", async (
   const expectedResult = await Promise.resolve(true);
   const stubVolunteerRepository = stub(
     VolunteerRepository,
-    "isVolunteer",
+    "isExist",
     [expectedResult],
   );
 

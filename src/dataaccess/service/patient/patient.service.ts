@@ -8,8 +8,8 @@
 import { CreatePatientRequest } from "../../../models/patient/request/patient.request.ts";
 
 const PatientService = {
-  // TODO: ESSENTIAL: Implement this method to call `med4all-patient-api`
-  // TODO: ESSENTIAL: Log & Trace this method with traceWrapperAsync
+  // TODO: ESSENTIAL: #22 Implement this method to call `med4all-patient-api`
+  // TODO: ESSENTIAL: #23 Log & Trace this method with traceWrapperAsync
   createPatient: (
     patient: CreatePatientRequest,
   ): Promise<boolean> => {

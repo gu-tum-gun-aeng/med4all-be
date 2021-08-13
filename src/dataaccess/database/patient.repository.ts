@@ -65,7 +65,7 @@ const PatientRepository = {
     `; // We use 'FOR UPDATE SKIP LOCKED' to prevent race condition.
   },
 
-  // TODO: ESSENTIAL: Adjust this patient db schema and queries according to agreed volunteer data forms
+  // TODO: ESSENTIAL: #19 Adjust this patient db schema and queries according to agreed volunteer data forms
   createPatient: async (
     patient: CreatePatientRequest,
     createdByUserId: string,

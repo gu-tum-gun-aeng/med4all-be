@@ -5,7 +5,7 @@
 // // Deno.test("when call /v1/volunteers/otp/request, it should return 200 OK", async () => {
 // //   const stubVolunteerRepository = stub(
 // //     VolunteerRepository,
-// //     "isVolunteer",
+// //     "isExist",
 // //     [await Promise.resolve(true)],
 // //   );
 
