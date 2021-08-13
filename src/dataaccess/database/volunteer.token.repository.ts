@@ -2,6 +2,7 @@ import { format } from "../../../deps.ts";
 import config from "../../config/config.ts";
 import dbUtils from "../../utils/db.util.ts";
 
+// TODO: Fix query to be 'volunteer' instead
 const VolunteerTokenRepository = {
   insert: async (token: string, validUntil: string): Promise<number> => {
     const currentDateTime = format(new Date(), "yyyy-MM-dd HH:mm:ss.SSS");
