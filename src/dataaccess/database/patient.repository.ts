@@ -8,6 +8,13 @@ import { throwError } from "../../middlewares/errorHandler.middleware.ts";
 import { CreatePatientResultRequest } from "../../models/patient/request/patientResult.request.ts";
 
 const PatientRepository = {
+  isExist: async (certificateId: string) => {
+    const result = await dbUtils.queryOneObject
+      `SELECT patient_id FROM patient WHERE certificate_id = ${certificateId} LIMIT 1`;
+
+    return result !== undefined;
+  },
+
   getAll: async () => {
     return await dbUtils.queryObject<Patient>`SELECT 
         patient_id, 
@@ -58,6 +65,7 @@ const PatientRepository = {
     `; // We use 'FOR UPDATE SKIP LOCKED' to prevent race condition.
   },
 
+  // TODO: ESSENTIAL: Adjust this patient db schema and queries according to agreed volunteer data forms
   createPatient: async (
     patient: CreatePatientRequest,
     createdByUserId: string,

@@ -50,10 +50,15 @@ Deno.test("PatientController.getFirstWaitingPatient should response with only 1 
 
 Deno.test("PatientController.createPatient should response with expected patientId", async () => {
   const expectedResult = 10;
-  const stubPatientRepository = stub(
+  const stubPatientRepositoryCreatePatient = stub(
     PatientRepository,
     "createPatient",
     [await expectedResult],
+  );
+  const stubPatientRepositoryIsExist = stub(
+    PatientRepository,
+    "isExist",
+    [false],
   );
   try {
     const mockContext = testing.createMockContext();
@@ -66,7 +71,8 @@ Deno.test("PatientController.createPatient should response with expected patient
       results: { patientId: expectedResult },
     });
   } finally {
-    stubPatientRepository.restore();
+    stubPatientRepositoryCreatePatient.restore();
+    stubPatientRepositoryIsExist.restore();
   }
 });
 

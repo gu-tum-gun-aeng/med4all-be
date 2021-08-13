@@ -73,10 +73,15 @@ Deno.test("when call /v1/patients/waiting, it should return 1 waiting patient", 
 
 Deno.test("when call post /v1/patient, it should return result with patientId", async () => {
   const expectedResult = 10;
-  const stubPatientRepository = stub(
+  const stubPatientRepositoryCreatePatient = stub(
     PatientRepository,
     "createPatient",
     [await expectedResult],
+  );
+  const stubPatientRepositoryIsExist = stub(
+    PatientRepository,
+    "isExist",
+    [false],
   );
   const mockToken = await tokenUtil.createToken({
     id: "1",
@@ -91,7 +96,8 @@ Deno.test("when call post /v1/patient, it should return result with patientId", 
       .expect(200)
       .expect({ results: { patientId: expectedResult } });
   } finally {
-    stubPatientRepository.restore();
+    stubPatientRepositoryCreatePatient.restore();
+    stubPatientRepositoryIsExist.restore();
   }
 });
 

@@ -5,7 +5,13 @@ import { authenticated } from "../../middlewares/authenticated.middleware.ts";
 const router = new Router();
 
 router
+  /**
+   * @deprecated
+   */
   .get("/patients", authenticated, PatientController.patients)
+  /**
+   * @deprecated
+   */
   .get(
     "/patients/waiting",
     authenticated,
@@ -16,11 +22,17 @@ router
     authenticated,
     (ctx) => PatientController.createPatient(ctx),
   )
+  /**
+   * @deprecated
+   */
   .post(
     "/patients/upload",
     authenticated,
     (ctx) => PatientController.uploadImagesByFormData(ctx),
   )
+  /**
+   * @deprecated
+   */
   .post(
     "/patients/result",
     authenticated,

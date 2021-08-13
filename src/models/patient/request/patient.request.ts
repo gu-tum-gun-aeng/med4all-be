@@ -7,6 +7,8 @@ import {
   startsWith,
   ValidationRules,
 } from "../../../../deps.ts";
+
+// TODO: ESSENTIAL: Adjust these request spec according to agreed volunteer data forms
 export type CreatePatientRequest = {
   patientName: string;
   age: number;
@@ -23,6 +25,7 @@ export type CreatePatientRequest = {
   medicalInfo?: Record<string, unknown>;
 };
 
+// TODO: ESSENTIAL: Adjust these request spec according to agreed volunteer data forms
 export const CreatePatientRequestValidationSchema: ValidationRules = {
   patientName: [required, minLength(1)],
   age: [required, isNumber, minNumber(15)],

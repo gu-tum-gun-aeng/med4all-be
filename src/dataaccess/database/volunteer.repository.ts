@@ -1,8 +1,10 @@
 // import { Volunteer } from "../../models/volunteer/volunteer.model.ts";
 import dbUtils from "../../utils/db.util.ts";
 
-// TODO: Fix query to be 'volunteer' instead
+// TODO: ESSENTIAL: Fix query to be 'volunteer' instead
+// TODO: ESSENTIAL: add column 'volunteer_group' to table 'volunteer'
 const VolunteerRepository = {
+  // TODO: ESSENTIAL: Rename to isExist
   isVolunteer: async (telephone: string) => {
     const result = await dbUtils.queryOneObject
       `SELECT doctor_id FROM doctor WHERE mobile_phone_number = ${telephone} LIMIT 1`;

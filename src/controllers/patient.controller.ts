@@ -22,11 +22,17 @@ const PatientController = {
    * @param response
    * @returns Promise<void>
    */
+  /**
+   * @deprecated
+   */
   patients: async ({ response }: Context): Promise<void> => {
     const patient = await PatientService.getPatients();
     responseOk(response, patient);
   },
 
+  /**
+   * @deprecated
+   */
   getFirstWaitingPatient: async (
     { response }: Context,
   ): Promise<void> => {
@@ -57,6 +63,9 @@ const PatientController = {
     responseOk(ctx.response, response);
   },
 
+  /**
+   * @deprecated
+   */
   uploadImagesByFormData: async (
     ctx: Context,
     filterContentTypes: string[] = ["image/jpg", "image/jpeg", "image/png"],
@@ -87,6 +96,9 @@ const PatientController = {
     responseOk(ctx.response, s3Response);
   },
 
+  /**
+   * @deprecated
+   */
   createPatientResult: async (
     ctx: Context,
   ): Promise<void> => {
