@@ -164,7 +164,7 @@ const PatientRepository = {
       )
     VALUES (
       ${patientResult.patientId},
-      ${patientResult.doctorId},
+      ${patientResult.volunteerId},
       ${patientResult.isApproved},
       ${patientResult.rejectReasonId},
       ${patientResult.remark},

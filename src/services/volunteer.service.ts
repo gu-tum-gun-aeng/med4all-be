@@ -1,4 +1,4 @@
-import DoctorRepository from "../dataaccess/database/doctor.repository.ts";
+import VolunteerRepository from "../dataaccess/database/volunteer.repository.ts";
 import NexmoService from "../dataaccess/service/nexmo/nexmo.service.ts";
 import { throwError } from "../middlewares/errorHandler.middleware.ts";
 import { traceWrapperAsync } from "../utils/trace.util.ts";
@@ -6,15 +6,17 @@ import { traceWrapperAsync } from "../utils/trace.util.ts";
 const requestOtp = async (
   telephoneWithCountryCode: string,
 ): Promise<string> => {
-  const isDoctor = await DoctorRepository.isDoctor(telephoneWithCountryCode);
+  const isVolunteer = await VolunteerRepository.isVolunteer(
+    telephoneWithCountryCode,
+  );
   // TODO: properly declare custom error type
-  if (!isDoctor) {
+  if (!isVolunteer) {
     throwError({
       status: 400,
-      name: "You are not the doctor.",
-      path: "doctors/otp/request",
+      name: "You are not the volunteer.",
+      path: "volunteers/otp/request",
       param: "",
-      message: "You are not the doctor.",
+      message: "You are not the volunteer.",
       type: "bad request",
     });
   }
@@ -27,7 +29,7 @@ const requestOtp = async (
     throwError({
       status: 400,
       name: requestOtpResult.error_text!,
-      path: "doctors/otp/request",
+      path: "volunteers/otp/request",
       param: "",
       message: requestOtpResult.error_text!,
       type: "bad request",
@@ -46,7 +48,7 @@ const verifyOtp = async (requestId: string, code: string): Promise<boolean> => {
     throwError({
       status: 400,
       name: requestOtpResult.error_text!,
-      path: "doctors/otp/verify",
+      path: "volunteers/otp/verify",
       param: "",
       message: requestOtpResult.error_text!,
       type: "bad request",
@@ -62,14 +64,16 @@ const verifyOtp = async (requestId: string, code: string): Promise<boolean> => {
 const getIdByTelephone = async (
   telephoneWithCountryCode: string,
 ): Promise<number> => {
-  const id = await DoctorRepository.getIdByTelePhone(telephoneWithCountryCode);
+  const id = await VolunteerRepository.getIdByTelePhone(
+    telephoneWithCountryCode,
+  );
   if (!id) {
     throwError({
       status: 400,
-      name: "You are not the doctor.",
-      path: "doctors/otp/request",
+      name: "You are not the volunteer.",
+      path: "volunteers/otp/request",
       param: "",
-      message: "You are not the doctor.",
+      message: "You are not the volunteer.",
       type: "bad request",
     });
   }

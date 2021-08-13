@@ -2,10 +2,10 @@ import { format } from "../../../deps.ts";
 import config from "../../config/config.ts";
 import dbUtils from "../../utils/db.util.ts";
 
-const DoctorTokenRepository = {
+const VolunteerTokenRepository = {
   insert: async (token: string, validUntil: string): Promise<number> => {
     const currentDateTime = format(new Date(), "yyyy-MM-dd HH:mm:ss.SSS");
-    const doctorTokenId = await dbUtils.queryOneObject<{ value: BigInt }>`
+    const volunteerTokenId = await dbUtils.queryOneObject<{ value: BigInt }>`
       SELECT nextval('doctor_token_doctor_token_id_seq') as value
     `;
     const insertQuery = await dbUtils.toQuery`
@@ -18,7 +18,7 @@ const DoctorTokenRepository = {
         created_by,
         created_when)
         VALUES (
-            ${doctorTokenId?.value},
+            ${volunteerTokenId?.value},
             ${token},
             ${validUntil},
             ${config.appName},
@@ -30,8 +30,8 @@ const DoctorTokenRepository = {
       insertQuery,
     ]);
 
-    return Number(doctorTokenId?.value);
+    return Number(volunteerTokenId?.value);
   },
 };
 
-export default DoctorTokenRepository;
+export default VolunteerTokenRepository;

@@ -7,7 +7,7 @@ import {
 
 export type CreatePatientResultRequest = {
   patientId: number;
-  doctorId: number;
+  volunteerId: number;
   isApproved: boolean;
   rejectReasonId?: number;
   remark?: string;
@@ -15,7 +15,7 @@ export type CreatePatientResultRequest = {
 
 export const CreatePatientResultRequestValidationSchema: ValidationRules = {
   patientId: [required, isNumber],
-  doctorId: [required, isNumber],
+  volunteerId: [required, isNumber],
   isApproved: [required, isBool],
   rejectReasonId: [isNumber],
 };
