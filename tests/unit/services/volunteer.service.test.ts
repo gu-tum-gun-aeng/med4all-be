@@ -1,8 +1,8 @@
 import { assertEquals, stub } from "../../../deps.ts";
-import DoctorRepository from "../../../src/dataaccess/database/doctor.repository.ts";
+import VolunteerRepository from "../../../src/dataaccess/database/volunteer.repository.ts";
 import NexmoService from "../../../src/dataaccess/service/nexmo/nexmo.service.ts";
 
-import DoctorService from "../../../src/services/doctor.service.ts";
+import VolunteerService from "../../../src/services/volunteer.service.ts";
 
 const successResult = {
   "request_id": "123",
@@ -11,9 +11,9 @@ const successResult = {
 
 Deno.test("requestOtp should return true when given valid phone number", async () => {
   const expectedResult = await Promise.resolve(true);
-  const stubDoctorRepository = stub(
-    DoctorRepository,
-    "isDoctor",
+  const stubVolunteerRepository = stub(
+    VolunteerRepository,
+    "isVolunteer",
     [expectedResult],
   );
 
@@ -25,10 +25,10 @@ Deno.test("requestOtp should return true when given valid phone number", async (
   );
 
   try {
-    const actualResult = await DoctorService.requestOtp("66818126666");
+    const actualResult = await VolunteerService.requestOtp("66818126666");
     assertEquals(actualResult, successResult.request_id);
   } finally {
-    stubDoctorRepository.restore();
+    stubVolunteerRepository.restore();
     stubNexmoRequestOtp.restore();
   }
 });
@@ -42,7 +42,10 @@ Deno.test("verifyOtp should return true when given valid request_id number and c
     [expectedResultRequestOtp],
   );
   try {
-    const actualResult = await DoctorService.verifyOtp("66818126866", "1112");
+    const actualResult = await VolunteerService.verifyOtp(
+      "66818126866",
+      "1112",
+    );
     assertEquals(actualResult, expectedResult);
   } finally {
     stubNexmoRequestOtp.restore();

@@ -1,13 +1,13 @@
 // deno-lint-ignore-file no-explicit-any
 import { assertEquals, stub } from "../../../deps.ts";
 import { testing } from "../../../deps.ts";
-import DoctorController from "../../../src/controllers/doctor.controller.ts";
-import DoctorService from "../../../src/services/doctor.service.ts";
-import DoctorTokenService from "../../../src/services/doctor.token.service.ts";
+import VolunteerController from "../../../src/controllers/volunteer.controller.ts";
+import VolunteerService from "../../../src/services/volunteer.service.ts";
+import VolunteerTokenService from "../../../src/services/volunteer.token.service.ts";
 
-Deno.test("DoctorController.requestOtp should response with 200 ok", async () => {
-  const stubDoctorService = stub(
-    DoctorService,
+Deno.test("VolunteerController.requestOtp should response with 200 ok", async () => {
+  const stubVolunteerService = stub(
+    VolunteerService,
     "requestOtp",
     [await Promise.resolve("REQUEST_ID")],
   );
@@ -20,26 +20,26 @@ Deno.test("DoctorController.requestOtp should response with 200 ok", async () =>
   });
 
   try {
-    await DoctorController.requestOtp(mockContext);
+    await VolunteerController.requestOtp(mockContext);
     assertEquals(mockContext.response.body, { results: expectedResult });
   } finally {
-    stubDoctorService.restore();
+    stubVolunteerService.restore();
   }
 });
 
-Deno.test("DoctorController.verifyOtp should response with 200 ok", async () => {
+Deno.test("VolunteerController.verifyOtp should response with 200 ok", async () => {
   const stubVerifyOtp = stub(
-    DoctorService,
+    VolunteerService,
     "verifyOtp",
     [await Promise.resolve(true)],
   );
   const stubGetIdByTelephone = stub(
-    DoctorService,
+    VolunteerService,
     "getIdByTelephone",
     [await Promise.resolve(1)],
   );
   const stubInsertToken = stub(
-    DoctorTokenService,
+    VolunteerTokenService,
     "insert",
     [await Promise.resolve(1)],
   );
@@ -55,7 +55,7 @@ Deno.test("DoctorController.verifyOtp should response with 200 ok", async () => 
   });
 
   try {
-    await DoctorController.verifyOtp(mockContext);
+    await VolunteerController.verifyOtp(mockContext);
     assertEquals(mockContext.response.status, 200);
   } finally {
     stubVerifyOtp.restore();

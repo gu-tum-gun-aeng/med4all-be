@@ -98,7 +98,7 @@ Deno.test("createPatientResultAndUpdatePaientDiagnosticStatus should insert pati
     );
     assertEquals(
       queryInsertPatientResult.args[1],
-      patientResultRequestMock.doctorId,
+      patientResultRequestMock.volunteerId,
     );
     assertEquals(
       queryUpdatePatientDiagnosticStatus.args[0],

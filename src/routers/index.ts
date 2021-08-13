@@ -1,5 +1,5 @@
 import PatientRouter from "./v1/patient.router.ts";
-import DoctorRouter from "./v1/doctor.router.ts";
+import VolunteerRouter from "./v1/volunteer.router.ts";
 import { Router, Status } from "../../deps.ts";
 
 import type { RouterContext } from "../../deps.ts";
@@ -23,7 +23,7 @@ const setRootRouting = (router: Router) => {
 const setV1Routing = (router: Router) => {
   const subRouters = [
     PatientRouter,
-    DoctorRouter,
+    VolunteerRouter,
   ];
 
   const allRouter = subRouters.reduce(useSubRouter, new Router());

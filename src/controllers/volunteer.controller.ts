@@ -1,26 +1,26 @@
 import { RouterContext } from "../../deps.ts";
 import { responseOk } from "../utils/response.util.ts";
-import DoctorService from "../services/doctor.service.ts";
-import DoctorTokenService from "../services/doctor.token.service.ts";
-import { RequestOtpResponse } from "../models/doctor/response/request.otp.response.model.ts";
+import VolunteerService from "../services/volunteer.service.ts";
+import VolunteerTokenService from "../services/volunteer.token.service.ts";
+import { RequestOtpResponse } from "../models/volunteer/response/request.otp.response.model.ts";
 import * as tokenUtil from "../utils/token/token.util.ts";
-import { TokenOtpResponse } from "../models/doctor/response/token.otp.response.model.ts";
+import { TokenOtpResponse } from "../models/volunteer/response/token.otp.response.model.ts";
 import config from "../config/config.ts";
 import * as dateUtils from "../utils/date.util.ts";
 import { throwError } from "../middlewares/errorHandler.middleware.ts";
 import {
   RequestOtpRequest,
   RequestOtpRequestValidationSchema,
-} from "../models/doctor/request/request.otp.request.model.ts";
+} from "../models/volunteer/request/request.otp.request.model.ts";
 import {
   VerifyOtpRequest,
   VerifyOtpRequestValidationSchema,
-} from "../models/doctor/request/verfity.otp.request.model.ts";
+} from "../models/volunteer/request/verfity.otp.request.model.ts";
 import { validateAndThrow } from "../utils/validation.util.ts";
 
 const USE_HASH_ALG = tokenUtil.HashAlgorithm.HS512;
 
-const DoctorController = {
+const VolunteerController = {
   requestOtp: async (ctx: RouterContext): Promise<void> => {
     const req: RequestOtpRequest = await ctx.request.body({ type: "json" })
       .value;
@@ -32,7 +32,7 @@ const DoctorController = {
     );
 
     const telephoneTh = `66${req.telephone.slice(1)}`;
-    const requestId = await DoctorService.requestOtp(telephoneTh);
+    const requestId = await VolunteerService.requestOtp(telephoneTh);
     const res: RequestOtpResponse = {
       requestId,
     };
@@ -52,8 +52,8 @@ const DoctorController = {
     );
 
     const telephoneTh = `66${req.telephone.slice(1)}`;
-    const _ = await DoctorService.verifyOtp(req.requestId, req.code);
-    const id = await DoctorService.getIdByTelephone(telephoneTh);
+    const _ = await VolunteerService.verifyOtp(req.requestId, req.code);
+    const id = await VolunteerService.getIdByTelephone(telephoneTh);
 
     const tokenInfo: tokenUtil.TokenInfo = {
       id: id.toString(),
@@ -72,7 +72,7 @@ const DoctorController = {
       throwError({
         status: 500,
         name: "token exp not found",
-        path: "/doctors/otp/verify",
+        path: "/volunteers/otp/verify",
         param: "",
         message: "token exp not found",
         type: "internal error",
@@ -82,7 +82,7 @@ const DoctorController = {
 
     const expDate = dateUtils.toDate(payload.exp);
     const expDateFormat = expDate.toISOString();
-    await DoctorTokenService.insert(token, expDateFormat);
+    await VolunteerTokenService.insert(token, expDateFormat);
 
     const res: TokenOtpResponse = {
       token,
@@ -92,4 +92,4 @@ const DoctorController = {
   },
 };
 
-export default DoctorController;
+export default VolunteerController;

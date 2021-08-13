@@ -1,4 +1,4 @@
-// import { Doctor } from "../../models/doctor/doctor.model.ts";
+// import { Volunteer } from "../../models/volunteer/volunteer.model.ts";
 import config from "../../../config/config.ts";
 import { ky } from "../../../../deps.ts";
 import { RequestOtpResponse } from "../../../models/nexmo/response/request.response.model.ts";

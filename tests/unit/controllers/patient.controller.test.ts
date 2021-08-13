@@ -156,7 +156,7 @@ Deno.test("PatientController.createPatientResult should throw error intearnal 50
       message: '{"patientId":{"isNumber":"patientId must be a number"}}',
       name: "validation errors",
       param:
-        '{"patientId":"36","doctorId":100,"isApproved":true,"rejectReasonId":20}',
+        '{"patientId":"36","volunteerId":100,"isApproved":true,"rejectReasonId":20}',
       path: "createPatientResult",
       type: "internal error",
       status: 500,
