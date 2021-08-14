@@ -6,11 +6,11 @@ const VolunteerTokenRepository = {
   insert: async (token: string, validUntil: string): Promise<number> => {
     const currentDateTime = format(new Date(), "yyyy-MM-dd HH:mm:ss.SSS");
     const volunteerTokenId = await dbUtils.queryOneObject<{ value: BigInt }>`
-      SELECT nextval('doctor_token_doctor_token_id_seq') as value
+      SELECT nextval('volunteer_token_volunteer_token_id_seq') as value
     `;
     const insertQuery = await dbUtils.toQuery`
-      INSERT INTO public.doctor_token(
-        doctor_token_id,
+      INSERT INTO public.volunteer_token(
+        volunteer_token_id,
         token,
         valid_until, 
         last_modified_by,
