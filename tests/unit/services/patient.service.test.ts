@@ -23,6 +23,24 @@ Deno.test("getPatients should return list of all patients correctly", async () =
   }
 });
 
+Deno.test("getPatientRegisterStatus should return PatientRegisterStatus with is_registered==false if input certificate_id was not found in database", async () => {
+  const expectedResult = {
+    "is_registered": false
+  };
+  const stubPatientRepository = stub(
+    PatientRepository,
+    "getPatienRegisterStatus",
+    [{ "is_registered": false }],
+  );
+  try {
+    const actualResult = await patientService.getPatientRegisterStatus("999");
+    assertEquals(actualResult, expectedResult);
+  } finally {
+    stubPatientRepository.restore();
+  }
+});
+
+
 Deno.test("getFirstWaitingPatient should return 1 patient", async () => {
   const expectedResult = await getMockOnePatient();
   const stubPatientRepository = stub(

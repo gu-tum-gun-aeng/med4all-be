@@ -6,6 +6,7 @@ import { CreatePatientRequest } from "../../models/patient/request/patient.reque
 import dbUtils from "../../utils/db.util.ts";
 import { throwError } from "../../middlewares/errorHandler.middleware.ts";
 import { CreatePatientResultRequest } from "../../models/patient/request/patientResult.request.ts";
+import { PatientRegisterStatus } from "../../models/patient/response/patientRegisterStatus.response.ts";
 
 const PatientRepository = {
   getAll: async () => {
@@ -24,6 +25,23 @@ const PatientRepository = {
       FROM 
         patient
     `;
+  },
+
+  getPatienRegisterStatus: async (
+    certificateId: string
+  ): Promise<PatientRegisterStatus> => {
+    const userInfo = await dbUtils.queryOneObject<PatientRegisterStatus>`
+    SELECT true AS is_registered, v.name AS volunteer_name, vt.volunteer_team_name AS volunteer_team, p.created_when AS created_when
+    FROM patient p
+    LEFT JOIN volunteer v on p.volunteer_id = v.volunteer_id
+    LEFT JOIN volunteer_team vt on v.volunteer_team_id = vt.volunteer_team_id
+    WHERE certificate_id=${certificateId}
+    `;
+    if (userInfo) {
+      return userInfo
+    } else {
+      return { "is_registered": false }
+    }
   },
 
   getFirstWaitingPatient: async () => {
@@ -80,7 +98,7 @@ const PatientRepository = {
         certificate_picture_url,
         covid_test_picture_url, 
         medical_info,
-        diagnostic_status_id,
+        volunteer_id,
         last_modified_by,
         last_modified_when,
         created_by,
@@ -96,7 +114,7 @@ const PatientRepository = {
           ${patient.certificatePictureUrl},
           ${patient.covidTestPictureUrl},
           ${patient.medicalInfo},
-          ${DiagnosticStatus.Waiting},
+          ${createdByUserId},
           ${createdByUserId},
           ${currentDateTime},
           ${createdByUserId},

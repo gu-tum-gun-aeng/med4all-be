@@ -7,9 +7,9 @@ const router = new Router();
 router
   .get("/patients", authenticated, PatientController.patients)
   .get(
-    "/patients/waiting",
+    "/patients/:certificateId",
     authenticated,
-    PatientController.getFirstWaitingPatient,
+    (ctx) => PatientController.getPatientRegisterStatus(ctx),
   )
   .post(
     "/patients",

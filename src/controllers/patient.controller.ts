@@ -1,4 +1,4 @@
-import type { FormDataFile } from "../../deps.ts";
+import type { FormDataFile, RouterContext, State } from "../../deps.ts";
 import PatientService from "../services/patient.service.ts";
 import S3Service from "../services/s3.service.ts";
 import { responseOk } from "../utils/response.util.ts";
@@ -15,6 +15,7 @@ import { CreatePatientResponse } from "../models/patient/response/patient.respon
 import { CreatePatientResultResponse } from "../models/patient/response/patientResult.response.ts";
 import { validateAndThrow } from "../utils/validation.util.ts";
 import Context from "../types/context.type.ts";
+import { RouteParams } from "https://deno.land/x/oak@v7.6.3/router.ts";
 
 const PatientController = {
   /**
@@ -25,6 +26,13 @@ const PatientController = {
   patients: async ({ response }: Context): Promise<void> => {
     const patient = await PatientService.getPatients();
     responseOk(response, patient);
+  },
+
+  getPatientRegisterStatus: async (
+    ctx: Context,
+  ): Promise<void> => {
+    const patientRegisterStatus = await PatientService.getPatientRegisterStatus(ctx.params.certificateId!);
+    responseOk(ctx.response, patientRegisterStatus);
   },
 
   getFirstWaitingPatient: async (
@@ -110,6 +118,7 @@ const PatientController = {
     };
     responseOk(ctx.response, response);
   },
+
 };
 
 export default PatientController;
