@@ -16,7 +16,6 @@ const config: ({
   env: string;
   appName: string;
   logAppName: string;
-  ip: string;
   host: string;
   port: number;
   protocol: string;
@@ -30,7 +29,6 @@ const config: ({
   env,
   appName: dotenvConfig.APP_NAME,
   logAppName: dotenvConfig.LOG_APP_NAME,
-  ip: dotenvConfig.IP,
   host: dotenvConfig.HOST,
   port: getConfigPort(dotenvConfig),
   protocol: dotenvConfig.PROTOCOL,
