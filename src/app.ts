@@ -10,12 +10,16 @@ const app: Application = new Application();
 await start(app);
 
 async function start(app: Application) {
-  const { url, port, logAppName } = configs;
-
   setupMiddleware(app);
   setupRouter(app, router);
   setUpDatabaseConnection(configs.env);
-  await setupListener(app, url, port, logAppName);
+  await setupListener(
+    app,
+    configs.url,
+    configs.host,
+    configs.port,
+    configs.logAppName,
+  );
 }
 
 function setupMiddleware(app: Application) {
@@ -38,6 +42,7 @@ function setUpDatabaseConnection(env: string) {
 async function setupListener(
   app: Application,
   url: string,
+  hostname: string,
   port: number,
   logAppName: string,
 ) {
@@ -51,7 +56,7 @@ async function setupListener(
 
   if (import.meta.main) {
     log.info(`start server`, `${logAppName}::start_server`);
-    await app.listen({ port });
+    await app.listen({ hostname, port });
   }
 }
 
