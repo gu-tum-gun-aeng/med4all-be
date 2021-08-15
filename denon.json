@@ -50,10 +50,10 @@
       "watch": false
     },
     "prod": {
-      "cmd": "deno run app.bundle.js",
+      "cmd": "deno run ./src/app.ts",
       "desc": "Run the server in prod mode.",
       "env": {
-        "ENV": "production",
+        "ENV": "prod",
         "NO_COLOR": "true"
       }
     },

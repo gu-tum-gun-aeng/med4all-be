@@ -10,4 +10,4 @@ COPY . .
 RUN /app/lock_update.sh
 RUN deno cache /app/src/app.ts
 
-CMD ["denon", "start"]
+CMD ["denon", "prod"]
