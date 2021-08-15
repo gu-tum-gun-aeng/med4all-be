@@ -15,6 +15,7 @@ import {
 import {
   patientResultRequestMockInvalid,
 } from "../../mock/patient/patientResult.request.mock.ts";
+import { MockContextOptions } from "https://deno.land/x/oak@v7.6.3/testing.ts";
 
 Deno.test("PatientController.patients should response with mock data", async () => {
   const expectedResult = await getMockPatients();
@@ -26,6 +27,29 @@ Deno.test("PatientController.patients should response with mock data", async () 
   try {
     const mockContext = testing.createMockContext();
     await PatientController.patients(mockContext);
+    assertEquals(mockContext.response.body, { results: expectedResult });
+  } finally {
+    stubPatientRepository.restore();
+  }
+});
+
+Deno.test("PatientController.getPatientRegisterStatus should response PatientRegisterStatus with is_registered==false if input certificate_id was not found in database", async () => {
+  const expectedResult = {
+    "is_registered": false,
+  };
+  const stubPatientRepository = stub(
+    PatientRepository,
+    "getPatienRegisterStatus",
+    [{ "is_registered": false }],
+  );
+  try {
+    const mockContextOptions: MockContextOptions = {
+      params: {
+        certificateId: "999",
+      },
+    };
+    const mockContext = testing.createMockContext(mockContextOptions);
+    await PatientController.getPatientRegisterStatus(mockContext);
     assertEquals(mockContext.response.body, { results: expectedResult });
   } finally {
     stubPatientRepository.restore();

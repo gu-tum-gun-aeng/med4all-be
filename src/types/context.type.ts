@@ -1,5 +1,6 @@
-import { Context as OakContext } from "../../deps.ts";
+import { RouteParams } from "https://deno.land/x/oak@v7.6.3/router.ts";
+import { RouterContext, State } from "../../deps.ts";
 
-export default interface Context extends OakContext {
+export default interface Context extends RouterContext<RouteParams, State> {
   userId?: string;
 }

@@ -27,6 +27,15 @@ const PatientController = {
     responseOk(response, patient);
   },
 
+  getPatientRegisterStatus: async (
+    ctx: Context,
+  ): Promise<void> => {
+    const patientRegisterStatus = await PatientService.getPatientRegisterStatus(
+      ctx.params.certificateId!,
+    );
+    responseOk(ctx.response, patientRegisterStatus);
+  },
+
   getFirstWaitingPatient: async (
     { response }: Context,
   ): Promise<void> => {

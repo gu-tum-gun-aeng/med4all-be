@@ -2,10 +2,7 @@ import { superdeno } from "../../deps.ts";
 import app from "../../src/app.ts";
 import PatientRepository from "../../src/dataaccess/database/patient.repository.ts";
 import { stub } from "../../deps.ts";
-import {
-  getMockOnePatient,
-  getMockPatients,
-} from "../mock/patient/patient.mock.ts";
+import { getMockPatients } from "../mock/patient/patient.mock.ts";
 import { patientRequestMock } from "../mock/patient/patient.request.mock.ts";
 import { patientResultRequestMock } from "../mock/patient/patientResult.request.mock.ts";
 import * as tokenUtil from "../../src/utils/token/token.util.ts";
@@ -46,29 +43,6 @@ Deno.test("when call /v1/patients without Authorization header, it should return
   await superdeno(app.handle.bind(app))
     .get("/v1/patients")
     .expect(401);
-});
-
-Deno.test("when call /v1/patients/waiting, it should return 1 waiting patient", async () => {
-  const expectedResult = await getMockOnePatient();
-  const stubPatientRepository = stub(
-    PatientRepository,
-    "getFirstWaitingPatient",
-    [getMockOnePatient()],
-  );
-  const mockToken = await tokenUtil.createToken({
-    id: "1",
-    hashAlgorithm: tokenUtil.HashAlgorithm.HS512,
-    ttlSeconds: 60,
-  }, config.jwt.key);
-  try {
-    await superdeno(app.handle.bind(app))
-      .get("/v1/patients/waiting")
-      .set("Authorization", `Bearer ${mockToken}`)
-      .expect(200)
-      .expect({ results: expectedResult });
-  } finally {
-    stubPatientRepository.restore();
-  }
 });
 
 Deno.test("when call post /v1/patient, it should return result with patientId", async () => {
