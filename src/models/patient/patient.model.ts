@@ -9,7 +9,6 @@ export interface Patient {
   "certificate_picture_url": string;
   "covid_test_picture_url": string;
   "medical_info": Json;
-  "diagnostic_status_id": number;
 }
 
 type Json = Record<string, unknown>;

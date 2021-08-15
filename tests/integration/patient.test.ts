@@ -48,29 +48,6 @@ Deno.test("when call /v1/patients without Authorization header, it should return
     .expect(401);
 });
 
-Deno.test("when call /v1/patients/waiting, it should return 1 waiting patient", async () => {
-  const expectedResult = await getMockOnePatient();
-  const stubPatientRepository = stub(
-    PatientRepository,
-    "getFirstWaitingPatient",
-    [getMockOnePatient()],
-  );
-  const mockToken = await tokenUtil.createToken({
-    id: "1",
-    hashAlgorithm: tokenUtil.HashAlgorithm.HS512,
-    ttlSeconds: 60,
-  }, config.jwt.key);
-  try {
-    await superdeno(app.handle.bind(app))
-      .get("/v1/patients/waiting")
-      .set("Authorization", `Bearer ${mockToken}`)
-      .expect(200)
-      .expect({ results: expectedResult });
-  } finally {
-    stubPatientRepository.restore();
-  }
-});
-
 Deno.test("when call post /v1/patient, it should return result with patientId", async () => {
   const expectedResult = 10;
   const stubPatientRepository = stub(
