@@ -18,8 +18,7 @@ export const authenticated = async (
         config.jwt.key,
         tokenUtil.HashAlgorithm.HS512,
       );
-      ctx.userId = payload.jti || "";
-      await next();
+      ctx.userId = payload.jti;
     } catch {
       const err: Err = {
         status: 401,
@@ -30,6 +29,20 @@ export const authenticated = async (
         type: "",
       };
       throw err;
+    }
+    if (ctx.userId) {
+      await next();
+    } else {
+      const err: Err = {
+        status: 401,
+        name: "Invalid token",
+        path: request.url.pathname,
+        param: "",
+        message: "Invalid token",
+        type: "",
+      };
+      throw err;
+
     }
   } else {
     const err: Err = {
