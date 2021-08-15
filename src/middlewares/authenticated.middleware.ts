@@ -33,7 +33,7 @@ export const authenticated = async (
   }
 };
 
-const invalidTokenError = (pathname: string) => {
+const invalidTokenError = (pathname: string): Err => {
   return {
     status: 401,
     name: "Invalid token",
@@ -44,7 +44,7 @@ const invalidTokenError = (pathname: string) => {
   };
 };
 
-const unauthorizedError = (pathname: string) => {
+const unauthorizedError = (pathname: string): Err => {
   return {
     status: 401,
     name: "Invalid token",

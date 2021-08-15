@@ -40,7 +40,9 @@ Deno.test("getPatientRegisterStatus should query status of input certificate_id 
     [undefined],
   );
   try {
-    const actualResult = await patientRepository.getPatientRegisterStatus("999");
+    const actualResult = await patientRepository.getPatientRegisterStatus(
+      "999",
+    );
     assertEquals(actualResult, expectedResult);
   } finally {
     stubPatientRepository.restore();
@@ -65,7 +67,9 @@ Deno.test("getPatientRegisterStatus should query status of input certificate_id 
     }],
   );
   try {
-    const actualResult = await patientRepository.getPatientRegisterStatus("999");
+    const actualResult = await patientRepository.getPatientRegisterStatus(
+      "999",
+    );
     assertEquals(actualResult, expectedResult);
   } finally {
     stubPatientRepository.restore();

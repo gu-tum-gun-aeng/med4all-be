@@ -49,7 +49,7 @@ Deno.test("getFirstWaitingPatient should return 1 patient", async () => {
     "getFirstWaitingPatient",
     [getMockOnePatient()],
   );
-  
+
   try {
     const actualResult = await patientService.getFirstWaitingPatient();
     assertEquals(actualResult, expectedResult);
