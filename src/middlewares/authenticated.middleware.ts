@@ -15,18 +15,18 @@ export const authenticated = async (
     throw unauthorizedError(request.url.pathname);
   }
 
-  // if (tokenUtil.isValid()) {
-
-  // }
+  if (
+    !tokenUtil.isValid(token, config.jwt.key, tokenUtil.HashAlgorithm.HS512)
+  ) {
+    throw invalidTokenError(request.url.pathname);
+  }
 
   try {
-    const payload = await tokenUtil.verify(
+    ctx.userId = await tokenUtil.getIdFrom(
       token,
       config.jwt.key,
       tokenUtil.HashAlgorithm.HS512,
     );
-
-    ctx.userId = payload.jti;
   } catch {
     throw invalidTokenError(request.url.pathname);
   }

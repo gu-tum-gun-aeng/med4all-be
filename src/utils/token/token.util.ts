@@ -38,8 +38,7 @@ export const isValid = async (
   try {
     const payload = await Djwt.verify(token, key, hashAlgorithm);
 
-    return isIssuerValid(payload) &&
-      isNotExpired(payload)
+    return isIssuerValid(payload) && isNotExpired(payload);
   } catch (_) {
     return false;
   }
@@ -61,11 +60,15 @@ export const verify = (
   return Djwt.verify(token, key, hashAlgorithm);
 };
 
-export const getNumericDateFrom = (dateTimeMillisecs: number): number =>
-  dateTimeMillisecs / 1000;
+export async function getIdFrom(
+  token: string,
+  key: string,
+  hashAlgorithm: HashAlgorithm,
+) {
+  const t = await Djwt.verify(token, key, hashAlgorithm);
 
-export const currentNumericDate = (): number =>
-  getNumericDateFrom(new Date().getTime());
+  return t.jti;
+}
 
 export enum HashAlgorithm {
   None = "none",
