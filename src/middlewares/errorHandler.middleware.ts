@@ -1,6 +1,6 @@
 import configs from "../config/config.ts";
 import { Context, isHttpError, State, Status } from "../../deps.ts";
-import type { Err } from "../types/interface.type.ts";
+import type { Err } from "../types/error.type.ts";
 import log from "../utils/logger.util.ts";
 
 /**

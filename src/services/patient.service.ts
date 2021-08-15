@@ -16,7 +16,7 @@ export const getPatientRegisterStatus = async (
   certificateId: string,
 ): Promise<PatientRegisterStatus> => {
   return await traceWrapperAsync<PatientRegisterStatus>(
-    () => patientRepository.getPatienRegisterStatus(certificateId),
+    () => patientRepository.getPatientRegisterStatus(certificateId),
     "route",
   );
 };

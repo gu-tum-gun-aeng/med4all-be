@@ -27,11 +27,13 @@ Deno.test("getPatientRegisterStatus should return PatientRegisterStatus with is_
   const expectedResult = {
     "is_registered": false,
   };
+
   const stubPatientRepository = stub(
     PatientRepository,
-    "getPatienRegisterStatus",
+    "getPatientRegisterStatus",
     [{ "is_registered": false }],
   );
+
   try {
     const actualResult = await patientService.getPatientRegisterStatus("999");
     assertEquals(actualResult, expectedResult);
@@ -47,6 +49,7 @@ Deno.test("getFirstWaitingPatient should return 1 patient", async () => {
     "getFirstWaitingPatient",
     [getMockOnePatient()],
   );
+  
   try {
     const actualResult = await patientService.getFirstWaitingPatient();
     assertEquals(actualResult, expectedResult);

@@ -27,7 +27,7 @@ const PatientRepository = {
     `;
   },
 
-  getPatienRegisterStatus: async (
+  getPatientRegisterStatus: async (
     certificateId: string,
   ): Promise<PatientRegisterStatus> => {
     const userInfo = await dbUtils.queryOneObject<PatientRegisterStatus>`

@@ -39,7 +39,7 @@ Deno.test("PatientController.getPatientRegisterStatus should response PatientReg
   };
   const stubPatientRepository = stub(
     PatientRepository,
-    "getPatienRegisterStatus",
+    "getPatientRegisterStatus",
     [{ "is_registered": false }],
   );
   try {
