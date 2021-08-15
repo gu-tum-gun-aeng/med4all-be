@@ -31,7 +31,6 @@ export const createToken = async (
 };
 
 export const isValid = async (
-  idToVerify: string,
   token: string,
   key: string,
   hashAlgorithm: HashAlgorithm,
@@ -40,8 +39,7 @@ export const isValid = async (
     const payload = await Djwt.verify(token, key, hashAlgorithm);
 
     return isIssuerValid(payload) &&
-      isNotExpired(payload) &&
-      isJtiMatch(payload, idToVerify);
+      isNotExpired(payload)
   } catch (_) {
     return false;
   }
@@ -52,10 +50,6 @@ export const isValid = async (
 
   function isNotExpired(payload: Djwt.Payload): boolean {
     return payload.exp !== null && payload.exp! >= currentSecondsSinceEpoch();
-  }
-
-  function isJtiMatch(payload: Djwt.Payload, idToVerify: string): boolean {
-    return payload.jti !== null && payload.jti! === idToVerify;
   }
 };
 

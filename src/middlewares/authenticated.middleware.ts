@@ -11,25 +11,30 @@ export const authenticated = async (
   const authHeader = request.headers.get("Authorization") || "";
   const token = authHeader.replace(/^bearer/i, "").trim();
 
-  if (token) {
-    try {
-      const payload = await tokenUtil.verify(
-        token,
-        config.jwt.key,
-        tokenUtil.HashAlgorithm.HS512,
-      );
-      ctx.userId = payload.jti;
-    } catch {
-      throw invalidTokenError(request.url.pathname);
-    }
-
-    if (ctx.userId) {
-      await next();
-    } else {
-      throw invalidTokenError(request.url.pathname);
-    }
-  } else {
+  if (!token) {
     throw unauthorizedError(request.url.pathname);
+  }
+
+  // if (tokenUtil.isValid()) {
+
+  // }
+
+  try {
+    const payload = await tokenUtil.verify(
+      token,
+      config.jwt.key,
+      tokenUtil.HashAlgorithm.HS512,
+    );
+
+    ctx.userId = payload.jti;
+  } catch {
+    throw invalidTokenError(request.url.pathname);
+  }
+
+  if (ctx.userId) {
+    await next();
+  } else {
+    throw invalidTokenError(request.url.pathname);
   }
 };
 

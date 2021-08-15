@@ -17,7 +17,7 @@ Deno.test("createToken should create valid Token with given token id when call",
   assertEquals(payload.jti, tokenInfo.id.toString());
 });
 
-Deno.test("isValid should return true when given token is not expired and issuer cliam is correct", async () => {
+Deno.test("isValid should return true when given token is not expired and issuer claim is correct", async () => {
   const key = "someKey";
   const tokenInfo = {
     id: "123",
@@ -27,7 +27,6 @@ Deno.test("isValid should return true when given token is not expired and issuer
 
   const token = await tokenUtil.createToken(tokenInfo, key);
   const isValid = await tokenUtil.isValid(
-    "123",
     token,
     key,
     tokenUtil.HashAlgorithm.HS512,
@@ -46,7 +45,6 @@ Deno.test("isValid should return false when given token is already expired", asy
 
   const token = await tokenUtil.createToken(tokenInfo, key);
   const isValid = await tokenUtil.isValid(
-    "123",
     token,
     key,
     tokenUtil.HashAlgorithm.HS512,
@@ -73,26 +71,6 @@ Deno.test("isValid should return false when given token issuer claim is incorrec
   );
 
   const isValid = await tokenUtil.isValid(
-    "1",
-    token,
-    key,
-    tokenUtil.HashAlgorithm.HS512,
-  );
-
-  assertEquals(isValid, false);
-});
-
-Deno.test("isValid should return false when given token id to check is not match", async () => {
-  const key = "someKey";
-  const tokenInfo = {
-    id: "someId",
-    ttlSeconds: 60,
-    hashAlgorithm: tokenUtil.HashAlgorithm.HS512,
-  };
-
-  const token = await tokenUtil.createToken(tokenInfo, key);
-  const isValid = await tokenUtil.isValid(
-    "someOtherId",
     token,
     key,
     tokenUtil.HashAlgorithm.HS512,
