@@ -6,7 +6,6 @@ import {
   QueryObjectResult,
 } from "../../deps.ts";
 import configs from "../config/config.ts";
-import { throwError } from "../middlewares/errorHandler.middleware.ts";
 
 let pool: Pool;
 
@@ -80,11 +79,7 @@ const DbUtil = {
       }));
 
       await transaction.commit();
-
       return results;
-    } catch (e) {
-      await transaction.rollback();
-      throwError(e);
     } finally {
       await client.release();
     }
