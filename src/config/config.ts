@@ -25,6 +25,7 @@ const config: ({
   s3: S3Config;
   nexmo: NexmoApiConfig;
   jwt: JwtConfig;
+  patientApiUrl: string;
 }) = {
   env,
   appName: dotenvConfig.APP_NAME,
@@ -38,6 +39,7 @@ const config: ({
   s3: getS3Config(dotenvConfig),
   nexmo: getNexmoApiConfig(dotenvConfig),
   jwt: getJwtConfig(dotenvConfig),
+  patientApiUrl: dotenvConfig.PATIENT_API_URL,
 };
 
 function createDotenvFor(targetEnv: string): DotenvConfig {
