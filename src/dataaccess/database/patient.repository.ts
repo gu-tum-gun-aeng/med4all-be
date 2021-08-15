@@ -28,7 +28,7 @@ const PatientRepository = {
   },
 
   getPatienRegisterStatus: async (
-    certificateId: string
+    certificateId: string,
   ): Promise<PatientRegisterStatus> => {
     const userInfo = await dbUtils.queryOneObject<PatientRegisterStatus>`
     SELECT true AS is_registered, v.name AS volunteer_name, vt.volunteer_team_name AS volunteer_team, p.created_when AS created_when
@@ -38,9 +38,9 @@ const PatientRepository = {
     WHERE certificate_id=${certificateId}
     `;
     if (userInfo) {
-      return userInfo
+      return userInfo;
     } else {
-      return { "is_registered": false }
+      return { "is_registered": false };
     }
   },
 

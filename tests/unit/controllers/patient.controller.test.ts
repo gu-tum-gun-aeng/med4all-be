@@ -35,7 +35,7 @@ Deno.test("PatientController.patients should response with mock data", async () 
 
 Deno.test("PatientController.getPatientRegisterStatus should response PatientRegisterStatus with is_registered==false if input certificate_id was not found in database", async () => {
   const expectedResult = {
-    "is_registered": false
+    "is_registered": false,
   };
   const stubPatientRepository = stub(
     PatientRepository,
@@ -45,9 +45,9 @@ Deno.test("PatientController.getPatientRegisterStatus should response PatientReg
   try {
     const mockContextOptions: MockContextOptions = {
       params: {
-        certificateId: "999"
-      }
-    }
+        certificateId: "999",
+      },
+    };
     const mockContext = testing.createMockContext(mockContextOptions);
     await PatientController.getPatientRegisterStatus(mockContext);
     assertEquals(mockContext.response.body, { results: expectedResult });
@@ -55,7 +55,6 @@ Deno.test("PatientController.getPatientRegisterStatus should response PatientReg
     stubPatientRepository.restore();
   }
 });
-
 
 Deno.test("PatientController.getFirstWaitingPatient should response with only 1 patient", async () => {
   const expectedResult = await getMockOnePatient();

@@ -13,7 +13,7 @@ export const getPatients = async (): Promise<Patient[]> => {
 };
 
 export const getPatientRegisterStatus = async (
-  certificateId: string
+  certificateId: string,
 ): Promise<PatientRegisterStatus> => {
   return await traceWrapperAsync<PatientRegisterStatus>(
     () => patientRepository.getPatienRegisterStatus(certificateId),

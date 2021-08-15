@@ -42,7 +42,6 @@ export const authenticated = async (
         type: "",
       };
       throw err;
-
     }
   } else {
     const err: Err = {

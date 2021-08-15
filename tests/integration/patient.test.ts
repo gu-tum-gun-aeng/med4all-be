@@ -2,10 +2,7 @@ import { superdeno } from "../../deps.ts";
 import app from "../../src/app.ts";
 import PatientRepository from "../../src/dataaccess/database/patient.repository.ts";
 import { stub } from "../../deps.ts";
-import {
-  getMockOnePatient,
-  getMockPatients,
-} from "../mock/patient/patient.mock.ts";
+import { getMockPatients } from "../mock/patient/patient.mock.ts";
 import { patientRequestMock } from "../mock/patient/patient.request.mock.ts";
 import { patientResultRequestMock } from "../mock/patient/patientResult.request.mock.ts";
 import * as tokenUtil from "../../src/utils/token/token.util.ts";

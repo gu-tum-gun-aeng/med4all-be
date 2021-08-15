@@ -32,7 +32,7 @@ Deno.test("getAll should return list of all patients correctly", async () => {
 
 Deno.test("getPatientRegisterStatus should query status of input certificate_id and return is_registered == false if certificate_id was not found", async () => {
   const expectedResult = {
-    "is_registered": false
+    "is_registered": false,
   };
   const stubPatientRepository = stub(
     DbUtil,
@@ -53,7 +53,7 @@ Deno.test("getPatientRegisterStatus should query status of input certificate_id 
     "volunteer_name": "Krittipong",
     "volunteer_team": "AVA",
     "created_when": new Date("2019-01-16"),
-  }
+  };
   const stubPatientRepository = stub(
     DbUtil,
     "queryOneObject",
