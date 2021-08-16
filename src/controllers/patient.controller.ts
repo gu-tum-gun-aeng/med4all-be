@@ -10,7 +10,6 @@ import { CreatePatientResponse } from "../models/patient/response/patient.respon
 import Context from "../types/context.type.ts";
 
 const PatientController = {
-
   getPatientRegisterStatus: async (
     ctx: Context,
   ): Promise<void> => {

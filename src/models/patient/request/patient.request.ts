@@ -1,13 +1,3 @@
-import {
-  isNumber,
-  maxNumber,
-  minLength,
-  minNumber,
-  required,
-  startsWith,
-  ValidationRules,
-} from "../../../../deps.ts";
-
 export type CreatePatientRequest = {
   certificateId: string;
   certificateType: CertificateType;
@@ -30,7 +20,7 @@ export type CreatePatientRequest = {
   homeTown: number;
   equipments: string[];
   createdDate: Date;
-}
+};
 
 export type MedicalInfo = {
   isAtkPositive: boolean;
@@ -84,7 +74,7 @@ export type MedicalInfo = {
   secondVaccinedDate: Date;
   remark: string;
   firstDateOfSymtom: Date;
-}
+};
 
 export type Address = {
   provinceCode: number;
@@ -99,12 +89,11 @@ export type Address = {
   zipCode: number;
   building: string;
   note: string;
-}
+};
 
 export enum CertificateType {
   PersonalId = 0,
   Passport = 1,
   ForeignId = 2,
-  NoDoc = 3
+  NoDoc = 3,
 }
-

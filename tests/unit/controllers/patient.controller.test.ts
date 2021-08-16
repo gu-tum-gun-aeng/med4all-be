@@ -4,9 +4,7 @@ import { testing } from "../../../deps.ts";
 import PatientController from "../../../src/controllers/patient.controller.ts";
 import PatientRepository from "../../../src/dataaccess/database/patient.repository.ts";
 import S3Service from "../../../src/services/s3.service.ts";
-import {
-  patientRequestMock,
-} from "../../mock/patient/patient.request.mock.ts";
+import { patientRequestMock } from "../../mock/patient/patient.request.mock.ts";
 import { MockContextOptions } from "https://deno.land/x/oak@v7.6.3/testing.ts";
 import PatientApiService from "../../../src/dataaccess/service/patient-api/patient-api.service.ts";
 import { mockPublishPatientResponse } from "../../mock/patient-api/publishPatient.response.mock.ts";
@@ -108,5 +106,3 @@ Deno.test("PatientController should get response 200 ok if has image data", asyn
     stubS3ServiceUploadFile.restore();
   }
 });
-
-

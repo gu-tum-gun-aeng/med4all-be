@@ -19,6 +19,6 @@ router
     "/patients/upload",
     authenticated,
     (ctx) => PatientController.uploadImagesByFormData(ctx),
-  )
+  );
 
 export default router;
