@@ -4,23 +4,9 @@ import { throwError } from "../middlewares/errorHandler.middleware.ts";
 import { traceWrapperAsync } from "../utils/trace.util.ts";
 
 const requestOtp = async (
-  telephoneWithCountryCode: string,
+  telephone: string,
 ): Promise<string> => {
-  const isVolunteer = await VolunteerRepository.isVolunteer(
-    telephoneWithCountryCode,
-  );
-  // TODO: properly declare custom error type
-  if (!isVolunteer) {
-    throwError({
-      status: 400,
-      name: "You are not the volunteer.",
-      path: "volunteers/otp/request",
-      param: "",
-      message: "You are not the volunteer.",
-      type: "bad request",
-    });
-  }
-
+  const telephoneWithCountryCode = `66${telephone.slice(1)}`;
   const requestOtpResult = await NexmoService.requestOtp(
     telephoneWithCountryCode,
   );
@@ -61,10 +47,10 @@ const verifyOtp = async (requestId: string, code: string): Promise<boolean> => {
   );
 };
 
-const getIdByTelephone = async (
+const getActiveIdByTelephone = async (
   telephoneWithCountryCode: string,
 ): Promise<number> => {
-  const id = await VolunteerRepository.getIdByTelePhone(
+  const id = await VolunteerRepository.getActiveIdByTelephone(
     telephoneWithCountryCode,
   );
   if (!id) {
@@ -87,5 +73,5 @@ const getIdByTelephone = async (
 export default {
   requestOtp,
   verifyOtp,
-  getIdByTelephone,
+  getActiveIdByTelephone,
 };

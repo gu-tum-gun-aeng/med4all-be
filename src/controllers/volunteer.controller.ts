@@ -1,13 +1,10 @@
 import { RouterContext } from "../../deps.ts";
 import { responseOk } from "../utils/response.util.ts";
 import VolunteerService from "../services/volunteer.service.ts";
-import VolunteerTokenService from "../services/volunteer.token.service.ts";
 import { RequestOtpResponse } from "../models/volunteer/response/request.otp.response.model.ts";
 import * as tokenUtil from "../utils/token/token.util.ts";
 import { TokenOtpResponse } from "../models/volunteer/response/token.otp.response.model.ts";
 import config from "../config/config.ts";
-import * as dateUtils from "../utils/date.util.ts";
-import { throwError } from "../middlewares/errorHandler.middleware.ts";
 import {
   RequestOtpRequest,
   RequestOtpRequestValidationSchema,
@@ -17,6 +14,7 @@ import {
   VerifyOtpRequestValidationSchema,
 } from "../models/volunteer/request/verfity.otp.request.model.ts";
 import { validateAndThrow } from "../utils/validation.util.ts";
+import { throwError } from "../middlewares/errorHandler.middleware.ts";
 
 const USE_HASH_ALG = tokenUtil.HashAlgorithm.HS512;
 
@@ -31,8 +29,22 @@ const VolunteerController = {
       "RequestOtpRequest",
     );
 
-    const telephoneTh = `66${req.telephone.slice(1)}`;
-    const requestId = await VolunteerService.requestOtp(telephoneTh);
+    const volunteerId = await VolunteerService.getActiveIdByTelephone(
+      req.telephone,
+    );
+
+    if (!volunteerId) {
+      throwError({
+        status: 400,
+        name: "You are not the volunteer.",
+        path: "volunteers/otp/request",
+        param: "",
+        message: "You are not the volunteer.",
+        type: "bad request",
+      });
+    }
+
+    const requestId = await VolunteerService.requestOtp(req.telephone);
     const res: RequestOtpResponse = {
       requestId,
     };
@@ -53,7 +65,7 @@ const VolunteerController = {
 
     const telephoneTh = `66${req.telephone.slice(1)}`;
     const _ = await VolunteerService.verifyOtp(req.requestId, req.code);
-    const id = await VolunteerService.getIdByTelephone(telephoneTh);
+    const id = await VolunteerService.getActiveIdByTelephone(telephoneTh);
 
     const tokenInfo: tokenUtil.TokenInfo = {
       id: id.toString(),
@@ -62,27 +74,6 @@ const VolunteerController = {
     };
 
     const token = await tokenUtil.createToken(tokenInfo, config.jwt.key);
-    const payload = await tokenUtil.verify(
-      token,
-      config.jwt.key,
-      USE_HASH_ALG,
-    );
-
-    if (!payload.exp) {
-      throwError({
-        status: 500,
-        name: "token exp not found",
-        path: "/volunteers/otp/verify",
-        param: "",
-        message: "token exp not found",
-        type: "internal error",
-      });
-      return;
-    }
-
-    const expDate = dateUtils.toDate(payload.exp);
-    const expDateFormat = expDate.toISOString();
-    await VolunteerTokenService.insert(token, expDateFormat);
 
     const res: TokenOtpResponse = {
       token,
