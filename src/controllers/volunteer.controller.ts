@@ -66,7 +66,7 @@ const VolunteerController = {
     const telephoneTh = `66${req.telephone.slice(1)}`;
     const id = await VolunteerService.getActiveIdByTelephone(telephoneTh);
     const _ = await VolunteerService.verifyOtp(req.requestId, req.code);
-    
+
     const tokenInfo: tokenUtil.TokenInfo = {
       id: id.toString(),
       ttlSeconds: config.jwt.ttlSeconds,

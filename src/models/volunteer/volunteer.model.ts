@@ -1,3 +1,3 @@
 export type VolunteerId = {
-    id: number
-}
+  id: number;
+};
