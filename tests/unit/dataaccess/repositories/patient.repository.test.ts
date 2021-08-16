@@ -7,7 +7,6 @@ import {
   patientRequestMock,
 } from "../../../mock/patient/patient.request.mock.ts";
 
-
 Deno.test("getPatientRegisterStatus should query status of input certificate_id and return is_registered == false if certificate_id was not found", async () => {
   const expectedResult = {
     "is_registered": false,
@@ -53,7 +52,6 @@ Deno.test("getPatientRegisterStatus should query status of input certificate_id 
     stubPatientRepository.restore();
   }
 });
-
 
 Deno.test("createPatient should insert patient and address to database", async () => {
   const expectedResult = 10;

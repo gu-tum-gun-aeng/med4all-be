@@ -1,4 +1,8 @@
-import { Address, CreatePatientRequest, MedicalInfo } from "../../../src/models/patient/request/patient.request.ts";
+import {
+  Address,
+  CreatePatientRequest,
+  MedicalInfo,
+} from "../../../src/models/patient/request/patient.request.ts";
 
 const medicalInfo: MedicalInfo = {
   isAtkPositive: true,
@@ -19,7 +23,7 @@ const medicalInfo: MedicalInfo = {
   isBedridden: true,
   symptoms: "hello",
   allergyToDrugs: ["aaa", "bbbb"],
-  allergyToFoods:  ["aaa", "bbbb"],
+  allergyToFoods: ["aaa", "bbbb"],
   isSymptomShortnessOfBreath: true,
   isSymptomFever: true,
   isSymptomCough: true,
@@ -47,12 +51,12 @@ const medicalInfo: MedicalInfo = {
   isDiseaseHyperlipidemia: true,
   isDiseaseCirrhosis: true,
   isDiseaseTuberculosis: true,
-  vaccinationRecords:  ["aaa", "bbbb"],
+  vaccinationRecords: ["aaa", "bbbb"],
   firstVaccinedDate: new Date(),
   secondVaccinedDate: new Date(),
   remark: "Hi",
   firstDateOfSymtom: new Date(),
-}
+};
 
 const address: Address = {
   provinceCode: 1,
@@ -67,7 +71,7 @@ const address: Address = {
   zipCode: 10867,
   building: "",
   note: "",
-}
+};
 
 export const patientRequestMock: CreatePatientRequest = {
   certificateId: "1123123124355",

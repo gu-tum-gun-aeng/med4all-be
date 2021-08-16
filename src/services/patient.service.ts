@@ -6,8 +6,6 @@ import { PatientRegisterStatus } from "../models/patient/response/patientRegiste
 import { mapPatientApiRequest } from "../models/patient-api/request/mapper/patient-api.request.mapper.ts";
 import { PublishPatientResponse } from "../models/patient-api/response/patient-api.response.model.ts";
 
-
-
 export const getPatientRegisterStatus = async (
   certificateId: string,
 ): Promise<PatientRegisterStatus> => {
@@ -17,7 +15,6 @@ export const getPatientRegisterStatus = async (
     "getPatientRegisterStatus",
   );
 };
-
 
 export const createPatient = async (
   patient: CreatePatientRequest,

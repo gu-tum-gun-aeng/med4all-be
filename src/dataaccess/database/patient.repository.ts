@@ -4,7 +4,6 @@ import { throwError } from "../../middlewares/errorHandler.middleware.ts";
 import { PatientRegisterStatus } from "../../models/patient/response/patientRegisterStatus.response.ts";
 
 const PatientRepository = {
-
   getPatientRegisterStatus: async (
     certificateId: string,
   ): Promise<PatientRegisterStatus> => {
@@ -146,8 +145,6 @@ const PatientRepository = {
 
     return result;
   },
-
-  
 };
 
 export default PatientRepository;
