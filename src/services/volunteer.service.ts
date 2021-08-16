@@ -1,3 +1,4 @@
+import { Cookies, RouterContext } from "https://deno.land/x/oak@v7.6.3/mod.ts";
 import VolunteerRepository from "../dataaccess/database/volunteer.repository.ts";
 import NexmoService from "../dataaccess/service/nexmo/nexmo.service.ts";
 import { throwError } from "../middlewares/errorHandler.middleware.ts";
@@ -70,8 +71,13 @@ const getActiveIdByTelephone = async (
   );
 };
 
+const setCookie = (ctx: RouterContext, token: string): Cookies => {
+  return ctx.cookies.set("token", token, { httpOnly: true });
+};
+
 export default {
   requestOtp,
   verifyOtp,
   getActiveIdByTelephone,
+  setCookie,
 };
