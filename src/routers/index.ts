@@ -1,5 +1,6 @@
 import PatientRouter from "./v1/patient.router.ts";
 import VolunteerRouter from "./v1/volunteer.router.ts";
+import SwaggerRouter from "./v1/swagger.router.ts";
 import { Router, Status } from "../../deps.ts";
 
 import type { RouterContext } from "../../deps.ts";
@@ -24,6 +25,7 @@ const setV1Routing = (router: Router) => {
   const subRouters = [
     PatientRouter,
     VolunteerRouter,
+    SwaggerRouter,
   ];
 
   const allRouter = subRouters.reduce(useSubRouter, new Router());
