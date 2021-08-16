@@ -1,19 +1,19 @@
-import { assertEquals, assertSpyCalls, stub } from "../../../deps.ts";
-import patientRepository from "../../../src/dataaccess/database/patient.repository.ts";
-import { DiagnosticStatus } from "../../../src/models/patient/patient.model.ts";
-import DbUtil from "../../../src/utils/db.util.ts";
-import { Query } from "../../../src/utils/db.util.ts";
+import { assertEquals, assertSpyCalls, stub } from "../../../../deps.ts";
+import patientRepository from "../../../../src/dataaccess/database/patient.repository.ts";
+import { DiagnosticStatus } from "../../../../src/models/patient/patient.model.ts";
+import DbUtil from "../../../../src/utils/db.util.ts";
+import { Query } from "../../../../src/utils/db.util.ts";
 import {
   getMockOnePatient,
   getMockPatients,
-} from "../../mock/patient/patient.mock.ts";
+} from "../../../mock/patient/patient.mock.ts";
 import {
   getPatientIdMock,
   patientRequestMock,
-} from "../../mock/patient/patient.request.mock.ts";
+} from "../../../mock/patient/patient.request.mock.ts";
 import {
   patientResultRequestMock,
-} from "../../mock/patient/patientResult.request.mock.ts";
+} from "../../../mock/patient/patientResult.request.mock.ts";
 
 Deno.test("getAll should return list of all patients correctly", async () => {
   const expectedResult = await getMockPatients();
