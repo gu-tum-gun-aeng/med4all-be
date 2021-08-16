@@ -62,27 +62,6 @@ const VolunteerController = {
     };
 
     const token = await tokenUtil.createToken(tokenInfo, config.jwt.key);
-    const payload = await tokenUtil.verify(
-      token,
-      config.jwt.key,
-      USE_HASH_ALG,
-    );
-
-    if (!payload.exp) {
-      throwError({
-        status: 500,
-        name: "token exp not found",
-        path: "/volunteers/otp/verify",
-        param: "",
-        message: "token exp not found",
-        type: "internal error",
-      });
-      return;
-    }
-
-    const expDate = dateUtils.toDate(payload.exp);
-    const expDateFormat = expDate.toISOString();
-    await VolunteerTokenService.insert(token, expDateFormat);
 
     const res: TokenOtpResponse = {
       token,
