@@ -6,10 +6,16 @@ import VolunteerService from "../../../src/services/volunteer.service.ts";
 import VolunteerTokenService from "../../../src/services/volunteer.token.service.ts";
 
 Deno.test("VolunteerController.requestOtp should response with 200 ok", async () => {
-  const stubVolunteerService = stub(
+  const stubVolunteerServiceRequestOtp = stub(
     VolunteerService,
     "requestOtp",
     [await Promise.resolve("REQUEST_ID")],
+  );
+
+  const stubVolunteerServiceGetIdByTelephone = stub(
+    VolunteerService,
+    "getIdByTelephone",
+    [await Promise.resolve(1)],
   );
 
   const expectedResult = { "requestId": "REQUEST_ID" };
@@ -23,7 +29,8 @@ Deno.test("VolunteerController.requestOtp should response with 200 ok", async ()
     await VolunteerController.requestOtp(mockContext);
     assertEquals(mockContext.response.body, { results: expectedResult });
   } finally {
-    stubVolunteerService.restore();
+    stubVolunteerServiceRequestOtp.restore();
+    stubVolunteerServiceGetIdByTelephone.restore();
   }
 });
 

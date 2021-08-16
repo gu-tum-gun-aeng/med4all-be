@@ -29,6 +29,7 @@ const VolunteerController = {
     );
 
     const telephoneTh = `66${req.telephone.slice(1)}`;
+    await VolunteerService.getIdByTelephone(req.telephone);
     const requestId = await VolunteerService.requestOtp(telephoneTh);
     const res: RequestOtpResponse = {
       requestId,
@@ -49,7 +50,7 @@ const VolunteerController = {
     );
 
     const telephoneTh = `66${req.telephone.slice(1)}`;
-    const _ = await VolunteerService.verifyOtp(req.requestId, req.code);
+    await VolunteerService.verifyOtp(req.requestId, req.code);
     const id = await VolunteerService.getIdByTelephone(telephoneTh);
 
     const tokenInfo: tokenUtil.TokenInfo = {
