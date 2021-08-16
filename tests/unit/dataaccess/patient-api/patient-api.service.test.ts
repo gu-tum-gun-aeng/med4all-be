@@ -1,13 +1,13 @@
 import patientApiService from "../../../../src/dataaccess/service/patient-api/patient-api.service.ts";
-import { CreatePatientRequest } from "../../../../src/models/patient-api/request/patient-api.request.model.ts";
+import { PublishPatientRequest } from "../../../../src/models/patient-api/request/patient-api.request.model.ts";
 import { assertThrowsAsync, ky } from "../../../../deps.ts";
 import { assertEquals, stub } from "../../../../deps.ts";
-import { CreatePatientResponse } from "../../../../src/models/patient-api/response/patient-api.response.model.ts";
+import { PublishPatientResponse } from "../../../../src/models/patient-api/response/patient-api.response.model.ts";
 
 Deno.test("createPatient should post http request to patient-api endpoint", async () => {
   const now = new Date();
 
-  const request: CreatePatientRequest = {
+  const request: PublishPatientRequest = {
     id: 1,
     cdPersonID: "0000000000000",
     cdPersonFirstName: "John",
@@ -20,7 +20,7 @@ Deno.test("createPatient should post http request to patient-api endpoint", asyn
     createdAt: now,
   };
 
-  const expectedResult: CreatePatientResponse = {
+  const expectedResult: PublishPatientResponse = {
     data: request,
     message: "success",
   };
@@ -29,7 +29,7 @@ Deno.test("createPatient should post http request to patient-api endpoint", asyn
     json: () => expectedResult,
   }]);
 
-  const result = await patientApiService.createPatient(request);
+  const result = await patientApiService.publishPatient(request);
   assertEquals(result, expectedResult);
 
   stubKy.restore();
@@ -38,7 +38,7 @@ Deno.test("createPatient should post http request to patient-api endpoint", asyn
 Deno.test("createPatient should post http request to patient-api endpoint", () => {
   const now = new Date();
 
-  const request: CreatePatientRequest = {
+  const request: PublishPatientRequest = {
     id: 1,
     cdPersonID: "0000000000000",
     cdPersonFirstName: "John",
@@ -56,7 +56,7 @@ Deno.test("createPatient should post http request to patient-api endpoint", () =
   });
 
   assertThrowsAsync(
-    () => patientApiService.createPatient(request),
+    () => patientApiService.publishPatient(request),
     Error,
     "Panic! Threw Error",
   );

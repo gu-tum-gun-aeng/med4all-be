@@ -1,4 +1,4 @@
-export type CreatePatientRequest = {
+export type PublishPatientRequest = {
   id: number;
   cdPersonID?: string;
   cdPersonForeignID?: string;

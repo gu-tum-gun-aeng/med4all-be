@@ -56,7 +56,7 @@ const PatientController = {
       "createPatient",
     );
 
-    const patientId = await PatientService.createPatient(
+    const [patientId] = await PatientService.createPatient(
       createPatientRequest,
       ctx.userId!,
     );

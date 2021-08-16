@@ -1,6 +1,6 @@
-import { CreatePatientRequest } from "../request/patient-api.request.model.ts";
+import { PublishPatientRequest } from "../request/patient-api.request.model.ts";
 
-export type CreatePatientResponse = {
-  data: CreatePatientRequest;
+export type PublishPatientResponse = {
+  data: PublishPatientRequest;
   message: string;
 };

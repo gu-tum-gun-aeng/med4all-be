@@ -3,7 +3,7 @@ import log from "../utils/logger.util.ts";
 import { HttpRequestTracing } from "../types/http.type.ts";
 import configs from "../config/config.ts";
 
-type Context = "route" | "externalApi" | "log" | "test";
+type Context = "route" | "externalApi" | "log" | "test" | "db";
 const { logAppName } = configs;
 
 const getHttpObjectFromRequest = (request: Partial<Request>) => {
