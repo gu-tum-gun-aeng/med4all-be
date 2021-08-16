@@ -19,7 +19,6 @@ export type CreatePatientRequest = {
   lineId: string;
   homeTown: number;
   equipments: string[];
-  createdDate: Date;
 };
 
 export type MedicalInfo = {
