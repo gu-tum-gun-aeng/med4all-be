@@ -10,15 +10,29 @@ import {
 
 export type CreatePatientRequest = {
   certificateId: string;
-  certificateType: ENUM;
+  certificateType: CertificateType;
   name: string;
   surname: string;
-  gender: ENUM;
+  gender: number;
   ageYear: number;
   patientPhone: string;
   custodianPhone: string;
   weightKg: number;
   heightCm: number;
+  medicalInfo: MedicalInfo;
+  checkInDate: Date;
+  checkOutDate: Date;
+  address: Address;
+  patientDataSource: number;
+  admittedTo: string;
+  healthCoverage: number;
+  lineId: string;
+  homeTown: number;
+  equipments: string[];
+  createdDate: Date;
+}
+
+export type MedicalInfo = {
   isAtkPositive: boolean;
   isRtPcrPositive: boolean;
   labTestWhen: Date;
@@ -65,45 +79,32 @@ export type CreatePatientRequest = {
   isDiseaseHyperlipidemia: boolean;
   isDiseaseCirrhosis: boolean;
   isDiseaseTuberculosis: boolean;
-  checkInDate: Date;
-  checkOutDate: Date;
-  addressProvince: string;
-  addressDistrict: string;
-  addressSubDistrict: string;
-  addressMoo: string;
-  addressRoad: string;
-  addressAlley: string;
-  addressSoi: string;
-  addressVillage: string;
-  addressBangkokZone: string;
-  addressBuilding: string;
-  addressNote: string;
-  patientDataSource: ENUM;
-  admittedTo: ENUM;
-  healthCoverage: ENUM;
-  lineId: string;
-  homeTown: ENUM;
-  equipments: ENUM[];
-  vaccinationRecords: ENUM[];
+  vaccinationRecords: string[];
   firstVaccinedDate: Date;
   secondVaccinedDate: Date;
   remark: string;
   firstDateOfSymtom: Date;
-  createdDate: Date;
 }
 
+export type Address = {
+  provinceCode: number;
+  districtCode: number;
+  subDistrictCode: number;
+  moo: string;
+  road: string;
+  alley: string;
+  soi: string;
+  village: string;
+  bangkokZoneCode: number;
+  zipCode: number;
+  building: string;
+  note: string;
+}
 
-export const CreatePatientRequestValidationSchema: ValidationRules = {
-  patientName: [required, minLength(1)],
-  age: [required, isNumber, minNumber(15)],
-  weightKg: [required, isNumber],
-  heightCm: [required, isNumber],
-  certificateId: [required, minLength(1)],
-  certificateTypeId: [required, isNumber],
-  certificatePictureUrl: [required, startsWith("http"), minLength(1)],
-  covidTestPictureUrl: [required, startsWith("http"), minLength(1)],
-  address: [required, minLength(1)],
-  district: [required, minLength(1)],
-  province: [required, minLength(1)],
-  zipCode: [required, maxNumber(99999)],
-};
+export enum CertificateType {
+  PersonalId = 0,
+  Passport = 1,
+  ForeignId = 2,
+  NoDoc = 3
+}
+
