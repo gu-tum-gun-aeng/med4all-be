@@ -12,7 +12,7 @@ export const getPatients = async (): Promise<Patient[]> => {
   return await traceWrapperAsync<Patient[]>(
     () => patientRepository.getAll(),
     "db",
-    "getPatients"
+    "getPatients",
   );
 };
 
@@ -22,7 +22,7 @@ export const getPatientRegisterStatus = async (
   return await traceWrapperAsync<PatientRegisterStatus>(
     () => patientRepository.getPatientRegisterStatus(certificateId),
     "db",
-    "getPatientRegisterStatus"
+    "getPatientRegisterStatus",
   );
 };
 
@@ -30,7 +30,7 @@ export const getFirstWaitingPatient = async () => {
   return await traceWrapperAsync<Patient | undefined>(
     () => patientRepository.getFirstWaitingPatient(),
     "db",
-    "getFirstWaitingPatient"
+    "getFirstWaitingPatient",
   );
 };
 
@@ -38,17 +38,16 @@ export const createPatient = async (
   patient: CreatePatientRequest,
   createdByUserId: string,
 ) => {
-
   const dbPromise = traceWrapperAsync<number>(
     () => patientRepository.createPatient(patient, createdByUserId),
     "db",
-    "createPatient"
+    "createPatient",
   );
 
   const apiPromise = traceWrapperAsync<PublishPatientResponse>(
     () => patientApiService.publishPatient(mapPatientApiRequest(patient)),
     "externalApi",
-    "publishPatient"
+    "publishPatient",
   );
 
   return await Promise.all([dbPromise, apiPromise]);
@@ -65,7 +64,7 @@ export const createPatientResult = async (
         createdByUserId,
       ),
     "db",
-    "createPatientResultAndUpdatePaientDiagnosticStatus"
+    "createPatientResultAndUpdatePaientDiagnosticStatus",
   );
 };
 

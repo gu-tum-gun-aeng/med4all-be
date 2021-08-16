@@ -60,7 +60,7 @@ Deno.test("when call post /v1/patient, it should return result with patientId", 
     "publishPatient",
     [await mockPublishPatientResponse],
   );
-  
+
   const mockToken = await tokenUtil.createToken({
     id: "1",
     hashAlgorithm: tokenUtil.HashAlgorithm.HS512,

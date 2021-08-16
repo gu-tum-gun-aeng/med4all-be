@@ -86,7 +86,7 @@ Deno.test("PatientController.createPatient should response with expected patient
     "publishPatient",
     [await mockPublishPatientResponse],
   );
-  
+
   try {
     const mockContext = testing.createMockContext();
     (mockContext.request.body as any) = () => ({

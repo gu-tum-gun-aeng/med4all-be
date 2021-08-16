@@ -79,8 +79,8 @@ Deno.test("createPatient should return patientId correctly", async () => {
     );
     assertEquals(patientIdResult, expectedResult);
     assertEquals(publishResult, mockPublishPatientResponse);
-    assertEquals(stubPatientRepository.calls.length, 1)
-    assertEquals(stubPatientApiService.calls.length, 1)
+    assertEquals(stubPatientRepository.calls.length, 1);
+    assertEquals(stubPatientApiService.calls.length, 1);
   } finally {
     stubPatientRepository.restore();
     stubPatientApiService.restore();
