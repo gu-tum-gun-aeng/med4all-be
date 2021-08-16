@@ -16,6 +16,8 @@ import {
   patientResultRequestMockInvalid,
 } from "../../mock/patient/patientResult.request.mock.ts";
 import { MockContextOptions } from "https://deno.land/x/oak@v7.6.3/testing.ts";
+import PatientApiService from "../../../src/dataaccess/service/patient-api/patient-api.service.ts";
+import { mockPublishPatientResponse } from "../../mock/patient-api/publishPatient.response.mock.ts";
 
 Deno.test("PatientController.patients should response with mock data", async () => {
   const expectedResult = await getMockPatients();
@@ -79,6 +81,12 @@ Deno.test("PatientController.createPatient should response with expected patient
     "createPatient",
     [await expectedResult],
   );
+  const stubPatientApiService = stub(
+    PatientApiService,
+    "publishPatient",
+    [await mockPublishPatientResponse],
+  );
+  
   try {
     const mockContext = testing.createMockContext();
     (mockContext.request.body as any) = () => ({
@@ -91,6 +99,7 @@ Deno.test("PatientController.createPatient should response with expected patient
     });
   } finally {
     stubPatientRepository.restore();
+    stubPatientApiService.restore();
   }
 });
 

@@ -1,7 +1,9 @@
 import { assertEquals, stub } from "../../../deps.ts";
 import PatientRepository from "../../../src/dataaccess/database/patient.repository.ts";
+import PatientApiService from "../../../src/dataaccess/service/patient-api/patient-api.service.ts";
 
 import * as patientService from "../../../src/services/patient.service.ts";
+import { mockPublishPatientResponse } from "../../mock/patient-api/publishPatient.response.mock.ts";
 import {
   getMockOnePatient,
   getMockPatients,
@@ -65,13 +67,22 @@ Deno.test("createPatient should return patientId correctly", async () => {
     "createPatient",
     [await expectedResult],
   );
+  const stubPatientApiService = stub(
+    PatientApiService,
+    "publishPatient",
+    [await mockPublishPatientResponse],
+  );
   try {
-    const actualResult = await patientService.createPatient(
+    const [patientIdResult, publishResult] = await patientService.createPatient(
       patientRequestMock,
       "20",
     );
-    assertEquals(actualResult, expectedResult);
+    assertEquals(patientIdResult, expectedResult);
+    assertEquals(publishResult, mockPublishPatientResponse);
+    assertEquals(stubPatientRepository.calls.length, 1)
+    assertEquals(stubPatientApiService.calls.length, 1)
   } finally {
     stubPatientRepository.restore();
+    stubPatientApiService.restore();
   }
 });
