@@ -1,13 +1,10 @@
 import { RouterContext } from "../../deps.ts";
 import { responseOk } from "../utils/response.util.ts";
 import VolunteerService from "../services/volunteer.service.ts";
-import VolunteerTokenService from "../services/volunteer.token.service.ts";
 import { RequestOtpResponse } from "../models/volunteer/response/request.otp.response.model.ts";
 import * as tokenUtil from "../utils/token/token.util.ts";
 import { TokenOtpResponse } from "../models/volunteer/response/token.otp.response.model.ts";
 import config from "../config/config.ts";
-import * as dateUtils from "../utils/date.util.ts";
-import { throwError } from "../middlewares/errorHandler.middleware.ts";
 import {
   RequestOtpRequest,
   RequestOtpRequestValidationSchema,
