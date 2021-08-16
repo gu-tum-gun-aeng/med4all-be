@@ -1,168 +1,98 @@
 swagger: "2.0"
 info:
   version: "1.0.0"
-  title: "BFF Swagger api"
+  title: "Med4all API"
   contact:
     email: "natechawin.s@ava.fund"
-host: "localhost:8000"
+host: "api.med4all.care"
 tags:
-- name: "News"
-  description: "Financial news"
-- name: "Home"
-  description: "Home"
-- name: "Research"
-  description: "Financial researches"
-- name: "Hello"
-  description: "Testing with Hello world"
+- name: "Authorization"
+- name: "Patients"
 schemes:
-- "http"
+- "https"
 paths:
-  /v1/hello:
-    get:
+  /v1/volunteers/otp/request:
+    post:
       tags:
-      - "Hello"
-      summary: "Hello world"
-      description: "Get Hello world"
-      operationId: "getHello"
+        - "Authorization"
+        - "Volunteer"
       produces:
-      - "application/json"
-      responses:
-        "200":
-          description: "successful operation"
-        "401":
-          description: "Unauthorized user"
-  /v1/news:
-    get:
-      tags:
-      - "News"
-      summary: "List news"
-      description: "List top 3 news"
-      operationId: "getNews"
-      produces:
-      - "application/json"
-      responses:
-        "200":
-          description: "successful operation"
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "Volunteer Telephone Number"
+          required: true
           schema:
             type: object
             properties:
-              results:
-                type: array
-                items:
-                  $ref: "#/definition/News"
-        "500":
-          description: "Internal error"
-  /v1/research:
-    get:
-      tags:
-      - "Research"
-      summary: "List news"
-      description: "List top 3 news"
-      operationId: "getResearch"
-      produces:
-      - "application/json"
+              telephone:
+                type: "string"
+                default: "0820180058"
+            required:
+              - telephone
       responses:
         "200":
-          description: "successful operation"
+          description: "Successful request otp"
+          schema:
+            type: "object"
+            properties:
+              results:
+                type: "object"
+                properties:
+                  requestId:
+                    type: "string"
+                    default: "aa1c4552b26447aa85fa9724105c4e4d"
+                required:
+                  - requestId
+            required:
+              - results
+        "400":
+          description: "Error: Bad Request"
+  /v1/volunteers/otp/verify:
+    post:
+      tags:
+        - "Authorization"
+        - "Volunteer"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "OTP code"
+          required: true
           schema:
             type: object
             properties:
-              results:
-                type: array
-                items:
-                  $ref: "#/definition/Research"
-        "500":
-          description: "Internal error"
-  /v1/home/sections:
-    get:
-      tags:
-      - "Home"
-      summary: "List home section"
-      description: "List home sections"
-      operationId: "listHomeSections"
-      produces:
-      - "application/json"
+              telephone:
+                type: "string"
+                default: "0820180058"
+              requestId:
+                type: "string"
+                default: "bd5daccc16b9478c87ffb81fc74e2c2b"
+              code:
+                type: "string"
+                default: "2570"
+            required:
+              - telephone
       responses:
         "200":
-          description: "successful operation"
+          description: "Successful verify volunteer"
           schema:
-            type: object
+            type: "object"
             properties:
               results:
-                type: array
-                items:
-                  $ref: "#/definition/Home"
-        "500":
-          description: "Internal error"
-
-definition:
-  News:
-    type: object
-    properties:
-      title:
-        type: string
-      items:
-        type: array
-        items:
-          $ref: "#/definition/NewsItem"
-  Research:
-    type: object
-    properties:
-      title:
-        type: string
-      items:
-        type: array
-        items:
-          $ref: "#/definition/ResearchItem"
-  Home:
-    type: object
-    properties:
-      sections:
-        type: array
-        items:
-          $ref: "#/definition/HomeSection"
-  HomeSection:
-    type: object
-    properties:
-      id: 
-        type: number
-      type: 
-        type: string
-      title: 
-        type: string
-        optional: true
-      url: 
-        type: string
-        optional: true
-  NewsItem:
-    type: object
-    properties:
-      id: 
-        type: number
-      thumbnailUrl: 
-        type: string
-      permalinkUrl: 
-        type: string
-      isNew: 
-        type: boolean
-  ResearchItem:
-    type: object
-    properties:
-      id:
-        type: number
-      thumbnailUrl:
-        type: string
-      symbols:
-        type: array
-        items:
-          type: string
-      title:
-        type: string
-      source:
-        type: string
-      date:
-        type: string
-
+                type: "object"
+                properties:
+                  token:
+                    type: "string"
+                    default: "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJbb2JqZWN0IE9iamVjdF0iLCJpc3MiOiJtZWQ0YWxsLWJlIiwiaXN0IjoxNjI5MTA5MjkwLjM2OCxxxxxxIjoxNjI5MTA5MzUwLjM2OH0.mYEPw_CePOTDjHNCV9LZzcrObXqpZOcpSepTq0O9CrqogwCPCafKhGeR8eNLyu8tFsi2gpmZboAnTMff_8jXPw"
+                required:
+                  - token
+            required:
+              - results
+        "400":
+          description: "Volunteer data not found"
 
 externalDocs:
   description: "Find out more about Swagger"
