@@ -112,12 +112,334 @@ paths:
           schema:
             type: string
       responses:
-        "200":
-          "description": "ok"
-        "400":
-          "description": "failed"
+        200:
+          description: Successful verify volunteer
+          content:
+            application/json:
+              schema:
+                required:
+                - results
+                type: object
+                properties:
+                  results:
+                    required:
+                    - is_registered
+                    type: object
+                    properties:
+                      is_registered:
+                        type: boolean
+        400:
+          description: failed
+  /v1/patients:
+    post:
+      tags:
+        - "Patients"
+      security:
+        - bearerAuth: []
+      requestBody:
+        description: Optional description in *Markdown*
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Patient'
+      responses:
+        200:
+          description: ok
+          content:
+            application/json:
+              schema:
+                required:
+                - results
+                type: object
+                properties:
+                  results:
+                    type: object
+                    required:
+                      - patientId
+                    properties:
+                      patientId:
+                        type: integer
+                        default: 1
+        400:
+          description: failed
 
 components:
+  schemas:
+    Patient:
+      type: object
+      properties:
+        certificateId:
+          type: string
+        certificateType:
+          type: integer
+        name:
+          type: string
+        surname:
+          type: string
+        gender:
+          type: integer
+        ageYear:
+          type: integer
+        patientPhone:
+          type: string
+        custodianPhone:
+          type: string
+        weightKg:
+          type: integer
+        heightCm:
+          type: integer
+        medicalInfo:
+          type: object
+          properties:
+            isAtkPositive:
+              type: boolean
+            isRtPcrPositive:
+              type: boolean
+            labTestWhen:
+              type: string
+              format: date-time
+            isFavipiravirReceived:
+              type: boolean
+            receivedFavipiravirWhen:
+              type: string
+              format: date-time
+            bodyTemperatureCelcius:
+              type: integer
+            pulseRateBpm:
+              type: integer
+            oxygenSaturation:
+              type: integer
+            oxygenSaturationAfterExercise:
+              type: integer
+            oxygenSaturationDifference:
+              type: integer
+            systolic:
+              type: integer
+            diastolic:
+              type: integer
+            inspirationRate:
+              type: integer
+            isPregnant:
+              type: boolean
+            pregnancyWeeks:
+              type: integer
+            isBedridden:
+              type: boolean
+            symptoms:
+              type: string
+            allergyToDrugs:
+              type: array
+              items:
+                type: string
+            allergyToFoods:
+              type: array
+              items:
+                type: string
+            isSymptomShortnessOfBreath:
+              type: boolean
+            isSymptomFever:
+              type: boolean
+            isSymptomCough:
+              type: boolean
+            isSymptomRunnyNose:
+              type: boolean
+            isSymptomSoreThroat:
+              type: boolean
+            isSymptomFatigue:
+              type: boolean
+            isSymptomHeadAche:
+              type: boolean
+            isSymptomDiarrhea:
+              type: boolean
+            isSymptomLossOfSmell:
+              type: boolean
+            isSymptomConjunctivitis:
+              type: boolean
+            isSymptomRash:
+              type: boolean
+            isSymptomLossOfTaste:
+              type: boolean
+            isSymptomTiredness:
+              type: boolean
+            isSymptomChestPain:
+              type: boolean
+            isDiseaseUncontrollDm:
+              type: boolean
+            isDiseaseCancer:
+              type: boolean
+            isDiseaseCopd:
+              type: boolean
+            isDiseaseAsthma:
+              type: boolean
+            isDiseaseObesity:
+              type: boolean
+            isDiseaseCkdLevelHigherThanFour:
+              type: boolean
+            isDiseaseStrokeWithinSixMonth:
+              type: boolean
+            isDiseaseCardioVascularDisease:
+              type: boolean
+            isDiseaseHiv:
+              type: boolean
+            isDiseaseHypertension:
+              type: boolean
+            isDiseaseHyperlipidemia:
+              type: boolean
+            isDiseaseCirrhosis:
+              type: boolean
+            isDiseaseTuberculosis:
+              type: boolean
+            vaccinationRecords:
+              type: array
+              items:
+                type: string
+            firstVaccinedDate:
+              type: string
+              format: date-time
+            secondVaccinedDate:
+              type: string
+              format: date-time
+            remark:
+              type: string
+            firstDateOfSymtom:
+              type: string
+              format: date-time
+          required:
+            - isAtkPositive
+            - isRtPcrPositive
+            - labTestWhen
+            - isFavipiravirReceived
+            - receivedFavipiravirWhen
+            - bodyTemperatureCelcius
+            - pulseRateBpm
+            - oxygenSaturation
+            - oxygenSaturationAfterExercise
+            - oxygenSaturationDifference
+            - systolic
+            - diastolic
+            - inspirationRate
+            - isPregnant
+            - pregnancyWeeks
+            - isBedridden
+            - symptoms
+            - allergyToDrugs
+            - allergyToFoods
+            - isSymptomShortnessOfBreath
+            - isSymptomFever
+            - isSymptomCough
+            - isSymptomRunnyNose
+            - isSymptomSoreThroat
+            - isSymptomFatigue
+            - isSymptomHeadAche
+            - isSymptomDiarrhea
+            - isSymptomLossOfSmell
+            - isSymptomConjunctivitis
+            - isSymptomRash
+            - isSymptomLossOfTaste
+            - isSymptomTiredness
+            - isSymptomChestPain
+            - isDiseaseUncontrollDm
+            - isDiseaseCancer
+            - isDiseaseCopd
+            - isDiseaseAsthma
+            - isDiseaseObesity
+            - isDiseaseCkdLevelHigherThanFour
+            - isDiseaseStrokeWithinSixMonth
+            - isDiseaseCardioVascularDisease
+            - isDiseaseHiv
+            - isDiseaseHypertension
+            - isDiseaseHyperlipidemia
+            - isDiseaseCirrhosis
+            - isDiseaseTuberculosis
+            - vaccinationRecords
+            - firstVaccinedDate
+            - secondVaccinedDate
+            - remark
+            - firstDateOfSymtom
+        checkInDate:
+          type: string
+        checkOutDate:
+          type: string
+        address:
+          type: object
+          properties:
+            provinceCode:
+              type: integer
+            districtCode:
+              type: integer
+            subDistrictCode:
+              type: integer
+            moo:
+              type: string
+            road:
+              type: string
+            alley:
+              type: string
+            soi:
+              type: string
+            village:
+              type: string
+            bangkokZoneCode:
+              type: integer
+            zipCode:
+              type: integer
+            building:
+              type: string
+            note:
+              type: string
+          required:
+            - provinceCode
+            - districtCode
+            - subDistrictCode
+            - moo
+            - road
+            - alley
+            - soi
+            - village
+            - bangkokZoneCode
+            - zipCode
+            - building
+            - note
+        patientDataSource:
+          type: integer
+        admittedTo:
+          type: string
+        healthCoverage:
+          type: integer
+        lineId:
+          type: string
+        homeTown:
+          type: integer
+        equipments:
+          type: array
+          items:
+            type: string
+        createdDate:
+          type: string
+          format: date-time
+      required:
+        - certificateId
+        - certificateType
+        - name
+        - surname
+        - gender
+        - ageYear
+        - patientPhone
+        - custodianPhone
+        - weightKg
+        - heightCm
+        - medicalInfo
+        - checkInDate
+        - checkOutDate
+        - address
+        - patientDataSource
+        - admittedTo
+        - healthCoverage
+        - lineId
+        - homeTown
+        - equipments
+        - createdDate
   securitySchemes:
     bearerAuth:
       type: http
