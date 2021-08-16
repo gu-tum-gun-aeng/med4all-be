@@ -9,12 +9,12 @@ export const validateAndThrow = async (
   const [passes, errors] = await validate(input, schema);
   if (!passes) {
     throwError({
-      status: 400,
+      status: 500,
       name: "validation errors",
       path: path,
       param: JSON.stringify(input),
       message: JSON.stringify(errors),
-      type: "bad request",
+      type: "internal error",
     });
   }
 };
