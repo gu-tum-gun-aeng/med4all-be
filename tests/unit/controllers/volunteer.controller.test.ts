@@ -11,6 +11,11 @@ Deno.test("VolunteerController.requestOtp should response with 200 ok", async ()
     "requestOtp",
     [await Promise.resolve("REQUEST_ID")],
   );
+  const stubGetActiveIdByTelephone = stub(
+    VolunteerService,
+    "getActiveIdByTelephone",
+    [await Promise.resolve(1)],
+  );
 
   const expectedResult = { "requestId": "REQUEST_ID" };
   const mockContext = testing.createMockContext();
@@ -24,6 +29,7 @@ Deno.test("VolunteerController.requestOtp should response with 200 ok", async ()
     assertEquals(mockContext.response.body, { results: expectedResult });
   } finally {
     stubVolunteerService.restore();
+    stubGetActiveIdByTelephone.restore();
   }
 });
 
@@ -33,9 +39,9 @@ Deno.test("VolunteerController.verifyOtp should response with 200 ok", async () 
     "verifyOtp",
     [await Promise.resolve(true)],
   );
-  const stubGetIdByTelephone = stub(
+  const stubGetActiveIdByTelephone = stub(
     VolunteerService,
-    "getIdByTelephone",
+    "getActiveIdByTelephone",
     [await Promise.resolve(1)],
   );
   const stubInsertToken = stub(
@@ -59,7 +65,7 @@ Deno.test("VolunteerController.verifyOtp should response with 200 ok", async () 
     assertEquals(mockContext.response.status, 200);
   } finally {
     stubVerifyOtp.restore();
-    stubGetIdByTelephone.restore();
+    stubGetActiveIdByTelephone.restore();
     stubInsertToken.restore();
   }
 });

@@ -14,6 +14,7 @@ import {
   VerifyOtpRequestValidationSchema,
 } from "../models/volunteer/request/verfity.otp.request.model.ts";
 import { validateAndThrow } from "../utils/validation.util.ts";
+import { throwError } from "../middlewares/errorHandler.middleware.ts";
 
 const USE_HASH_ALG = tokenUtil.HashAlgorithm.HS512;
 
@@ -28,8 +29,22 @@ const VolunteerController = {
       "RequestOtpRequest",
     );
 
-    const telephoneTh = `66${req.telephone.slice(1)}`;
-    const requestId = await VolunteerService.requestOtp(telephoneTh);
+    const volunteerId = await VolunteerService.getActiveIdByTelephone(
+      req.telephone,
+    );
+
+    if (!volunteerId) {
+      throwError({
+        status: 400,
+        name: "You are not the volunteer.",
+        path: "volunteers/otp/request",
+        param: "",
+        message: "You are not the volunteer.",
+        type: "bad request",
+      });
+    }
+
+    const requestId = await VolunteerService.requestOtp(req.telephone);
     const res: RequestOtpResponse = {
       requestId,
     };
@@ -50,7 +65,7 @@ const VolunteerController = {
 
     const telephoneTh = `66${req.telephone.slice(1)}`;
     const _ = await VolunteerService.verifyOtp(req.requestId, req.code);
-    const id = await VolunteerService.getIdByTelephone(telephoneTh);
+    const id = await VolunteerService.getActiveIdByTelephone(telephoneTh);
 
     const tokenInfo: tokenUtil.TokenInfo = {
       id: id.toString(),
