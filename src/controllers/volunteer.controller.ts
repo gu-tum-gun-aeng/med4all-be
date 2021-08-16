@@ -79,6 +79,8 @@ const VolunteerController = {
       token,
     };
 
+    ctx.cookies.set("token", token, { httpOnly: true });
+
     responseOk(ctx.response, res);
   },
 };
