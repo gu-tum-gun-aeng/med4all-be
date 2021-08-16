@@ -1,99 +1,125 @@
-swagger: "2.0"
+openapi: 3.0.1
 info:
-  version: "1.0.0"
-  title: "Med4all API"
+  title: Med4all API
   contact:
-    email: "natechawin.s@ava.fund"
-host: "api.med4all.care"
+    email: natechawin.s@ava.fund
+  version: 1.0.0
+externalDocs:
+  description: Find out more about Swagger
+  url: http://swagger.io
+servers:
+- url: https://api.med4all.care/
 tags:
-- name: "Authorization"
-- name: "Patients"
-schemes:
-- "https"
+- name: Authorization
+- name: Patients
 paths:
   /v1/volunteers/otp/request:
     post:
       tags:
-        - "Authorization"
-        - "Volunteer"
-      produces:
-        - "application/json"
-      parameters:
-        - in: "body"
-          name: "body"
-          description: "Volunteer Telephone Number"
-          required: true
-          schema:
-            type: object
-            properties:
-              telephone:
-                type: "string"
-                default: "0820180058"
-            required:
+      - Authorization
+      - Volunteer
+      requestBody:
+        description: Volunteer Telephone Number
+        content:
+          '*/*':
+            schema:
+              required:
               - telephone
+              type: object
+              properties:
+                telephone:
+                  type: string
+                  default: "0820180058"
+        required: true
       responses:
-        "200":
-          description: "Successful request otp"
-          schema:
-            type: "object"
-            properties:
-              results:
-                type: "object"
-                properties:
-                  requestId:
-                    type: "string"
-                    default: "aa1c4552b26447aa85fa9724105c4e4d"
+        200:
+          description: Successful request otp
+          content:
+            application/json:
+              schema:
                 required:
-                  - requestId
-            required:
-              - results
-        "400":
-          description: "Error: Bad Request"
+                - results
+                type: object
+                properties:
+                  results:
+                    required:
+                    - requestId
+                    type: object
+                    properties:
+                      requestId:
+                        type: string
+                        default: aa1c4552b26447aa85fa9724105c4e4d
+        400:
+          description: 'Error: Bad Request'
+          content: {}
+      x-codegen-request-body-name: body
   /v1/volunteers/otp/verify:
     post:
       tags:
-        - "Authorization"
-        - "Volunteer"
-      produces:
-        - "application/json"
+      - Authorization
+      - Volunteer
+      requestBody:
+        description: OTP code
+        content:
+          '*/*':
+            schema:
+              required:
+              - telephone
+              type: object
+              properties:
+                telephone:
+                  type: string
+                  default: "0820180058"
+                requestId:
+                  type: string
+                  default: bd5daccc16b9478c87ffb81fc74e2c2b
+                code:
+                  type: string
+                  default: "2570"
+        required: true
+      responses:
+        200:
+          description: Successful verify volunteer
+          content:
+            application/json:
+              schema:
+                required:
+                - results
+                type: object
+                properties:
+                  results:
+                    required:
+                    - token
+                    type: object
+                    properties:
+                      token:
+                        type: string
+                        default: eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJbb2JqZWN0IE9iamVjdF0iLCJpc3MiOiJtZWQ0YWxsLWJlIiwiaXN0IjoxNjI5MTA5MjkwLjM2OCxxxxxxIjoxNjI5MTA5MzUwLjM2OH0.mYEPw_CePOTDjHNCV9LZzcrObXqpZOcpSepTq0O9CrqogwCPCafKhGeR8eNLyu8tFsi2gpmZboAnTMff_8jXPw
+        400:
+          description: Volunteer data not found
+          content: {}
+      x-codegen-request-body-name: body
+  /v1/patients/{certificateId}/register-status:
+    get:
+      tags:
+        - "Patients"
+      security:
+        - bearerAuth: []
       parameters:
-        - in: "body"
-          name: "body"
-          description: "OTP code"
+        - in: "path"
+          name: certificateId
           required: true
           schema:
-            type: object
-            properties:
-              telephone:
-                type: "string"
-                default: "0820180058"
-              requestId:
-                type: "string"
-                default: "bd5daccc16b9478c87ffb81fc74e2c2b"
-              code:
-                type: "string"
-                default: "2570"
-            required:
-              - telephone
+            type: string
       responses:
         "200":
-          description: "Successful verify volunteer"
-          schema:
-            type: "object"
-            properties:
-              results:
-                type: "object"
-                properties:
-                  token:
-                    type: "string"
-                    default: "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJbb2JqZWN0IE9iamVjdF0iLCJpc3MiOiJtZWQ0YWxsLWJlIiwiaXN0IjoxNjI5MTA5MjkwLjM2OCxxxxxxIjoxNjI5MTA5MzUwLjM2OH0.mYEPw_CePOTDjHNCV9LZzcrObXqpZOcpSepTq0O9CrqogwCPCafKhGeR8eNLyu8tFsi2gpmZboAnTMff_8jXPw"
-                required:
-                  - token
-            required:
-              - results
+          "description": "ok"
         "400":
-          description: "Volunteer data not found"
+          "description": "failed"
 
-externalDocs:
-  description: "Find out more about Swagger"
-  url: "http://swagger.io"
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
