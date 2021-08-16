@@ -7,7 +7,7 @@ const router = new Router();
 router
   .get("/patients", authenticated, PatientController.patients)
   .get(
-    "/patients/:certificateId",
+    "/patients/:certificateId/register-status",
     authenticated,
     (ctx) => PatientController.getPatientRegisterStatus(ctx),
   )
