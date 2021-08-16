@@ -1,169 +1,447 @@
-swagger: "2.0"
+openapi: 3.0.1
 info:
-  version: "1.0.0"
-  title: "BFF Swagger api"
+  title: Med4all API
   contact:
-    email: "natechawin.s@ava.fund"
-host: "localhost:8000"
-tags:
-- name: "News"
-  description: "Financial news"
-- name: "Home"
-  description: "Home"
-- name: "Research"
-  description: "Financial researches"
-- name: "Hello"
-  description: "Testing with Hello world"
-schemes:
-- "http"
-paths:
-  /v1/hello:
-    get:
-      tags:
-      - "Hello"
-      summary: "Hello world"
-      description: "Get Hello world"
-      operationId: "getHello"
-      produces:
-      - "application/json"
-      responses:
-        "200":
-          description: "successful operation"
-        "401":
-          description: "Unauthorized user"
-  /v1/news:
-    get:
-      tags:
-      - "News"
-      summary: "List news"
-      description: "List top 3 news"
-      operationId: "getNews"
-      produces:
-      - "application/json"
-      responses:
-        "200":
-          description: "successful operation"
-          schema:
-            type: object
-            properties:
-              results:
-                type: array
-                items:
-                  $ref: "#/definition/News"
-        "500":
-          description: "Internal error"
-  /v1/research:
-    get:
-      tags:
-      - "Research"
-      summary: "List news"
-      description: "List top 3 news"
-      operationId: "getResearch"
-      produces:
-      - "application/json"
-      responses:
-        "200":
-          description: "successful operation"
-          schema:
-            type: object
-            properties:
-              results:
-                type: array
-                items:
-                  $ref: "#/definition/Research"
-        "500":
-          description: "Internal error"
-  /v1/home/sections:
-    get:
-      tags:
-      - "Home"
-      summary: "List home section"
-      description: "List home sections"
-      operationId: "listHomeSections"
-      produces:
-      - "application/json"
-      responses:
-        "200":
-          description: "successful operation"
-          schema:
-            type: object
-            properties:
-              results:
-                type: array
-                items:
-                  $ref: "#/definition/Home"
-        "500":
-          description: "Internal error"
-
-definition:
-  News:
-    type: object
-    properties:
-      title:
-        type: string
-      items:
-        type: array
-        items:
-          $ref: "#/definition/NewsItem"
-  Research:
-    type: object
-    properties:
-      title:
-        type: string
-      items:
-        type: array
-        items:
-          $ref: "#/definition/ResearchItem"
-  Home:
-    type: object
-    properties:
-      sections:
-        type: array
-        items:
-          $ref: "#/definition/HomeSection"
-  HomeSection:
-    type: object
-    properties:
-      id: 
-        type: number
-      type: 
-        type: string
-      title: 
-        type: string
-        optional: true
-      url: 
-        type: string
-        optional: true
-  NewsItem:
-    type: object
-    properties:
-      id: 
-        type: number
-      thumbnailUrl: 
-        type: string
-      permalinkUrl: 
-        type: string
-      isNew: 
-        type: boolean
-  ResearchItem:
-    type: object
-    properties:
-      id:
-        type: number
-      thumbnailUrl:
-        type: string
-      symbols:
-        type: array
-        items:
-          type: string
-      title:
-        type: string
-      source:
-        type: string
-      date:
-        type: string
-
-
+    email: natechawin.s@ava.fund
+  version: 1.0.0
 externalDocs:
-  description: "Find out more about Swagger"
-  url: "http://swagger.io"
+  description: Find out more about Swagger
+  url: http://swagger.io
+servers:
+- url: https://api.med4all.care/
+tags:
+- name: Authorization
+- name: Patients
+paths:
+  /v1/volunteers/otp/request:
+    post:
+      tags:
+      - Authorization
+      - Volunteer
+      requestBody:
+        description: Volunteer Telephone Number
+        content:
+          '*/*':
+            schema:
+              required:
+              - telephone
+              type: object
+              properties:
+                telephone:
+                  type: string
+                  default: "0820180058"
+        required: true
+      responses:
+        200:
+          description: Successful request otp
+          content:
+            application/json:
+              schema:
+                required:
+                - results
+                type: object
+                properties:
+                  results:
+                    required:
+                    - requestId
+                    type: object
+                    properties:
+                      requestId:
+                        type: string
+                        default: aa1c4552b26447aa85fa9724105c4e4d
+        400:
+          description: 'Error: Bad Request'
+          content: {}
+      x-codegen-request-body-name: body
+  /v1/volunteers/otp/verify:
+    post:
+      tags:
+      - Authorization
+      - Volunteer
+      requestBody:
+        description: OTP code
+        content:
+          '*/*':
+            schema:
+              required:
+              - telephone
+              type: object
+              properties:
+                telephone:
+                  type: string
+                  default: "0820180058"
+                requestId:
+                  type: string
+                  default: bd5daccc16b9478c87ffb81fc74e2c2b
+                code:
+                  type: string
+                  default: "2570"
+        required: true
+      responses:
+        200:
+          description: Successful verify volunteer
+          content:
+            application/json:
+              schema:
+                required:
+                - results
+                type: object
+                properties:
+                  results:
+                    required:
+                    - token
+                    type: object
+                    properties:
+                      token:
+                        type: string
+                        default: eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJbb2JqZWN0IE9iamVjdF0iLCJpc3MiOiJtZWQ0YWxsLWJlIiwiaXN0IjoxNjI5MTA5MjkwLjM2OCxxxxxxIjoxNjI5MTA5MzUwLjM2OH0.mYEPw_CePOTDjHNCV9LZzcrObXqpZOcpSepTq0O9CrqogwCPCafKhGeR8eNLyu8tFsi2gpmZboAnTMff_8jXPw
+        400:
+          description: Volunteer data not found
+          content: {}
+      x-codegen-request-body-name: body
+  /v1/patients/{certificateId}/register-status:
+    get:
+      tags:
+        - "Patients"
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: "path"
+          name: certificateId
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Successful verify volunteer
+          content:
+            application/json:
+              schema:
+                required:
+                - results
+                type: object
+                properties:
+                  results:
+                    required:
+                    - is_registered
+                    type: object
+                    properties:
+                      is_registered:
+                        type: boolean
+        400:
+          description: failed
+  /v1/patients:
+    post:
+      tags:
+        - "Patients"
+      security:
+        - bearerAuth: []
+      requestBody:
+        description: Optional description in *Markdown*
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Patient'
+      responses:
+        200:
+          description: ok
+          content:
+            application/json:
+              schema:
+                required:
+                - results
+                type: object
+                properties:
+                  results:
+                    type: object
+                    required:
+                      - patientId
+                    properties:
+                      patientId:
+                        type: integer
+                        default: 1
+        400:
+          description: failed
+
+components:
+  schemas:
+    Patient:
+      type: object
+      properties:
+        certificateId:
+          type: string
+        certificateType:
+          type: integer
+        name:
+          type: string
+        surname:
+          type: string
+        gender:
+          type: integer
+        ageYear:
+          type: integer
+        patientPhone:
+          type: string
+        custodianPhone:
+          type: string
+        weightKg:
+          type: integer
+        heightCm:
+          type: integer
+        medicalInfo:
+          type: object
+          properties:
+            isAtkPositive:
+              type: boolean
+            isRtPcrPositive:
+              type: boolean
+            labTestWhen:
+              type: string
+              format: date-time
+            isFavipiravirReceived:
+              type: boolean
+            receivedFavipiravirWhen:
+              type: string
+              format: date-time
+            bodyTemperatureCelcius:
+              type: integer
+            pulseRateBpm:
+              type: integer
+            oxygenSaturation:
+              type: integer
+            oxygenSaturationAfterExercise:
+              type: integer
+            oxygenSaturationDifference:
+              type: integer
+            systolic:
+              type: integer
+            diastolic:
+              type: integer
+            inspirationRate:
+              type: integer
+            isPregnant:
+              type: boolean
+            pregnancyWeeks:
+              type: integer
+            isBedridden:
+              type: boolean
+            symptoms:
+              type: string
+            allergyToDrugs:
+              type: array
+              items:
+                type: string
+            allergyToFoods:
+              type: array
+              items:
+                type: string
+            isSymptomShortnessOfBreath:
+              type: boolean
+            isSymptomFever:
+              type: boolean
+            isSymptomCough:
+              type: boolean
+            isSymptomRunnyNose:
+              type: boolean
+            isSymptomSoreThroat:
+              type: boolean
+            isSymptomFatigue:
+              type: boolean
+            isSymptomHeadAche:
+              type: boolean
+            isSymptomDiarrhea:
+              type: boolean
+            isSymptomLossOfSmell:
+              type: boolean
+            isSymptomConjunctivitis:
+              type: boolean
+            isSymptomRash:
+              type: boolean
+            isSymptomLossOfTaste:
+              type: boolean
+            isSymptomTiredness:
+              type: boolean
+            isSymptomChestPain:
+              type: boolean
+            isDiseaseUncontrollDm:
+              type: boolean
+            isDiseaseCancer:
+              type: boolean
+            isDiseaseCopd:
+              type: boolean
+            isDiseaseAsthma:
+              type: boolean
+            isDiseaseObesity:
+              type: boolean
+            isDiseaseCkdLevelHigherThanFour:
+              type: boolean
+            isDiseaseStrokeWithinSixMonth:
+              type: boolean
+            isDiseaseCardioVascularDisease:
+              type: boolean
+            isDiseaseHiv:
+              type: boolean
+            isDiseaseHypertension:
+              type: boolean
+            isDiseaseHyperlipidemia:
+              type: boolean
+            isDiseaseCirrhosis:
+              type: boolean
+            isDiseaseTuberculosis:
+              type: boolean
+            vaccinationRecords:
+              type: array
+              items:
+                type: string
+            firstVaccinedDate:
+              type: string
+              format: date-time
+            secondVaccinedDate:
+              type: string
+              format: date-time
+            remark:
+              type: string
+            firstDateOfSymtom:
+              type: string
+              format: date-time
+          required:
+            - isAtkPositive
+            - isRtPcrPositive
+            - labTestWhen
+            - isFavipiravirReceived
+            - receivedFavipiravirWhen
+            - bodyTemperatureCelcius
+            - pulseRateBpm
+            - oxygenSaturation
+            - oxygenSaturationAfterExercise
+            - oxygenSaturationDifference
+            - systolic
+            - diastolic
+            - inspirationRate
+            - isPregnant
+            - pregnancyWeeks
+            - isBedridden
+            - symptoms
+            - allergyToDrugs
+            - allergyToFoods
+            - isSymptomShortnessOfBreath
+            - isSymptomFever
+            - isSymptomCough
+            - isSymptomRunnyNose
+            - isSymptomSoreThroat
+            - isSymptomFatigue
+            - isSymptomHeadAche
+            - isSymptomDiarrhea
+            - isSymptomLossOfSmell
+            - isSymptomConjunctivitis
+            - isSymptomRash
+            - isSymptomLossOfTaste
+            - isSymptomTiredness
+            - isSymptomChestPain
+            - isDiseaseUncontrollDm
+            - isDiseaseCancer
+            - isDiseaseCopd
+            - isDiseaseAsthma
+            - isDiseaseObesity
+            - isDiseaseCkdLevelHigherThanFour
+            - isDiseaseStrokeWithinSixMonth
+            - isDiseaseCardioVascularDisease
+            - isDiseaseHiv
+            - isDiseaseHypertension
+            - isDiseaseHyperlipidemia
+            - isDiseaseCirrhosis
+            - isDiseaseTuberculosis
+            - vaccinationRecords
+            - firstVaccinedDate
+            - secondVaccinedDate
+            - remark
+            - firstDateOfSymtom
+        checkInDate:
+          type: string
+        checkOutDate:
+          type: string
+        address:
+          type: object
+          properties:
+            provinceCode:
+              type: integer
+            districtCode:
+              type: integer
+            subDistrictCode:
+              type: integer
+            moo:
+              type: string
+            road:
+              type: string
+            alley:
+              type: string
+            soi:
+              type: string
+            village:
+              type: string
+            bangkokZoneCode:
+              type: integer
+            zipCode:
+              type: integer
+            building:
+              type: string
+            note:
+              type: string
+          required:
+            - provinceCode
+            - districtCode
+            - subDistrictCode
+            - moo
+            - road
+            - alley
+            - soi
+            - village
+            - bangkokZoneCode
+            - zipCode
+            - building
+            - note
+        patientDataSource:
+          type: integer
+        admittedTo:
+          type: string
+        healthCoverage:
+          type: integer
+        lineId:
+          type: string
+        homeTown:
+          type: integer
+        equipments:
+          type: array
+          items:
+            type: string
+        createdDate:
+          type: string
+          format: date-time
+      required:
+        - certificateId
+        - certificateType
+        - name
+        - surname
+        - gender
+        - ageYear
+        - patientPhone
+        - custodianPhone
+        - weightKg
+        - heightCm
+        - medicalInfo
+        - checkInDate
+        - checkOutDate
+        - address
+        - patientDataSource
+        - admittedTo
+        - healthCoverage
+        - lineId
+        - homeTown
+        - equipments
+        - createdDate
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
