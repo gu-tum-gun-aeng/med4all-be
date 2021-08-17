@@ -78,7 +78,7 @@ const VolunteerController = {
       token,
     };
 
-    ctx.cookies = VolunteerService.setCookie(ctx, token);
+    ctx.cookies = VolunteerService.setCookieHttpOnly(ctx, token);
 
     responseOk(ctx.response, res);
   },
