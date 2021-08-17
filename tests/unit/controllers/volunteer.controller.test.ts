@@ -47,7 +47,7 @@ Deno.test("VolunteerController.verifyOtp should response with 200 ok", async () 
 
   const stubCookie = stub(
     VolunteerService,
-    "setCookie",
+    "setCookieHttpOnly",
     [1],
   );
 

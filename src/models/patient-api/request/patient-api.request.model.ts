@@ -22,7 +22,6 @@ export type PublishPatientRequest = {
   emLaboratoryTestDate?: Date;
   emPatientGotFavipiravir?: boolean;
   emPatientGotFavipiravirDate?: Date;
-  emPatientCommitStatusCode?: number; // We could require this data in the future
   emPatientCommitTemperature?: number;
   emPatientCommitPulse?: number;
   emPatientCommitOxygenSaturation?: number;

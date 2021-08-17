@@ -7,7 +7,6 @@ export const mockPublishPatientResponse = async () => {
       cdPersonLastName: "Doe",
       cdPersonAge: 30,
       cdPersonPhone1: "0811231234",
-      emPatientCommitStatusCode: 1,
       crProvinceCode: "00",
       crAmpurCode: "01",
       createdAt: new Date(),

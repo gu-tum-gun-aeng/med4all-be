@@ -62,7 +62,7 @@ const PatientRepository = {
         created_when
       )
       VALUES (
-        ${patientId.value}
+        ${patientId.value},
         ${patient.certificateId}, 
         ${patient.certificateType}, 
         ${patient.name}, 
