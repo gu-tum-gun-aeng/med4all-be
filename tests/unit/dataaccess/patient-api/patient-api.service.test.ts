@@ -8,8 +8,9 @@ Deno.test("createPatient should post http request to patient-api endpoint", asyn
   const now = new Date();
 
   const request: PublishPatientRequest = {
-    id: 1,
     cdPersonID: "0000000000000",
+    cdPersonForeignID: "",
+    cdPersonPassportID: "",
     cdPersonFirstName: "John",
     cdPersonLastName: "Doe",
     cdPersonAge: 30,
@@ -39,8 +40,9 @@ Deno.test("createPatient should post http request to patient-api endpoint", () =
   const now = new Date();
 
   const request: PublishPatientRequest = {
-    id: 1,
     cdPersonID: "0000000000000",
+    cdPersonForeignID: "",
+    cdPersonPassportID: "",
     cdPersonFirstName: "John",
     cdPersonLastName: "Doe",
     cdPersonAge: 30,
