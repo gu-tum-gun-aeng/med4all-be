@@ -71,7 +71,7 @@ const getActiveIdByTelephone = async (
   );
 };
 
-const setCookie = (ctx: RouterContext, token: string): Cookies => {
+const setCookieHttpOnly = (ctx: RouterContext, token: string): Cookies => {
   return ctx.cookies.set("token", token, { httpOnly: true });
 };
 
@@ -79,5 +79,5 @@ export default {
   requestOtp,
   verifyOtp,
   getActiveIdByTelephone,
-  setCookie,
+  setCookieHttpOnly,
 };
