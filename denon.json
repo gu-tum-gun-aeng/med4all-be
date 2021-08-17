@@ -55,7 +55,8 @@
       "env": {
         "ENV": "prod",
         "NO_COLOR": "true"
-      }
+      },
+      "watch": false
     },
     "fmt": {
       "cmd": "deno fmt --quiet",

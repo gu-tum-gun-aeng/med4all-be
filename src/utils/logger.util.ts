@@ -51,7 +51,7 @@ await setup({
   },
 });
 
-const logger = (env === "test") ? getLogger() : getLogger("tests");
+const logger = (env === "test") ? getLogger("tests") : getLogger();
 
 const Logger = {
   info: (
