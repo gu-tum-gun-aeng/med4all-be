@@ -19,6 +19,8 @@ export type CreatePatientRequest = {
   lineId: string;
   homeTown: number;
   equipments: string[];
+  certificatePictureUrl?: string;
+  covidTestPictureUrl?: string;
 };
 
 export type MedicalInfo = {
