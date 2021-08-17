@@ -1,39 +1,98 @@
-import {
-  isNumber,
-  maxNumber,
-  minLength,
-  minNumber,
-  required,
-  startsWith,
-  ValidationRules,
-} from "../../../../deps.ts";
 export type CreatePatientRequest = {
-  patientName: string;
-  age: number;
+  certificateId: string;
+  certificateType: CertificateType;
+  name: string;
+  surname: string;
+  gender: number;
+  ageYear: number;
+  patientPhone: string;
+  custodianPhone: string;
   weightKg: number;
   heightCm: number;
-  certificateId: string;
-  certificateTypeId: number;
-  certificatePictureUrl: string;
-  covidTestPictureUrl: string;
-  address: string;
-  district: string;
-  province: string;
-  zipCode: number;
-  medicalInfo?: Record<string, unknown>;
+  medicalInfo: MedicalInfo;
+  checkInDate: Date;
+  checkOutDate: Date;
+  address: Address;
+  patientDataSource: number;
+  admittedTo: string;
+  healthCoverage: number;
+  lineId: string;
+  homeTown: number;
+  equipments: string[];
 };
 
-export const CreatePatientRequestValidationSchema: ValidationRules = {
-  patientName: [required, minLength(1)],
-  age: [required, isNumber, minNumber(15)],
-  weightKg: [required, isNumber],
-  heightCm: [required, isNumber],
-  certificateId: [required, minLength(1)],
-  certificateTypeId: [required, isNumber],
-  certificatePictureUrl: [required, startsWith("http"), minLength(1)],
-  covidTestPictureUrl: [required, startsWith("http"), minLength(1)],
-  address: [required, minLength(1)],
-  district: [required, minLength(1)],
-  province: [required, minLength(1)],
-  zipCode: [required, maxNumber(99999)],
+export type MedicalInfo = {
+  isAtkPositive: boolean;
+  isRtPcrPositive: boolean;
+  labTestWhen: Date;
+  isFavipiravirReceived: boolean;
+  receivedFavipiravirWhen: Date;
+  bodyTemperatureCelcius: number;
+  pulseRateBpm: number;
+  oxygenSaturation: number;
+  oxygenSaturationAfterExercise: number;
+  oxygenSaturationDifference: number;
+  systolic: number;
+  diastolic: number;
+  inspirationRate: number;
+  isPregnant: boolean;
+  pregnancyWeeks: number;
+  isBedridden: boolean;
+  symptoms: string;
+  allergyToDrugs: string[];
+  allergyToFoods: string[];
+  isSymptomShortnessOfBreath: boolean;
+  isSymptomFever: boolean;
+  isSymptomCough: boolean;
+  isSymptomRunnyNose: boolean;
+  isSymptomSoreThroat: boolean;
+  isSymptomFatigue: boolean;
+  isSymptomHeadAche: boolean;
+  isSymptomDiarrhea: boolean;
+  isSymptomLossOfSmell: boolean;
+  isSymptomConjunctivitis: boolean;
+  isSymptomRash: boolean;
+  isSymptomLossOfTaste: boolean;
+  isSymptomTiredness: boolean;
+  isSymptomChestPain: boolean;
+  isDiseaseUncontrollDm: boolean;
+  isDiseaseCancer: boolean;
+  isDiseaseCopd: boolean;
+  isDiseaseAsthma: boolean;
+  isDiseaseObesity: boolean;
+  isDiseaseCkdLevelHigherThanFour: boolean;
+  isDiseaseStrokeWithinSixMonth: boolean;
+  isDiseaseCardioVascularDisease: boolean;
+  isDiseaseHiv: boolean;
+  isDiseaseHypertension: boolean;
+  isDiseaseHyperlipidemia: boolean;
+  isDiseaseCirrhosis: boolean;
+  isDiseaseTuberculosis: boolean;
+  vaccinationRecords: string[];
+  firstVaccinedDate: Date;
+  secondVaccinedDate: Date;
+  remark: string;
+  firstDateOfSymtom: Date;
 };
+
+export type Address = {
+  provinceCode: number;
+  districtCode: number;
+  subDistrictCode: number;
+  moo: string;
+  road: string;
+  alley: string;
+  soi: string;
+  village: string;
+  bangkokZoneCode: number;
+  zipCode: number;
+  building: string;
+  note: string;
+};
+
+export enum CertificateType {
+  PersonalId = 0,
+  Passport = 1,
+  ForeignId = 2,
+  NoDoc = 3,
+}

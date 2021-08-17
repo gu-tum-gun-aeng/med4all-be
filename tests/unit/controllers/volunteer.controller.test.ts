@@ -3,7 +3,6 @@ import { assertEquals, stub } from "../../../deps.ts";
 import { testing } from "../../../deps.ts";
 import VolunteerController from "../../../src/controllers/volunteer.controller.ts";
 import VolunteerService from "../../../src/services/volunteer.service.ts";
-import VolunteerTokenService from "../../../src/services/volunteer.token.service.ts";
 
 Deno.test("VolunteerController.requestOtp should response with 200 ok", async () => {
   const stubVolunteerService = stub(
@@ -39,15 +38,17 @@ Deno.test("VolunteerController.verifyOtp should response with 200 ok", async () 
     "verifyOtp",
     [await Promise.resolve(true)],
   );
+
   const stubGetActiveIdByTelephone = stub(
     VolunteerService,
     "getActiveIdByTelephone",
     [await Promise.resolve(1)],
   );
-  const stubInsertToken = stub(
-    VolunteerTokenService,
-    "insert",
-    [await Promise.resolve(1)],
+
+  const stubCookie = stub(
+    VolunteerService,
+    "setCookie",
+    [1],
   );
 
   const mockContext = testing.createMockContext();
@@ -66,6 +67,6 @@ Deno.test("VolunteerController.verifyOtp should response with 200 ok", async () 
   } finally {
     stubVerifyOtp.restore();
     stubGetActiveIdByTelephone.restore();
-    stubInsertToken.restore();
+    stubCookie.restore();
   }
 });

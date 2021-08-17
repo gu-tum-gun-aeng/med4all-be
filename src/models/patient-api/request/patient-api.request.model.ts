@@ -1,8 +1,7 @@
-export type CreatePatientRequest = {
-  id: number;
-  cdPersonID?: string;
-  cdPersonForeignID?: string;
-  cdPersonPassportID?: string;
+export type PublishPatientRequest = {
+  cdPersonID: string;
+  cdPersonForeignID: string;
+  cdPersonPassportID: string;
   cdPersonNationalityCode?: number;
   cdPersonNameTitleCode?: number;
   cdPersonFirstName: string;
@@ -23,7 +22,7 @@ export type CreatePatientRequest = {
   emLaboratoryTestDate?: Date;
   emPatientGotFavipiravir?: boolean;
   emPatientGotFavipiravirDate?: Date;
-  emPatientCommitStatusCode: number;
+  emPatientCommitStatusCode?: number; // We could require this data in the future
   emPatientCommitTemperature?: number;
   emPatientCommitPulse?: number;
   emPatientCommitOxygenSaturation?: number;

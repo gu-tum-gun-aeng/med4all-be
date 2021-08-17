@@ -1,32 +1,9 @@
-import {
-  DiagnosticStatus,
-  Patient,
-} from "../../models/patient/patient.model.ts";
 import { CreatePatientRequest } from "../../models/patient/request/patient.request.ts";
 import dbUtils from "../../utils/db.util.ts";
 import { throwError } from "../../middlewares/errorHandler.middleware.ts";
-import { CreatePatientResultRequest } from "../../models/patient/request/patientResult.request.ts";
 import { PatientRegisterStatus } from "../../models/patient/response/patientRegisterStatus.response.ts";
 
 const PatientRepository = {
-  getAll: async () => {
-    return await dbUtils.queryObject<Patient>`SELECT 
-        patient_id, 
-        name, 
-        age, 
-        weight_kg, 
-        height_cm, 
-        certificate_id, 
-        certificate_type_id, 
-        certificate_picture_url,
-        covid_test_picture_url, 
-        medical_info, 
-        diagnostic_status_id 
-      FROM 
-        patient
-    `;
-  },
-
   getPatientRegisterStatus: async (
     certificateId: string,
   ): Promise<PatientRegisterStatus> => {
@@ -44,38 +21,6 @@ const PatientRepository = {
     }
   },
 
-  getFirstWaitingPatient: async () => {
-    const patientDiagnosingTimeout = 8; //Hours
-    return await dbUtils.queryOneObject<Patient>`
-      UPDATE patient
-      SET    diagnostic_status_id = ${DiagnosticStatus.Diagnosing},
-      last_modified_when = current_timestamp
-      WHERE  patient_id = (
-              SELECT patient_id
-              FROM   patient
-              WHERE  diagnostic_status_id = ${DiagnosticStatus.Waiting} OR (
-                diagnostic_status_id = ${DiagnosticStatus.Diagnosing} AND
-                  DATE_PART('day', current_timestamp - last_modified_when) * 24 + 
-                  DATE_PART('hour', current_timestamp - last_modified_when) >= ${patientDiagnosingTimeout}
-              )
-              ORDER BY last_modified_when ASC
-              LIMIT  1
-              FOR UPDATE SKIP LOCKED
-      )
-      RETURNING  patient_id, 
-      name, 
-      age, 
-      weight_kg, 
-      height_cm, 
-      certificate_id, 
-      certificate_type_id, 
-      certificate_picture_url,
-      covid_test_picture_url, 
-      medical_info, 
-      diagnostic_status_id;
-    `; // We use 'FOR UPDATE SKIP LOCKED' to prevent race condition.
-  },
-
   createPatient: async (
     patient: CreatePatientRequest,
     createdByUserId: string,
@@ -87,61 +32,100 @@ const PatientRepository = {
     `;
     if (patientId) {
       const insertPatientSQL = dbUtils.toQuery`
-      INSERT INTO public.patient(
+      INSERT INTO patient (
         patient_id,
+        certificate_id, 
+        certificate_type, 
         name, 
-        age,
-        weight_kg,
-        height_cm,
-        certificate_id,
-        certificate_type_id,
-        certificate_picture_url,
-        covid_test_picture_url, 
-        medical_info,
+        surname, 
+        gender, 
+        age_year, 
+        patient_phone,
+        custodian_phone,
+        weight_kg, 
+        height_cm, 
+        medical_info, 
+        check_in_date, 
+        check_out_date,
+        patient_data_source, 
+        admitted_to, 
+        health_coverage, 
+        line_id, 
+        home_town, 
+        equipments, 
         volunteer_id,
-        last_modified_by,
-        last_modified_when,
-        created_by,
-        created_when)
-        VALUES (
-          ${patientId.value},
-          ${patient.patientName},
-          ${patient.age},
-          ${patient.weightKg},
-          ${patient.heightCm},
-          ${patient.certificateId}, 
-          ${patient.certificateTypeId},
-          ${patient.certificatePictureUrl},
-          ${patient.covidTestPictureUrl},
-          ${patient.medicalInfo},
-          ${createdByUserId},
-          ${createdByUserId},
-          ${currentDateTime},
-          ${createdByUserId},
-          ${currentDateTime})
-    `;
-      const insertAddressSQL = dbUtils.toQuery`
-      INSERT INTO public.address(
-        patient_id, 
-        address, 
-        district, 
-        province, 
-        zip_code, 
         last_modified_by, 
         last_modified_when, 
         created_by, 
-        created_when)
-        VALUES (
-          ${patientId.value}, 
-          ${patient.address}, 
-          ${patient.district}, 
-          ${patient.province}, 
-          ${patient.zipCode}, 
-          ${createdByUserId}, 
-          ${currentDateTime}, 
-          ${createdByUserId}, 
-          ${currentDateTime}
-          )
+        created_when
+      )
+      VALUES (
+        ${patientId.value}
+        ${patient.certificateId}, 
+        ${patient.certificateType}, 
+        ${patient.name}, 
+        ${patient.surname}, 
+        ${patient.gender}, 
+        ${patient.ageYear}, 
+        ${patient.patientPhone},
+        ${patient.custodianPhone},
+        ${patient.weightKg}, 
+        ${patient.heightCm}, 
+        ${patient.medicalInfo}, 
+        ${patient.checkInDate}, 
+        ${patient.checkOutDate},
+        ${patient.patientDataSource}, 
+        ${patient.admittedTo}, 
+        ${patient.healthCoverage}, 
+        ${patient.lineId}, 
+        ${patient.homeTown}, 
+        ${patient.equipments}, 
+        ${createdByUserId},
+        ${createdByUserId}, 
+        ${currentDateTime}, 
+        ${createdByUserId}, 
+        ${currentDateTime}
+      );
+    `;
+      const insertAddressSQL = dbUtils.toQuery`
+      INSERT INTO address (
+        patient_id, 
+        province_code, 
+        district_code, 
+        sub_district_code,
+        moo, 
+        road, 
+        alley, 
+        soi,
+        village, 
+        bangkok_zone_code, 
+        zip_code, 
+        building, 
+        note, 
+        last_modified_by, 
+        last_modified_when,
+        created_by, 
+        created_when
+      )
+      VALUES (
+        ${patientId.value}, 
+        ${patient.address.provinceCode}, 
+        ${patient.address.districtCode}, 
+        ${patient.address.subDistrictCode}, 
+        ${patient.address.moo}, 
+        ${patient.address.road}, 
+        ${patient.address.alley}, 
+        ${patient.address.soi}, 
+        ${patient.address.village}, 
+        ${patient.address.bangkokZoneCode}, 
+        ${patient.address.zipCode}, 
+        ${patient.address.building}, 
+        ${patient.address.note}, 
+        ${createdByUserId}, 
+        ${currentDateTime}, 
+        ${createdByUserId}, 
+        ${currentDateTime}
+      );
     `;
       await dbUtils.excuteTransactional([
         insertPatientSQL,
@@ -160,53 +144,6 @@ const PatientRepository = {
     }
 
     return result;
-  },
-
-  createPatientResultAndUpdatePaientDiagnosticStatus: async (
-    patientResult: CreatePatientResultRequest,
-    createdByUserId: string,
-  ): Promise<void> => {
-    const currentDateTime = (new Date()).toISOString();
-    const insertPatientResultSQL = dbUtils.toQuery`
-    INSERT INTO 
-      patient_result (
-        patient_id, 
-        doctor_id, 
-        is_approved, 
-        reject_reason_id, 
-        remark, 
-        last_modified_by, 
-        last_modified_when, 
-        created_by, 
-        created_when
-      )
-    VALUES (
-      ${patientResult.patientId},
-      ${patientResult.volunteerId},
-      ${patientResult.isApproved},
-      ${patientResult.rejectReasonId},
-      ${patientResult.remark},
-      ${createdByUserId},
-      ${currentDateTime},
-      ${createdByUserId},
-      ${currentDateTime}
-    );
-    `;
-
-    const updatePatientDiagnosticStatusSQL = dbUtils.toQuery`
-      UPDATE patient
-      SET 
-        diagnostic_status_id = ${DiagnosticStatus.Completed},
-        last_modified_by = ${createdByUserId},
-        last_modified_when = ${currentDateTime}
-      WHERE patient_id = ${patientResult.patientId};
-    `;
-
-    await dbUtils.excuteTransactional([
-      insertPatientResultSQL,
-      updatePatientDiagnosticStatusSQL,
-    ]);
-    return;
   },
 };
 
