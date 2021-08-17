@@ -1,5 +1,6 @@
 import {
   Address,
+  CertificateType,
   CreatePatientRequest,
   MedicalInfo,
 } from "../../../src/models/patient/request/patient.request.ts";
@@ -73,9 +74,30 @@ const address: Address = {
   note: "",
 };
 
-export const patientRequestMock: CreatePatientRequest = {
-  certificateId: "1123123124355",
-  certificateType: 1,
+// export const patientRequestMock: CreatePatientRequest = {
+//   certificateId: "1123123124355",
+//   certificateType: 1,
+//   name: "Krittipong",
+//   surname: "Kanc",
+//   gender: 1,
+//   ageYear: 26,
+//   patientPhone: "08762845932",
+//   custodianPhone: "0876284532",
+//   weightKg: 70,
+//   heightCm: 175,
+//   medicalInfo: medicalInfo,
+//   checkInDate: new Date(),
+//   checkOutDate: new Date(),
+//   address: address,
+//   patientDataSource: 1,
+//   admittedTo: "Chula",
+//   healthCoverage: 1,
+//   lineId: "myline",
+//   homeTown: 1,
+//   equipments: [],
+// };
+
+const basePatientRequestMock: object = {
   name: "Krittipong",
   surname: "Kanc",
   gender: 1,
@@ -95,5 +117,23 @@ export const patientRequestMock: CreatePatientRequest = {
   homeTown: 1,
   equipments: [],
 };
+
+export const thaiPatientRequestMock: CreatePatientRequest = {
+  ...basePatientRequestMock,
+  certificateId: "1123123124355",
+  certificateType: CertificateType.PersonalId,
+} as CreatePatientRequest;
+
+export const foreignPatientRequestMock: CreatePatientRequest = {
+  ...basePatientRequestMock,
+  certificateId: "30990000001",
+  certificateType: CertificateType.ForeignId,
+} as CreatePatientRequest;
+
+export const foreignWithPassportPatientRequestMock: CreatePatientRequest = {
+  ...basePatientRequestMock,
+  certificateId: "S0002068",
+  certificateType: CertificateType.Passport,
+} as CreatePatientRequest;
 
 export const getPatientIdMock = async () => await { value: BigInt(10) };
