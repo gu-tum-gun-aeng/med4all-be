@@ -43,7 +43,7 @@ export const CreatePatientRequestValidationMessage = {
 };
 
 export type MedicalInfo = {
-  patientCovidClassificationColor: number;
+  patientCovidClassificationColor?: number;
   isAtkPositive: boolean;
   isRtPcrPositive: boolean;
   labTestWhen: string;
