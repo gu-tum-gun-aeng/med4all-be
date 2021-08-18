@@ -5,9 +5,14 @@ import { responseOk } from "../utils/response.util.ts";
 import { throwError } from "../middlewares/errorHandler.middleware.ts";
 import {
   CreatePatientRequest,
+  CreatePatientRequestValidationMessage,
+  CreatePatientRequestValidationSchema,
+  MedicalInfoValidationMessage,
+  MedicalInfoValidationSchema,
 } from "../models/patient/request/patient.request.ts";
 import { CreatePatientResponse } from "../models/patient/response/patient.response.ts";
 import Context from "../types/context.type.ts";
+import { validateAndThrow } from "../utils/validation.util.ts";
 
 const PatientController = {
   getPatientRegisterStatus: async (
@@ -25,6 +30,8 @@ const PatientController = {
     const createPatientRequest: CreatePatientRequest = await ctx.request.body({
       type: "json",
     }).value;
+
+    await validateCreatePatientRequest(createPatientRequest);
 
     const [patientId] = await PatientService.createPatient(
       createPatientRequest,
@@ -66,5 +73,22 @@ const PatientController = {
     responseOk(ctx.response, s3Response);
   },
 };
+
+async function validateCreatePatientRequest(request: CreatePatientRequest) {
+  await Promise.all([
+    validateAndThrow(
+      request,
+      CreatePatientRequestValidationSchema,
+      "createPatient",
+      CreatePatientRequestValidationMessage,
+    ),
+    validateAndThrow(
+      request.medicalInfo,
+      MedicalInfoValidationSchema,
+      "createPatient",
+      MedicalInfoValidationMessage,
+    ),
+  ]);
+}
 
 export default PatientController;

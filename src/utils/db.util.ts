@@ -22,11 +22,14 @@ const DbUtil = {
       true,
     );
   },
+  getPool: () => {
+    return pool;
+  },
   queryOneObject: async <T>(
     sql: TemplateStringsArray,
     ...args: QueryArguments
   ): Promise<T | undefined> => {
-    const client: PoolClient = await pool.connect();
+    const client: PoolClient = await DbUtil.getPool().connect();
     let result: QueryObjectResult<T>;
     try {
       result = await client.queryObject<T>(sql, ...args);
@@ -39,7 +42,7 @@ const DbUtil = {
     sql: TemplateStringsArray,
     ...args: QueryArguments
   ) => {
-    const client: PoolClient = await pool.connect();
+    const client: PoolClient = await DbUtil.getPool().connect();
     let result: QueryObjectResult<T>;
     try {
       result = await client.queryObject<T>(sql, ...args);
@@ -52,7 +55,7 @@ const DbUtil = {
     sql: TemplateStringsArray,
     ...args: QueryArguments
   ) => {
-    const client: PoolClient = await pool.connect();
+    const client: PoolClient = await DbUtil.getPool().connect();
     let result: QueryArrayResult<T>;
     try {
       result = await client.queryArray<T>(sql, ...args);
@@ -65,11 +68,11 @@ const DbUtil = {
   excuteTransactional: async <T extends Array<unknown>>(
     statements: Query[],
   ) => {
-    const client: PoolClient = await pool.connect();
+    const client: PoolClient = await DbUtil.getPool().connect();
     const transaction = client.createTransaction("transaction");
     try {
       await transaction.begin();
-      const results = Promise.all(statements.map(async (statement) => {
+      const results = await Promise.all(statements.map(async (statement) => {
         const result = await transaction.queryArray<T>(
           statement.text,
           ...statement.args,
@@ -85,7 +88,7 @@ const DbUtil = {
     }
   },
   terminate: async () => {
-    await pool.end();
+    await DbUtil.getPool().end();
   },
   toQuery: (strings: TemplateStringsArray, ...args: QueryArguments): Query => {
     return {
