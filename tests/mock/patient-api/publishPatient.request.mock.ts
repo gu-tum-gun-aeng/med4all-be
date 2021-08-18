@@ -11,7 +11,6 @@ export const publishPatientRequestMock: PublishPatientRequest = {
   crProvinceCode: "00",
   crAmpurCode: "01",
   createdAt: "",
-  emPatientCommitStatusCode: 1,
   emMoveFromLocationTypeCode: "",
   emMoveFromLocationCode: "",
   emMoveToLocationTypeCode: "",

@@ -39,8 +39,6 @@ export const mapPatientApiRequest = (
       createPatientRequest.medicalInfo.isFavipiravirReceived,
     emPatientGotFavipiravirDate:
       createPatientRequest.medicalInfo.receivedFavipiravirWhen,
-    emPatientCommitStatusCode:
-      createPatientRequest.medicalInfo.patientCovidClassificationColor,
     emPatientCommitTemperature:
       createPatientRequest.medicalInfo.bodyTemperatureCelcius,
     emPatientCommitPulse: createPatientRequest.medicalInfo.pulseRateBpm,
