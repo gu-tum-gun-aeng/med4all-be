@@ -69,7 +69,7 @@ const DbUtil = {
     const transaction = client.createTransaction("transaction");
     try {
       await transaction.begin();
-      const results = Promise.all(statements.map(async (statement) => {
+      const results = await Promise.all(statements.map(async (statement) => {
         const result = await transaction.queryArray<T>(
           statement.text,
           ...statement.args,
