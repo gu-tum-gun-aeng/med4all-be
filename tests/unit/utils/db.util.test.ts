@@ -8,7 +8,7 @@ Deno.test(
     const mockPool = new Pool("postgresql://user:pass@localhost/db", 1, true);
     const mockClient = {
       queryObject: async (_: string) => {
-        return await { rows: [expected] };
+        return await { rows: [expected, { name: "unexpected" }] };
       },
       connect: async () => {},
       release: () => {
