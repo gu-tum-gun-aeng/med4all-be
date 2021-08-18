@@ -4,10 +4,7 @@ import { testing } from "../../../deps.ts";
 import PatientController from "../../../src/controllers/patient.controller.ts";
 import PatientRepository from "../../../src/dataaccess/database/patient.repository.ts";
 import S3Service from "../../../src/services/s3.service.ts";
-import { patientRequestMock } from "../../mock/patient/patient.request.mock.ts";
 import { MockContextOptions } from "https://deno.land/x/oak@v7.6.3/testing.ts";
-import PatientApiService from "../../../src/dataaccess/service/patient-api/patient-api.service.ts";
-import { mockPublishPatientResponse } from "../../mock/patient-api/publishPatient.response.mock.ts";
 
 Deno.test("PatientController.getPatientRegisterStatus should response PatientRegisterStatus with is_registered==false if input certificate_id was not found in database", async () => {
   const expectedResult = {
@@ -29,35 +26,6 @@ Deno.test("PatientController.getPatientRegisterStatus should response PatientReg
     assertEquals(mockContext.response.body, { results: expectedResult });
   } finally {
     stubPatientRepository.restore();
-  }
-});
-
-Deno.test("PatientController.createPatient should response with expected patientId", async () => {
-  const expectedResult = 10;
-  const stubPatientRepository = stub(
-    PatientRepository,
-    "createPatient",
-    [await expectedResult],
-  );
-  const stubPatientApiService = stub(
-    PatientApiService,
-    "publishPatient",
-    [await mockPublishPatientResponse],
-  );
-
-  try {
-    const mockContext = testing.createMockContext();
-    (mockContext.request.body as any) = () => ({
-      type: "json",
-      value: patientRequestMock,
-    });
-    await PatientController.createPatient(mockContext);
-    assertEquals(mockContext.response.body, {
-      results: { patientId: expectedResult },
-    });
-  } finally {
-    stubPatientRepository.restore();
-    stubPatientApiService.restore();
   }
 });
 

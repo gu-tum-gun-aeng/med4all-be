@@ -1,12 +1,13 @@
-import { validate, ValidationRules } from "../../deps.ts";
+import { validate, ValidationOptions, ValidationRules } from "../../deps.ts";
 import { throwError } from "../middlewares/errorHandler.middleware.ts";
 
 export const validateAndThrow = async (
   input: Record<string, unknown>,
   schema: ValidationRules,
   path: string,
+  options?: ValidationOptions,
 ) => {
-  const [passes, errors] = await validate(input, schema);
+  const [passes, errors] = await validate(input, schema, options);
   if (!passes) {
     throwError({
       status: 500,

@@ -5,11 +5,12 @@ import {
 } from "../../../src/models/patient/request/patient.request.ts";
 
 const medicalInfo: MedicalInfo = {
+  patientCovidClassificationColor: 1,
   isAtkPositive: true,
   isRtPcrPositive: true,
-  labTestWhen: new Date(),
+  labTestWhen: "2021-08-17T08:41:48.912Z",
   isFavipiravirReceived: true,
-  receivedFavipiravirWhen: new Date(),
+  receivedFavipiravirWhen: "2021-08-17T08:41:48.912Z",
   bodyTemperatureCelcius: 27,
   pulseRateBpm: 80,
   oxygenSaturation: 99,
@@ -52,10 +53,10 @@ const medicalInfo: MedicalInfo = {
   isDiseaseCirrhosis: true,
   isDiseaseTuberculosis: true,
   vaccinationRecords: ["aaa", "bbbb"],
-  firstVaccinedDate: new Date(),
-  secondVaccinedDate: new Date(),
+  firstVaccinedDate: "2021-08-17T08:41:48.912Z",
+  secondVaccinedDate: "2021-08-17T08:41:48.912Z",
   remark: "Hi",
-  firstDateOfSymtom: new Date(),
+  firstDateOfSymtom: "2021-08-17T08:41:48.912Z",
 };
 
 const address: Address = {
@@ -85,10 +86,11 @@ export const patientRequestMock: CreatePatientRequest = {
   weightKg: 70,
   heightCm: 175,
   medicalInfo: medicalInfo,
-  checkInDate: new Date(),
-  checkOutDate: new Date(),
+  checkInDate: "2021-08-17T08:41:48.912Z",
+  checkOutDate: "2021-08-17T08:41:48.912Z",
   address: address,
   patientDataSource: 1,
+  sourceLocation: "home",
   admittedTo: "Chula",
   healthCoverage: 1,
   lineId: "myline",

@@ -39,6 +39,8 @@ export const mapPatientApiRequest = (
       createPatientRequest.medicalInfo.isFavipiravirReceived,
     emPatientGotFavipiravirDate:
       createPatientRequest.medicalInfo.receivedFavipiravirWhen,
+    emPatientCommitStatusCode:
+      createPatientRequest.medicalInfo.patientCovidClassificationColor,
     emPatientCommitTemperature:
       createPatientRequest.medicalInfo.bodyTemperatureCelcius,
     emPatientCommitPulse: createPatientRequest.medicalInfo.pulseRateBpm,
@@ -113,6 +115,9 @@ export const mapPatientApiRequest = (
     crAddressText: createPatientRequest.address.note,
     emSourceNumberCode: createPatientRequest.patientDataSource,
     emMoveToLocationCode: createPatientRequest.admittedTo,
+    emMoveToLocationTypeCode: createPatientRequest.admittedTo,
+    emMoveFromLocationCode: createPatientRequest.sourceLocation,
+    emMoveFromLocationTypeCode: createPatientRequest.sourceLocation,
     hsPatientHealthCoverage: createPatientRequest.healthCoverage,
   };
 };

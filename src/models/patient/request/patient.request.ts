@@ -1,3 +1,9 @@
+import { match } from "../../../../deps.ts";
+
+const regexIso8601 =
+  /\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d(\.\d+)*([+-][0-2]\d:[0-5]\d|Z)/;
+const dateFormatErrorMessage = "Date format should be YYYY-MM-DDTHH:MM:SS.sssZ";
+
 export type CreatePatientRequest = {
   certificateId: string;
   certificateType: CertificateType;
@@ -10,10 +16,11 @@ export type CreatePatientRequest = {
   weightKg: number;
   heightCm: number;
   medicalInfo: MedicalInfo;
-  checkInDate: Date;
-  checkOutDate: Date;
+  checkInDate: string;
+  checkOutDate: string;
   address: Address;
   patientDataSource: number;
+  sourceLocation: string;
   admittedTo: string;
   healthCoverage: number;
   lineId: string;
@@ -23,12 +30,25 @@ export type CreatePatientRequest = {
   covidTestPictureUrl?: string;
 };
 
+export const CreatePatientRequestValidationSchema = {
+  checkInDate: [match(regexIso8601, true)],
+  checkOutDate: [match(regexIso8601, true)],
+};
+
+export const CreatePatientRequestValidationMessage = {
+  messages: {
+    "checkInDate.match": dateFormatErrorMessage,
+    "checkOutDate.match": dateFormatErrorMessage,
+  },
+};
+
 export type MedicalInfo = {
+  patientCovidClassificationColor: number;
   isAtkPositive: boolean;
   isRtPcrPositive: boolean;
-  labTestWhen: Date;
+  labTestWhen: string;
   isFavipiravirReceived: boolean;
-  receivedFavipiravirWhen: Date;
+  receivedFavipiravirWhen: string;
   bodyTemperatureCelcius: number;
   pulseRateBpm: number;
   oxygenSaturation: number;
@@ -71,10 +91,26 @@ export type MedicalInfo = {
   isDiseaseCirrhosis: boolean;
   isDiseaseTuberculosis: boolean;
   vaccinationRecords: string[];
-  firstVaccinedDate: Date;
-  secondVaccinedDate: Date;
+  firstVaccinedDate: string;
+  secondVaccinedDate: string;
   remark: string;
-  firstDateOfSymtom: Date;
+  firstDateOfSymtom: string;
+};
+
+export const MedicalInfoValidationSchema = {
+  labTestWhen: [match(regexIso8601, true)],
+  receivedFavipiravirWhen: [match(regexIso8601, true)],
+  secondVaccinedDate: [match(regexIso8601, true)],
+  firstDateOfSymtom: [match(regexIso8601, true)],
+};
+
+export const MedicalInfoValidationMessage = {
+  messages: {
+    "labTestWhen.match": dateFormatErrorMessage,
+    "receivedFavipiravirWhen.match": dateFormatErrorMessage,
+    "secondVaccinedDate.match": dateFormatErrorMessage,
+    "firstDateOfSymtom.match": dateFormatErrorMessage,
+  },
 };
 
 export type Address = {
