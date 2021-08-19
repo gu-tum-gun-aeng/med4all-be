@@ -78,3 +78,31 @@ Deno.test("isValid should return false when given token issuer claim is incorrec
 
   assertEquals(isValid, false);
 });
+
+Deno.test("gen Token", async () => {
+  const key = "VGhpcyBpcyBtZWQ0YWxsIGp3dCBzZWNyZXQga2V5IG5hamE=";
+
+  const issueDateTime = currentSecondsSinceEpoch();
+  const payload: Payload = {
+    jti: "12",
+    iss: "med4all-be",
+    ist: issueDateTime,
+    exp: issueDateTime + 2592000,
+  };
+
+  const token = await create(
+    { alg: tokenUtil.HashAlgorithm.HS512, typ: "JWT" },
+    payload,
+    key,
+  );
+
+  console.log(token);
+
+  const isValid = await tokenUtil.isValid(
+    token,
+    key,
+    tokenUtil.HashAlgorithm.HS512,
+  );
+
+  assertEquals(isValid, false);
+});
