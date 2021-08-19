@@ -1,7 +1,7 @@
 import PatientRouter from "./v1/patient.router.ts";
 import VolunteerRouter from "./v1/volunteer.router.ts";
-import SwaggerRouter from "./v1/swagger.router.ts";
 import { Router, Status } from "../../deps.ts";
+import SwaggerController from "../controllers/swagger.controller.ts";
 
 import type { RouterContext } from "../../deps.ts";
 
@@ -19,13 +19,14 @@ const setRootRouting = (router: Router) => {
       response.body = "Ok";
     },
   );
+  router.get("/api-docs", SwaggerController.getSwaggerUi);
+  router.get("/swagger.yaml", SwaggerController.getYamlSchema);
 };
 
 const setV1Routing = (router: Router) => {
   const subRouters = [
     PatientRouter,
     VolunteerRouter,
-    SwaggerRouter,
   ];
 
   const allRouter = subRouters.reduce(useSubRouter, new Router());
