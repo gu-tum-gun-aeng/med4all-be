@@ -7,32 +7,34 @@
 
 ### run deno locally
 
-- install denon using deno.land
+- install velociraptor using deno.land
 
 ```sh
-deno install -qAf --unstable https://deno.land/x/denon/denon.ts
+deno install -qAn vr https://deno.land/x/velociraptor@1.1.0/cli.ts
 ```
+
+- copy `.env.sample` to be your environment for ex. `.env.dev`
 
 - start server with hot-reloading
 
 ```sh
-denon start
+vr run start
 ```
 
-- run test in directories with hot-reloading
+- run unit test with hot-reloading
 
 ```sh
-denon test [TEST_DIRECTORY...]
+vr run unit
 ```
 
 - run formatter and linter in watch mode
 
 ```sh
-denon check
+vr run format
 ```
 
 ```sh
-denon lint
+vr run lint
 ```
 
 ### run deno locally with swagger

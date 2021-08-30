@@ -1,0 +1,54 @@
+allow:
+  - net
+  - env
+  - read
+  - write
+  - plugin
+  - run
+
+scripts:
+  start:
+    cmd: deno run ./src/app.ts
+    watch: true
+
+  unit:watch:
+    cmd: deno test ./tests
+    env:
+      ENV: test
+    watch: true
+
+  test:
+    cmd:
+      - deno test ./tests
+      - deno test ./apitesting
+    lock: lock.json
+    unstable: true
+    cachedOnly: true
+    gitHook: pre-push
+    env:
+      ENV: test
+
+  unit:
+    cmd: deno test ./tests
+    lock: lock.json
+    unstable: true
+    cachedOnly: true
+    env: 
+      ENV: test
+
+  integration:
+    cmd: deno test ./apitesting --unstable
+    lock: lock.json
+    env:
+      ENV: test
+
+  format:
+    cmd: deno fmt
+    gitHook: pre-commit
+
+  lint:
+    cmd: deno lint
+    gitHook: pre-commit
+  
+  prod:
+    cmd: deno run app.bundle.js
