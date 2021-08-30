@@ -2,6 +2,7 @@ import { CreatePatientRequest } from "../../models/patient/request/patient.reque
 import dbUtils from "../../utils/db.util.ts";
 import { throwError } from "../../middlewares/errorHandler.middleware.ts";
 import { PatientRegisterStatus } from "../../models/patient/response/patientRegisterStatus.response.ts";
+import log from "../../utils/logger.util.ts";
 
 const PatientRepository = {
   getPatientRegisterStatus: async (
@@ -27,9 +28,15 @@ const PatientRepository = {
   ): Promise<number> => {
     let result = -1;
     const currentDateTime = (new Date()).toISOString();
+
+    log.info("will fetch patientId from db", "createPatient");
+
     const patientId = await dbUtils.queryOneObject<{ value: BigInt }>`
       SELECT nextval('patient_patient_id_seq') as value
     `;
+
+    log.info(`patientId: ${patientId}`, "createPatient");
+
     if (patientId) {
       const equipments = patient.equipments ? patient.equipments.join(",") : "";
 
@@ -139,11 +146,19 @@ const PatientRepository = {
         ${currentDateTime}
       );
     `;
+
+      log.info(
+        `will run transaction with patientId=${patientId}`,
+        "createPatient",
+      );
+
       await dbUtils.executeTransactional([
         insertPatientSQL,
         insertAddressSQL,
       ]);
       result = Number(patientId.value);
+
+      log.info(`get result patientId number=${result}`, "createPatient");
     } else {
       throwError({
         status: 500,
