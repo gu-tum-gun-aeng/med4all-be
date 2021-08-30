@@ -29,12 +29,12 @@ export {
   Client,
   Pool,
   PoolClient,
-} from "https://deno.land/x/postgres@v0.11.3/mod.ts";
+} from "https://deno.land/x/postgres@v0.12.0/mod.ts";
 export {
   QueryArrayResult,
   QueryObjectResult,
-} from "https://deno.land/x/postgres@v0.11.3/query/query.ts";
-export type { QueryArguments } from "https://deno.land/x/postgres@v0.11.3/query/query.ts";
+} from "https://deno.land/x/postgres@v0.12.0/query/query.ts";
+export type { QueryArguments } from "https://deno.land/x/postgres@v0.12.0/query/query.ts";
 export { create, decode, verify } from "https://deno.land/x/djwt@v2.2/mod.ts";
 export { format, parse } from "https://deno.land/std@0.103.0/datetime/mod.ts";
 export * from "https://deno.land/x/validasaur@v0.15.0/mod.ts";
