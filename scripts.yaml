@@ -19,8 +19,8 @@ scripts:
 
   test:
     cmd:
-      - deno test ./tests
-      - deno test ./apitesting
+      - deno test ./tests/unit
+      - deno test ./tests/integration
     lock: lock.json
     unstable: true
     cachedOnly: true
@@ -29,7 +29,7 @@ scripts:
       ENV: test
 
   unit:
-    cmd: deno test ./tests
+    cmd: deno test ./tests/unit
     lock: lock.json
     unstable: true
     cachedOnly: true
@@ -37,7 +37,7 @@ scripts:
       ENV: test
 
   integration:
-    cmd: deno test ./apitesting --unstable
+    cmd: deno test ./tests/integration --unstable
     lock: lock.json
     env:
       ENV: test
