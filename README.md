@@ -21,13 +21,31 @@ deno install -qAn vr https://deno.land/x/velociraptor@1.1.0/cli.ts
 vr run start
 ```
 
-- run unit test with hot-reloading
+- run unit test
 
 ```sh
 vr run unit
 ```
 
-- run formatter and linter in watch mode
+- run unit test with hot-reloading
+
+```sh
+vr run unit:watch
+```
+
+- run integration test
+
+```sh
+vr run integration
+```
+
+- run test: both unit and integration
+
+```sh
+vr run test
+```
+
+- run formatter and linter
 
 ```sh
 vr run format
