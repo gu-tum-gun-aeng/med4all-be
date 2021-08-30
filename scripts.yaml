@@ -11,23 +11,6 @@ scripts:
     cmd: deno run ./src/app.ts
     watch: true
 
-  unit:watch:
-    cmd: deno test ./tests
-    env:
-      ENV: test
-    watch: true
-
-  test:
-    cmd:
-      - deno test ./tests/unit
-      - deno test ./tests/integration
-    lock: lock.json
-    unstable: true
-    cachedOnly: true
-    gitHook: pre-push
-    env:
-      ENV: test
-
   unit:
     cmd: deno test ./tests/unit
     lock: lock.json
@@ -35,10 +18,29 @@ scripts:
     cachedOnly: true
     env: 
       ENV: test
+  
+  unit:watch:
+    cmd: deno test ./tests/unit
+    lock: lock.json
+    unstable: true
+    cachedOnly: true
+    env: 
+      ENV: test
+    watch: true
 
   integration:
-    cmd: deno test ./tests/integration --unstable
+    cmd: deno test ./tests/integration
+    unstable: true
     lock: lock.json
+    env:
+      ENV: test
+
+  test:
+    cmd: deno test ./tests
+    lock: lock.json
+    unstable: true
+    cachedOnly: true
+    gitHook: pre-push
     env:
       ENV: test
 
@@ -50,5 +52,3 @@ scripts:
     cmd: deno lint
     gitHook: pre-commit
   
-  prod:
-    cmd: deno run app.bundle.js
