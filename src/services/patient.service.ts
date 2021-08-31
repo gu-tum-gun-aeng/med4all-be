@@ -26,13 +26,13 @@ export const createPatient = async (
     "createPatient",
   );
 
-  // const apiPromise = traceWrapperAsync<PublishPatientResponse>(
-  //   () => patientApiService.publishPatient(mapPatientApiRequest(patient)),
-  //   "externalApi",
-  //   "publishPatient",
-  // );
+  const apiPromise = traceWrapperAsync<PublishPatientResponse>(
+    () => patientApiService.publishPatient(mapPatientApiRequest(patient)),
+    "externalApi",
+    "publishPatient",
+  );
 
-  return await Promise.all([dbPromise]);
+  return await Promise.all([dbPromise, apiPromise]);
 };
 
 export default {
