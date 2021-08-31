@@ -69,18 +69,18 @@ const DbUtil = {
     statements: Query[],
   ) => {
     const client: PoolClient = await DbUtil.getPool().connect();
-    const random = `${Math.random()}`.slice(2, 7)
+    const random = `${Math.random()}`.slice(2, 7);
     const transaction = client.createTransaction(`transaction-${random}`);
     try {
       await transaction.begin();
       const results = [];
 
-      for(const statement of statements) {
+      for (const statement of statements) {
         const result = await transaction.queryArray<T>(
           statement.text,
           ...statement.args,
         );
-        results.push(result.rows)
+        results.push(result.rows);
       }
 
       await transaction.commit();
