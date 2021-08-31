@@ -31,6 +31,8 @@ const PatientRepository = {
       SELECT nextval('patient_patient_id_seq') as value
     `;
     if (patientId) {
+      const equipments = patient.equipments ? patient.equipments.join(",") : "";
+
       const insertPatientSQL = dbUtils.toQuery`
       INSERT INTO patient (
         patient_id,
@@ -83,7 +85,7 @@ const PatientRepository = {
         ${patient.healthCoverage}, 
         ${patient.lineId}, 
         ${patient.homeTown}, 
-        ${patient.equipments?.join(",")}, 
+        ${equipments}, 
         ${patient.certificatePictureUrl}, 
         ${patient.covidTestPictureUrl}, 
         ${createdByUserId},
