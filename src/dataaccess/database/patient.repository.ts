@@ -83,7 +83,7 @@ const PatientRepository = {
         ${patient.healthCoverage}, 
         ${patient.lineId}, 
         ${patient.homeTown}, 
-        ${patient.equipments.join(",")}, 
+        ${patient.equipments?.join(",")}, 
         ${patient.certificatePictureUrl}, 
         ${patient.covidTestPictureUrl}, 
         ${createdByUserId},
