@@ -5,8 +5,7 @@ import { getJwtConfig, JwtConfig } from "./jwt.config.ts";
 import { DotenvConfig } from "https://deno.land/x/dotenv@v2.0.0/mod.ts"; // Todo: should move to deps
 
 // Todo: should consider to change ENV to more specific name
-// Todo: should consider to remove default dev env
-const env: string = Deno.env.toObject().ENV || "dev";
+const env: string = Deno.env.toObject().ENV;
 const dotenvConfig = createDotenvFor(env);
 
 /**

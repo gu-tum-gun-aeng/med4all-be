@@ -53,7 +53,6 @@
       "cmd": "deno run ./src/app.ts",
       "desc": "Run the server in prod mode.",
       "env": {
-        "ENV": "prod",
         "NO_COLOR": "true"
       },
       "watch": false
