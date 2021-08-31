@@ -69,17 +69,19 @@ const DbUtil = {
     statements: Query[],
   ) => {
     const client: PoolClient = await DbUtil.getPool().connect();
-    const transaction = client.createTransaction("transaction");
+    const random = `${Math.random()}`.slice(2, 7)
+    const transaction = client.createTransaction(`transaction-${random}`);
     try {
       await transaction.begin();
-      const results = await Promise.all(statements.map(async (statement) => {
+      const results = [];
+
+      for(const statement of statements) {
         const result = await transaction.queryArray<T>(
           statement.text,
           ...statement.args,
         );
-
-        return result.rows;
-      }));
+        results.push(result.rows)
+      }
 
       await transaction.commit();
       return results;
