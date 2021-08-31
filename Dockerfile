@@ -1,4 +1,4 @@
-FROM denoland/deno:1.11.0
+FROM denoland/deno:1.12.0
 # install denon
 RUN deno install -qAf --unstable https://deno.land/x/denon/denon.ts
 # The port that your application listens to.
