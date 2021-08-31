@@ -25,7 +25,7 @@ export type CreatePatientRequest = {
   healthCoverage: number;
   lineId: string;
   homeTown: number;
-  equipments: string[];
+  equipments?: string[];
   certificatePictureUrl?: string;
   covidTestPictureUrl?: string;
 };

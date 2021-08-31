@@ -94,8 +94,7 @@ export const patientRequestMock: CreatePatientRequest = {
   admittedTo: "Chula",
   healthCoverage: 1,
   lineId: "myline",
-  homeTown: 1,
-  equipments: [],
+  homeTown: 1
 };
 
 export const getPatientIdMock = async () => await { value: BigInt(10) };
