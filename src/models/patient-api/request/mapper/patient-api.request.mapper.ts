@@ -56,10 +56,10 @@ export const mapPatientApiRequest = (
     emPatientPregnancyWeeks: createPatientRequest.medicalInfo.pregnancyWeeks,
     emPatientBedriddenStatus: createPatientRequest.medicalInfo.isBedridden,
     emPatientSymptomsText: createPatientRequest.medicalInfo.symptoms,
-    emPatientAllergyDrug: createPatientRequest.medicalInfo.allergyToDrugs.join(
+    emPatientAllergyDrug: createPatientRequest.medicalInfo.allergyToDrugs?.join(
       ",",
     ),
-    emPatientAllergyFood: createPatientRequest.medicalInfo.allergyToFoods.join(
+    emPatientAllergyFood: createPatientRequest.medicalInfo.allergyToFoods?.join(
       ",",
     ),
     emPatientSymptomsCL1:
