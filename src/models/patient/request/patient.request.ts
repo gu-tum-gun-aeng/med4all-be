@@ -28,6 +28,8 @@ export type CreatePatientRequest = {
   equipments?: string[];
   certificatePictureUrl?: string;
   covidTestPictureUrl?: string;
+  isMedicineRequested?: string;
+  isBypassScreening?: string;
 };
 
 export const CreatePatientRequestValidationSchema = {

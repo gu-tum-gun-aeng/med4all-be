@@ -33,7 +33,7 @@ export const createPatient = async (
           mapPatientApiRequest(patient),
         );
       } catch (error) {
-        throw new Error("Cannot send request to patient api. Msg:" + error);
+        throw new Error("Cannot send request to patient api. Msg: " + error);
       }
     },
     "externalApi",
