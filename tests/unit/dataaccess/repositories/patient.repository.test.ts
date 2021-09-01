@@ -62,7 +62,7 @@ Deno.test("createPatient should insert patient and address to database", async (
   );
   const stubExecuteTransactional = stub(
     DbUtil,
-    "excuteTransactional",
+    "executeTransactional",
     [await undefined],
   );
 

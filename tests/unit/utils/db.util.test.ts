@@ -83,7 +83,7 @@ Deno.test(
 );
 
 Deno.test(
-  "dbutil excuteTransactional() with 2 Query should open new transaction then call client.queryArray 2 times and then release connection",
+  "dbutil executeTransactional() with 2 Query should open new transaction then call client.queryArray 2 times and then release connection",
   async () => {
     let isRelease = false;
     let isCommited = false;
@@ -110,7 +110,7 @@ Deno.test(
     const stubPool = stub(mockPool, "connect", () => mockClient);
     const stubDbUtil = stub(DbUtil, "getPool", () => mockPool);
 
-    const result = await DbUtil.excuteTransactional([
+    const result = await DbUtil.executeTransactional([
       DbUtil.toQuery`select statement 1`,
       DbUtil.toQuery`select statement 2`,
     ]);
@@ -124,7 +124,7 @@ Deno.test(
 );
 
 Deno.test(
-  "dbutil excuteTransactional() when exception was thrown, then shoud not commit transaction and forward exception to caller",
+  "dbutil executeTransactional() when exception was thrown, then should not commit transaction and forward exception to caller",
   async () => {
     let isRelease = false;
     let isCommited = false;
@@ -151,7 +151,7 @@ Deno.test(
     const stubDbUtil = stub(DbUtil, "getPool", () => mockPool);
 
     try {
-      await DbUtil.excuteTransactional([
+      await DbUtil.executeTransactional([
         DbUtil.toQuery`select statement 1`,
         DbUtil.toQuery`select statement 2`,
       ]);

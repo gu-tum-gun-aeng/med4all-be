@@ -26,7 +26,7 @@ const VolunteerTokenRepository = {
             ${config.appName},
             ${currentDateTime}
         )`;
-    await dbUtils.excuteTransactional([
+    await dbUtils.executeTransactional([
       insertQuery,
     ]);
 

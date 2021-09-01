@@ -65,7 +65,7 @@ const DbUtil = {
       await client.release();
     }
   },
-  excuteTransactional: async <T extends Array<unknown>>(
+  executeTransactional: async <T extends Array<unknown>>(
     statements: Query[],
   ) => {
     const client: PoolClient = await DbUtil.getPool().connect();
