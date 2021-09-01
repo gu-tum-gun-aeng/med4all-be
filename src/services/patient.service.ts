@@ -27,12 +27,15 @@ export const createPatient = async (
   );
 
   const apiPromise = traceWrapperAsync<PublishPatientResponse>(
-    () =>
-      patientApiService.publishPatient(mapPatientApiRequest(patient)).catch(
-        (e) => {
-          throw new Error("Cannot send request to patient api. Msg:" + e);
-        },
-      ),
+    async () => {
+      try {
+        return await patientApiService.publishPatient(
+          mapPatientApiRequest(patient),
+        );
+      } catch (error) {
+        throw new Error("Cannot send request to patient api. Msg:" + error);
+      }
+    },
     "externalApi",
     "publishPatient",
   );
