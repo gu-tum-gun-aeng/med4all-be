@@ -1,6 +1,6 @@
 export type ColinkCheckStatusResponse = {
   found: boolean;
-  record_details?: RecordDetailColinkCheckStatusResponse;
+  "record_details"?: RecordDetailColinkCheckStatusResponse;
 };
 
 export type RecordDetailColinkCheckStatusResponse = {
@@ -9,6 +9,6 @@ export type RecordDetailColinkCheckStatusResponse = {
   firstname: string;
   lastname: string;
   status: string;
-  hospital_admitted: string;
-  hospital_admitted_datetime: string;
+  "hospital_admitted": string;
+  "hospital_admitted_datetime": string;
 };

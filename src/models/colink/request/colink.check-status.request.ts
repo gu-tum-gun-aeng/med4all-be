@@ -19,7 +19,7 @@ export type PassportColinkCheckStatusRequest = {
 export type NoDocColinkCheckStatusRequest = {
   firstname: string;
   lastname: string;
-  contact_number: string;
+  "contact_number": string;
 };
 
 export const from = (req: CreatePatientRequest): ColinkCheckStatusRequest => {
