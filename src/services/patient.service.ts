@@ -5,6 +5,9 @@ import { CreatePatientRequest } from "../models/patient/request/patient.request.
 import { PatientRegisterStatus } from "../models/patient/response/patientRegisterStatus.response.ts";
 import { mapPatientApiRequest } from "../models/patient-api/request/mapper/patient-api.request.mapper.ts";
 import { PublishPatientResponse } from "../models/patient-api/response/patient-api.response.model.ts";
+import colinkApiService from "../dataaccess/service/colink-api/colink-api.service.ts";
+import * as colink from "../models/colink/request/colink.check-status.request.ts"
+import { ColinkCheckStatusResponse } from "../models/colink/response/colink.check-status.response.ts";
 
 export const getPatientRegisterStatus = async (
   certificateId: string,
@@ -40,7 +43,25 @@ export const createPatient = async (
     "publishPatient",
   );
 
-  return await Promise.all([dbPromise, apiPromise]);
+  const apiColinkCheckStatusPromise = traceWrapperAsync<ColinkCheckStatusResponse>(
+    async () => {
+      try {
+        return await colinkApiService.checkStatus(
+          colink.from(patient),
+        );
+      } catch (error) {
+        throw new Error("Cannot send request to colink api. Msg: " + error);
+      }
+    },
+    "externalApi",
+    "colinkCheckStatus",
+  );
+
+  const process = dbPromise
+  .then(_ => apiColinkCheckStatusPromise)
+  .then(_ => apiPromise)
+
+  return await process;
 };
 
 export default {
