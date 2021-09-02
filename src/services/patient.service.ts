@@ -68,7 +68,7 @@ export const createPatient = async (
   } else {
     await apiPromise;
     return {
-      patientId: dbResult
+      patientId: dbResult,
     };
   }
 };
