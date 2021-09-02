@@ -41,7 +41,7 @@ const config: ({
   nexmo: getNexmoApiConfig(dotenvConfig),
   jwt: getJwtConfig(dotenvConfig),
   patientApiUrl: dotenvConfig.PATIENT_API_URL,
-  colink: getColinkConfig(dotenvConfig)
+  colink: getColinkConfig(dotenvConfig),
 };
 
 function createDotenvFor(targetEnv: string): DotenvConfig {

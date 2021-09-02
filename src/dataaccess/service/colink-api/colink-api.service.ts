@@ -4,7 +4,9 @@ import { ColinkCheckStatusRequest } from "../../../models/colink/request/colink.
 import { ColinkCheckStatusResponse } from "../../../models/colink/response/colink.check-status.response.ts";
 
 const colinkApiService = {
-  checkStatus: (request: ColinkCheckStatusRequest): Promise<ColinkCheckStatusResponse> => {
+  checkStatus: (
+    request: ColinkCheckStatusRequest,
+  ): Promise<ColinkCheckStatusResponse> => {
     const url = `${config.colink.apiUrlCheckStatus}`;
     return ky.post(url, {
       json: request,
