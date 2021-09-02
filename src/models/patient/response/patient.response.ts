@@ -1,8 +1,8 @@
-import { ColinkCheckStatusResponse } from "../../colink/response/colink.check-status.response.ts";
+import { ColinkCheckStatusCamelCaseResponse } from "../../colink/response/colink.check-status.response.ts";
 
 export type CreatePatientResponse =
   | CreatePatientDbResponse
-  | ColinkCheckStatusResponse;
+  | ColinkCheckStatusCamelCaseResponse;
 
 type CreatePatientDbResponse = {
   patientId: number;
