@@ -3,7 +3,7 @@ import { ky } from "../../../../deps.ts";
 import { ColinkCheckStatusRequest } from "../../../models/colink/request/colink.check-status.request.ts";
 import { ColinkCheckStatusResponse } from "../../../models/colink/response/colink.check-status.response.ts";
 
-const colinkApiService = {
+const ColinkApiService = {
   checkStatus: (
     request: ColinkCheckStatusRequest,
   ): Promise<ColinkCheckStatusResponse> => {
@@ -14,4 +14,4 @@ const colinkApiService = {
   },
 };
 
-export default colinkApiService;
+export default ColinkApiService;

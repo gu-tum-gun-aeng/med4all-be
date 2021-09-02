@@ -5,9 +5,10 @@ import { CreatePatientRequest } from "../models/patient/request/patient.request.
 import { PatientRegisterStatus } from "../models/patient/response/patientRegisterStatus.response.ts";
 import { mapPatientApiRequest } from "../models/patient-api/request/mapper/patient-api.request.mapper.ts";
 import { PublishPatientResponse } from "../models/patient-api/response/patient-api.response.model.ts";
-import colinkApiService from "../dataaccess/service/colink-api/colink-api.service.ts";
+import ColinkApiService from "../dataaccess/service/colink-api/colink-api.service.ts";
 import * as colink from "../models/colink/request/colink.check-status.request.ts";
 import { ColinkCheckStatusResponse } from "../models/colink/response/colink.check-status.response.ts";
+import { CreatePatientResponse } from "../models/patient/response/patient.response.ts";
 
 export const getPatientRegisterStatus = async (
   certificateId: string,
@@ -22,7 +23,7 @@ export const getPatientRegisterStatus = async (
 export const createPatient = async (
   patient: CreatePatientRequest,
   createdByUserId: string,
-) => {
+): Promise<CreatePatientResponse> => {
   const dbPromise = traceWrapperAsync<number>(
     () => patientRepository.createPatient(patient, createdByUserId),
     "db",
@@ -48,7 +49,7 @@ export const createPatient = async (
   >(
     async () => {
       try {
-        return await colinkApiService.checkStatus(
+        return await ColinkApiService.checkStatus(
           colink.from(patient),
         );
       } catch (error) {
@@ -59,11 +60,17 @@ export const createPatient = async (
     "colinkCheckStatus",
   );
 
-  const process = dbPromise
-    .then((_) => apiColinkCheckStatusPromise)
-    .then((_) => apiPromise);
+  const dbResult = await dbPromise;
+  const colinkCheckStatusResponse = await apiColinkCheckStatusPromise;
 
-  return await process;
+  if (colinkCheckStatusResponse.found) {
+    return colinkCheckStatusResponse;
+  } else {
+    await apiPromise;
+    return {
+      patientId: dbResult
+    };
+  }
 };
 
 export default {

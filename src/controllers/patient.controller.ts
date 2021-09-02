@@ -33,13 +33,13 @@ const PatientController = {
 
     await validateCreatePatientRequest(createPatientRequest);
 
-    const [patientId] = await PatientService.createPatient(
+    const patientRespose = await PatientService.createPatient(
       createPatientRequest,
       ctx.userId!,
     );
-    const response: CreatePatientResponse = {
-      patientId,
-    };
+
+    const response: CreatePatientResponse = patientRespose;
+
     responseOk(ctx.response, response);
   },
 

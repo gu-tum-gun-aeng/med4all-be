@@ -9,6 +9,7 @@ export type RecordDetailColinkCheckStatusResponse = {
   firstname: string;
   lastname: string;
   status: string;
+  "contact_number": string;
   "hospital_admitted": string;
   "hospital_admitted_datetime": string;
 };
