@@ -7,18 +7,27 @@ import { patientRequestMock } from "../../mock/patient/patient.request.mock.ts";
 import PatientApiService from "../../../src/dataaccess/service/patient-api/patient-api.service.ts";
 import { mockPublishPatientResponse } from "../../mock/patient-api/publishPatient.response.mock.ts";
 import { CreatePatientRequest } from "../../../src/models/patient/request/patient.request.ts";
+import ColinkApiService from "../../../src/dataaccess/service/colink-api/colink-api.service.ts";
+import { mockColinkApiCheckStatusResponse } from "../../mock/colink/colink.response.mock.ts";
 
-Deno.test("PatientController.createPatient should response with expected patientId", async () => {
-  const expectedResult = 10;
+Deno.test("PatientController.createPatient should response with expected patientId or colinkCheckStatusResponse", async () => {
+  const expectedResult = await mockColinkApiCheckStatusResponse();
   const stubPatientRepository = stub(
     PatientRepository,
     "createPatient",
-    [await expectedResult],
+    [10],
   );
+
   const stubPatientApiService = stub(
     PatientApiService,
     "publishPatient",
     [await mockPublishPatientResponse],
+  );
+
+  const stubColinkApiService = stub(
+    ColinkApiService,
+    "checkStatus",
+    [expectedResult],
   );
 
   try {
@@ -29,11 +38,12 @@ Deno.test("PatientController.createPatient should response with expected patient
     });
     await PatientController.createPatient(mockContext);
     assertEquals(mockContext.response.body, {
-      results: { patientId: expectedResult },
+      results: expectedResult,
     });
   } finally {
     stubPatientRepository.restore();
     stubPatientApiService.restore();
+    stubColinkApiService.restore();
   }
 });
 
