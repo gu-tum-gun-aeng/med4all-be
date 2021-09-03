@@ -27,15 +27,17 @@ export const from = (req: CreatePatientRequest): ColinkCheckStatusRequest => {
     return {
       cid: req.certificateId,
     };
-  } else if (req.certificateType === CertificateType.Passport) {
+  }
+
+  if (req.certificateType === CertificateType.Passport) {
     return {
       passport: req.certificateId,
     };
-  } else {
-    return {
-      firstname: req.name,
-      lastname: req.surname,
-      contact_number: req.patientPhone,
-    };
   }
+
+  return {
+    firstname: req.name,
+    lastname: req.surname,
+    contact_number: req.patientPhone,
+  };
 };

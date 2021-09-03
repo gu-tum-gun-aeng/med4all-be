@@ -31,7 +31,7 @@ type RecordDetailColinkCheckStatusCamelCaseResponse = {
   status: string;
   contactNumber: string;
   hospitalAdmitted: string;
-  hospitalAdmittedAatetime: string;
+  hospitalAdmittedDatetime: string;
 };
 
 export const fromColinkCheckStatusResponse = (
@@ -61,6 +61,6 @@ const fromColinkCheckStatusDetailResponse = (
     status: res.status,
     contactNumber: res.contact_number,
     hospitalAdmitted: res.hospital_admitted,
-    hospitalAdmittedAatetime: res.hospital_admitted_datetime,
+    hospitalAdmittedDatetime: res.hospital_admitted_datetime,
   };
 };

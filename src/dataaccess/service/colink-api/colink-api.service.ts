@@ -14,6 +14,7 @@ const ColinkApiService = {
     const result = await ky.post(url, {
       json: request,
     }).json<ColinkCheckStatusResponse>();
+
     return fromColinkCheckStatusResponse(result);
   },
 };
