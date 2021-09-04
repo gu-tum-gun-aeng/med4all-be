@@ -131,8 +131,8 @@ export type Address = {
 };
 
 export enum CertificateType {
-  PersonalId = 0,
-  Passport = 1,
-  ForeignId = 2,
-  NoDoc = 3,
+  PersonalId = 1,
+  Passport = 2,
+  ForeignId = 3,
+  NoDoc = 4,
 }
