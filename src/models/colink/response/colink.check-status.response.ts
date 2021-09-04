@@ -37,7 +37,7 @@ type RecordDetailColinkCheckStatusCamelCaseResponse = {
 export const fromColinkCheckStatusResponse = (
   res: ColinkCheckStatusResponse,
 ): ColinkCheckStatusCamelCaseResponse => {
-  if (res.record_details === undefined) {
+  if (res.record_details === undefined || res.record_details === null) {
     return {
       found: res.found,
       recordDetails: undefined,
