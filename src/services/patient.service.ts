@@ -25,7 +25,6 @@ export const createPatient = async (
   patient: CreatePatientRequest,
   createdByUserId: string,
 ): Promise<CreatePatientResponse> => {
-
   if (await isPatientAlreadyRegistered(patient.certificateId)) {
     return {
       error: CreatePatientErrors.PatientAlreadyExistInMed4all,
@@ -46,7 +45,6 @@ export const createPatient = async (
     };
   }
 
-
   function isPatientAlreadyRegistered(certificateId: string) {
     return traceWrapperAsync<boolean>(
       async () => {
@@ -61,7 +59,10 @@ export const createPatient = async (
     );
   }
 
-  function savePatientToDb(patient: CreatePatientRequest, createdByUserId: string) {
+  function savePatientToDb(
+    patient: CreatePatientRequest,
+    createdByUserId: string,
+  ) {
     return traceWrapperAsync<number>(
       () => patientRepository.createPatient(patient, createdByUserId),
       "db",

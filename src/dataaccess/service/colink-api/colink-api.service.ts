@@ -1,6 +1,8 @@
 import config from "../../../config/config.ts";
 import { ky } from "../../../../deps.ts";
-import { ColinkCheckStatusRequest } from "../../../models/colink/request/colink.check-status.request.ts";
+import {
+  ColinkCheckStatusRequest,
+} from "../../../models/colink/request/colink.check-status.request.ts";
 import {
   ColinkCheckStatusCamelCaseResponse,
   fromColinkCheckStatusResponse,
@@ -10,8 +12,22 @@ const ColinkApiService = {
   checkStatus: async (
     request: ColinkCheckStatusRequest,
   ): Promise<ColinkCheckStatusCamelCaseResponse> => {
-    const url = `${config.colink.apiUrlCheckStatus}`;
-    const result = await ky.post(url, {
+    const colinkUrl = `${config.colink.apiUrlCheckStatus}`;
+
+    const api = ky.extend({
+      hooks: {
+        beforeRequest: [
+          (request) => {
+            request.headers.set(
+              "Authorization",
+              `Bearer ${config.colink.token}`,
+            );
+          },
+        ],
+      },
+    });
+
+    const result = await api.post(colinkUrl, {
       json: request,
     }).json<ColinkCheckStatusCamelCaseResponse>();
 
