@@ -25,8 +25,13 @@ export const createPatient = async (
   patient: CreatePatientRequest,
   createdByUserId: string,
 ): Promise<CreatePatientResponse> => {
-  const dbResult = await savePatientToDb();
+  if (await isPatientAlreadyRegistered()) {
+    return {
+      error: CreatePatientErrors.PatientAlreadyExistInMed4all,
+    };
+  }
 
+  const dbResult = await savePatientToDb();
   const colinkCheckStatusResponse = await apiColinkCheckStatus();
 
   if (colinkCheckStatusResponse.found) {
@@ -39,6 +44,20 @@ export const createPatient = async (
     return {
       patientId: dbResult,
     };
+  }
+
+  function isPatientAlreadyRegistered() {
+    return traceWrapperAsync<boolean>(
+      async () => {
+        const registerStatus = await patientRepository.getPatientRegisterStatus(
+          patient.certificateId,
+        );
+
+        return registerStatus.is_registered;
+      },
+      "db",
+      "createPatient-getPatientRegisterStatus",
+    );
   }
 
   function publishToPatientApi() {

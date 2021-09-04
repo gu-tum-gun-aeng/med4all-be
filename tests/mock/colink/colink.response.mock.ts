@@ -4,6 +4,16 @@ import {
   fromColinkCheckStatusResponse,
 } from "../../../src/models/colink/response/colink.check-status.response.ts";
 
+export const mockColinkApiCheckStatusPatientResponse = async (): Promise<
+  ColinkCheckStatusCamelCaseResponse
+> => {
+  const mock: ColinkCheckStatusResponse = {
+    found: false,
+  };
+
+  return await fromColinkCheckStatusResponse(mock);
+};
+
 export const mockColinkApiCheckStatusDuplicatePatientResponse =
   async (): Promise<
     ColinkCheckStatusCamelCaseResponse

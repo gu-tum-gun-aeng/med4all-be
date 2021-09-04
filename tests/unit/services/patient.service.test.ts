@@ -4,7 +4,10 @@ import ColinkApiService from "../../../src/dataaccess/service/colink-api/colink-
 import PatientApiService from "../../../src/dataaccess/service/patient-api/patient-api.service.ts";
 
 import * as patientService from "../../../src/services/patient.service.ts";
-import { mockColinkApiCheckStatusDuplicatePatientResponse } from "../../mock/colink/colink.response.mock.ts";
+import {
+  mockColinkApiCheckStatusDuplicatePatientResponse,
+  mockColinkApiCheckStatusPatientResponse,
+} from "../../mock/colink/colink.response.mock.ts";
 import { mockPublishPatientResponse } from "../../mock/patient-api/publishPatient.response.mock.ts";
 import { patientRequestMock } from "../../mock/patient/patient.request.mock.ts";
 
@@ -28,10 +31,13 @@ Deno.test("getPatientRegisterStatus should return PatientRegisterStatus with is_
 });
 
 Deno.test("createPatient should return duplicate patient in med4all when patient is already register to med4all system", async () => {
-  const expectedResult =
-    await mockColinkApiCheckStatusDuplicatePatientResponse();
+  const stubPatientRepositoryGetPatientRegisterStatus = stub(
+    PatientRepository,
+    "getPatientRegisterStatus",
+    [await { is_registered: true }],
+  );
 
-  const stubPatientRepository = stub(
+  const stubPatientRepositoryCreatePatient = stub(
     PatientRepository,
     "createPatient",
     [await 10],
@@ -46,34 +52,39 @@ Deno.test("createPatient should return duplicate patient in med4all when patient
   const stubColinkApiService = stub(
     ColinkApiService,
     "checkStatus",
-    [expectedResult],
+    [await mockColinkApiCheckStatusPatientResponse()],
   );
 
   try {
-    const patienReponse = await patientService.createPatient(
+    const patientResponse = await patientService.createPatient(
       patientRequestMock,
       "20",
     );
 
-    assertEquals(patienReponse, {
+    assertEquals(patientResponse, {
       error: {
-        id: 1002,
-        message: "Patient is already exist in Colink system.",
+        id: 1001,
+        message: "Patient is already exist in med4all system.",
       },
     });
-    assertEquals(stubPatientRepository.calls.length, 1);
+    assertEquals(stubPatientRepositoryGetPatientRegisterStatus.calls.length, 1);
+    assertEquals(stubPatientRepositoryCreatePatient.calls.length, 0);
     assertEquals(stubPatientApiService.calls.length, 0);
-    assertEquals(stubColinkApiService.calls.length, 1);
+    assertEquals(stubColinkApiService.calls.length, 0);
   } finally {
-    stubPatientRepository.restore();
+    stubPatientRepositoryGetPatientRegisterStatus.restore();
+    stubPatientRepositoryCreatePatient.restore();
     stubPatientApiService.restore();
     stubColinkApiService.restore();
   }
 });
 
 Deno.test("createPatient should return duplicate patient in colink when colink return patient found in their system", async () => {
-  const expectedResult =
-    await mockColinkApiCheckStatusDuplicatePatientResponse();
+  const stubPatientRepositoryGetPatientRegisterStatus = stub(
+    PatientRepository,
+    "getPatientRegisterStatus",
+    [await { is_registered: false }],
+  );
 
   const stubPatientRepository = stub(
     PatientRepository,
@@ -90,7 +101,7 @@ Deno.test("createPatient should return duplicate patient in colink when colink r
   const stubColinkApiService = stub(
     ColinkApiService,
     "checkStatus",
-    [expectedResult],
+    [await mockColinkApiCheckStatusDuplicatePatientResponse()],
   );
 
   try {
@@ -105,10 +116,13 @@ Deno.test("createPatient should return duplicate patient in colink when colink r
         message: "Patient is already exist in Colink system.",
       },
     });
+
+    assertEquals(stubPatientRepositoryGetPatientRegisterStatus.calls.length, 1);
     assertEquals(stubPatientRepository.calls.length, 1);
-    assertEquals(stubPatientApiService.calls.length, 0);
     assertEquals(stubColinkApiService.calls.length, 1);
+    assertEquals(stubPatientApiService.calls.length, 0);
   } finally {
+    stubPatientRepositoryGetPatientRegisterStatus.restore();
     stubPatientRepository.restore();
     stubPatientApiService.restore();
     stubColinkApiService.restore();

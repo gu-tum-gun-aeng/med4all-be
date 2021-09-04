@@ -10,9 +10,16 @@ import { CreatePatientRequest } from "../../../src/models/patient/request/patien
 import ColinkApiService from "../../../src/dataaccess/service/colink-api/colink-api.service.ts";
 import { mockColinkApiCheckStatusDuplicatePatientResponse } from "../../mock/colink/colink.response.mock.ts";
 
-Deno.test("PatientController.createPatient should response with expected patientId or colinkCheckStatusResponse", async () => {
+Deno.test("PatientController.createPatient should response with error patient already register in colink when given patient is already exist in colink system", async () => {
+  const stubPatientRepositoryGetPatientRegisterStatus = stub(
+    PatientRepository,
+    "getPatientRegisterStatus",
+    [await { is_registered: false }],
+  );
+
   const colinkCheckStatusResponseAsPatientAlreadyExist =
     await mockColinkApiCheckStatusDuplicatePatientResponse();
+
   const stubPatientRepository = stub(
     PatientRepository,
     "createPatient",
@@ -47,6 +54,7 @@ Deno.test("PatientController.createPatient should response with expected patient
       },
     });
   } finally {
+    stubPatientRepositoryGetPatientRegisterStatus.restore();
     stubPatientRepository.restore();
     stubPatientApiService.restore();
     stubColinkApiService.restore();

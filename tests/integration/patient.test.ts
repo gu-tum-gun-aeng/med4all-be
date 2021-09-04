@@ -27,6 +27,13 @@ Deno.test("when call /v1/patients without Authorization header, it should return
 Deno.test("when call post /v1/patient, it should return error when patient is already exist in colink system", async () => {
   const expectedResult =
     await mockColinkApiCheckStatusDuplicatePatientResponse();
+
+  const stubPatientRepositoryGetPatientRegisterStatus = stub(
+    PatientRepository,
+    "getPatientRegisterStatus",
+    [await { is_registered: false }],
+  );
+
   const stubPatientRepository = stub(
     PatientRepository,
     "createPatient",
@@ -65,6 +72,7 @@ Deno.test("when call post /v1/patient, it should return error when patient is al
         },
       });
   } finally {
+    stubPatientRepositoryGetPatientRegisterStatus.restore();
     stubPatientRepository.restore();
     stubPatientApiService.restore();
     stubColinkApiService.restore();
