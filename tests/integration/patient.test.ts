@@ -59,7 +59,7 @@ Deno.test("when call post /v1/patient, it should return error when patient is al
       .expect({
         results: {
           error: {
-            id: 1001,
+            id: 1002,
             message: "Patient is already exist in Colink system.",
           },
         },

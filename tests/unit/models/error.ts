@@ -3,7 +3,7 @@ import { CreatePatientErrors } from "../../../src/models/errors/CreatePatientErr
 
 Deno.test("error should return expected when call", () => {
   assertEquals(CreatePatientErrors.PatientAlreadyExistInColink, {
-    id: 1001,
+    id: 1002,
     message: "Patient is already exist in Colink system.",
   });
 });

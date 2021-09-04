@@ -31,7 +31,7 @@ export const createPatient = async (
 
   if (colinkCheckStatusResponse.found) {
     return {
-      error: CreatePatientErrors.CreatePatientErrors,
+      error: CreatePatientErrors.PatientAlreadyExistInColink,
     };
   } else {
     await publishToPatientApi();

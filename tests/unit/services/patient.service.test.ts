@@ -27,6 +27,50 @@ Deno.test("getPatientRegisterStatus should return PatientRegisterStatus with is_
   }
 });
 
+Deno.test("createPatient should return duplicate patient in med4all when patient is already register to med4all system", async () => {
+  const expectedResult =
+    await mockColinkApiCheckStatusDuplicatePatientResponse();
+
+  const stubPatientRepository = stub(
+    PatientRepository,
+    "createPatient",
+    [await 10],
+  );
+
+  const stubPatientApiService = stub(
+    PatientApiService,
+    "publishPatient",
+    [await mockPublishPatientResponse],
+  );
+
+  const stubColinkApiService = stub(
+    ColinkApiService,
+    "checkStatus",
+    [expectedResult],
+  );
+
+  try {
+    const patienReponse = await patientService.createPatient(
+      patientRequestMock,
+      "20",
+    );
+
+    assertEquals(patienReponse, {
+      error: {
+        id: 1002,
+        message: "Patient is already exist in Colink system.",
+      },
+    });
+    assertEquals(stubPatientRepository.calls.length, 1);
+    assertEquals(stubPatientApiService.calls.length, 0);
+    assertEquals(stubColinkApiService.calls.length, 1);
+  } finally {
+    stubPatientRepository.restore();
+    stubPatientApiService.restore();
+    stubColinkApiService.restore();
+  }
+});
+
 Deno.test("createPatient should return duplicate patient in colink when colink return patient found in their system", async () => {
   const expectedResult =
     await mockColinkApiCheckStatusDuplicatePatientResponse();
@@ -57,7 +101,7 @@ Deno.test("createPatient should return duplicate patient in colink when colink r
 
     assertEquals(patienReponse, {
       error: {
-        id: 1001,
+        id: 1002,
         message: "Patient is already exist in Colink system.",
       },
     });

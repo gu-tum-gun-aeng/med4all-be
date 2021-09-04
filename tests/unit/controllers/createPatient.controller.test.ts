@@ -41,7 +41,7 @@ Deno.test("PatientController.createPatient should response with expected patient
     assertEquals(mockContext.response.body, {
       results: {
         error: {
-          id: 1001,
+          id: 1002,
           message: "Patient is already exist in Colink system.",
         },
       },
