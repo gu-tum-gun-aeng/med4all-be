@@ -1,8 +1,8 @@
-interface AppError {
+export interface AppError {
   id: number;
   message: string;
 }
 
-interface ErrorGroup {
+export interface ErrorGroup {
   [id: string]: AppError;
 }

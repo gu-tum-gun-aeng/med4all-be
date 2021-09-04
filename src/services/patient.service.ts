@@ -9,6 +9,7 @@ import ColinkApiService from "../dataaccess/service/colink-api/colink-api.servic
 import * as ColinkCheckStatusRequest from "../models/colink/request/colink.check-status.request.ts";
 import { ColinkCheckStatusCamelCaseResponse } from "../models/colink/response/colink.check-status.response.ts";
 import { CreatePatientResponse } from "../models/patient/response/patient.response.ts";
+import { CreatePatientErrors } from "../models/errors/createPatient.errors.ts";
 
 export const getPatientRegisterStatus = async (
   certificateId: string,
@@ -29,15 +30,9 @@ export const createPatient = async (
   const colinkCheckStatusResponse = await apiColinkCheckStatus();
 
   if (colinkCheckStatusResponse.found) {
-    // return {
-    //   patientId: 0,
-    //   error: {
-    //     id: 1,
-    //     description: ""
-    //   }
-    // }
-
-    return colinkCheckStatusResponse;
+    return {
+      error: CreatePatientErrors.CreatePatientErrors,
+    };
   } else {
     await publishToPatientApi();
 

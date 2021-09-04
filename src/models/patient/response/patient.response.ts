@@ -1,9 +1,6 @@
-export type CreatePatientResponse =
-  | CreatePatientDbResponse
-  | ColinkCheckStatusCamelCaseResponse;
+import { AppError } from "../../error.ts";
 
-import { ColinkCheckStatusCamelCaseResponse } from "../../colink/response/colink.check-status.response.ts";
-
-type CreatePatientDbResponse = {
-  patientId: number;
+export type CreatePatientResponse = {
+  patientId?: number;
+  error?: AppError;
 };

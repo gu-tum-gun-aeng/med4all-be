@@ -4,7 +4,7 @@ import ColinkApiService from "../../../src/dataaccess/service/colink-api/colink-
 import PatientApiService from "../../../src/dataaccess/service/patient-api/patient-api.service.ts";
 
 import * as patientService from "../../../src/services/patient.service.ts";
-import { mockColinkApiCheckStatusResponse } from "../../mock/colink/colink.response.mock.ts";
+import { mockColinkApiCheckStatusDuplicatePatientResponse } from "../../mock/colink/colink.response.mock.ts";
 import { mockPublishPatientResponse } from "../../mock/patient-api/publishPatient.response.mock.ts";
 import { patientRequestMock } from "../../mock/patient/patient.request.mock.ts";
 
@@ -27,8 +27,9 @@ Deno.test("getPatientRegisterStatus should return PatientRegisterStatus with is_
   }
 });
 
-Deno.test("createPatient should return patientId correctly", async () => {
-  const expectedResult = await mockColinkApiCheckStatusResponse();
+Deno.test("createPatient should return duplicate patient in colink when colink return patient found in their system", async () => {
+  const expectedResult =
+    await mockColinkApiCheckStatusDuplicatePatientResponse();
 
   const stubPatientRepository = stub(
     PatientRepository,
@@ -54,7 +55,12 @@ Deno.test("createPatient should return patientId correctly", async () => {
       "20",
     );
 
-    assertEquals(patienReponse, expectedResult);
+    assertEquals(patienReponse, {
+      error: {
+        id: 1001,
+        message: "Patient is already exist in Colink system.",
+      },
+    });
     assertEquals(stubPatientRepository.calls.length, 1);
     assertEquals(stubPatientApiService.calls.length, 0);
     assertEquals(stubColinkApiService.calls.length, 1);
