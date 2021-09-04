@@ -25,32 +25,33 @@ export const createPatient = async (
   patient: CreatePatientRequest,
   createdByUserId: string,
 ): Promise<CreatePatientResponse> => {
-  if (await isPatientAlreadyRegistered()) {
+
+  if (await isPatientAlreadyRegistered(patient.certificateId)) {
     return {
       error: CreatePatientErrors.PatientAlreadyExistInMed4all,
     };
   }
 
-  const dbResult = await savePatientToDb();
-  const colinkCheckStatusResponse = await apiColinkCheckStatus();
+  const patientId = await savePatientToDb(patient, createdByUserId);
 
-  if (colinkCheckStatusResponse.found) {
+  if ((await apiColinkCheckStatus(patient)).found) {
     return {
       error: CreatePatientErrors.PatientAlreadyExistInColink,
     };
   } else {
-    await publishToPatientApi();
+    await publishToPatientApi(patient);
 
     return {
-      patientId: dbResult,
+      patientId: patientId,
     };
   }
 
-  function isPatientAlreadyRegistered() {
+
+  function isPatientAlreadyRegistered(certificateId: string) {
     return traceWrapperAsync<boolean>(
       async () => {
         const registerStatus = await patientRepository.getPatientRegisterStatus(
-          patient.certificateId,
+          certificateId,
         );
 
         return registerStatus.is_registered;
@@ -60,7 +61,15 @@ export const createPatient = async (
     );
   }
 
-  function publishToPatientApi() {
+  function savePatientToDb(patient: CreatePatientRequest, createdByUserId: string) {
+    return traceWrapperAsync<number>(
+      () => patientRepository.createPatient(patient, createdByUserId),
+      "db",
+      "createPatient",
+    );
+  }
+
+  function publishToPatientApi(patient: CreatePatientRequest) {
     return traceWrapperAsync<PublishPatientResponse>(
       async () => {
         try {
@@ -76,7 +85,7 @@ export const createPatient = async (
     );
   }
 
-  function apiColinkCheckStatus() {
+  function apiColinkCheckStatus(patient: CreatePatientRequest) {
     return traceWrapperAsync<
       ColinkCheckStatusCamelCaseResponse
     >(
@@ -91,14 +100,6 @@ export const createPatient = async (
       },
       "externalApi",
       "colinkCheckStatus",
-    );
-  }
-
-  function savePatientToDb() {
-    return traceWrapperAsync<number>(
-      () => patientRepository.createPatient(patient, createdByUserId),
-      "db",
-      "createPatient",
     );
   }
 };
