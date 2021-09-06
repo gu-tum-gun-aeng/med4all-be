@@ -2,6 +2,7 @@ import {
   Address,
   CertificateType,
   MedicalInfo,
+  RiskScore,
 } from "../../patient/request/patient.request.ts";
 
 export type PublishPatientRequest = {
@@ -26,6 +27,9 @@ export type PublishPatientRequest = {
   lineId?: string;
   homeTown?: number;
   equipments?: string[];
+  nhsoTicketId?: string;
+  trustedSource?: string;
+  riskScore?: RiskScore;
   certificatePictureUrl?: string;
   covidTestPictureUrl?: string;
 };

@@ -26,6 +26,9 @@ export type CreatePatientRequest = {
   lineId?: string;
   homeTown?: number;
   equipments?: string[];
+  nhsoTicketId?: string;
+  trustedSource?: string;
+  riskScore?: RiskScore;
   certificatePictureUrl?: string;
   covidTestPictureUrl?: string;
 };
@@ -101,6 +104,12 @@ export type MedicalInfo = {
   isMedicineRequested?: boolean;
   isBypassScreening?: boolean;
 };
+
+export type RiskScore = {
+  inclusionLabel?: string,
+  inclusionLabelType?: string,
+  triageScore?: number,
+}
 
 export const MedicalInfoValidationSchema = {
   labTestWhen: [match(regexIso8601, true)],

@@ -28,6 +28,9 @@ export const mapPatientApiRequest = (
     lineId: createPatientRequest.lineId,
     homeTown: createPatientRequest.homeTown,
     equipments: createPatientRequest.equipments,
+    nhsoTicketId: createPatientRequest.nhsoTicketId, 
+    trustedSource: createPatientRequest.trustedSource,
+    riskScore: createPatientRequest.riskScore,
     certificatePictureUrl: createPatientRequest.certificatePictureUrl,
     covidTestPictureUrl: createPatientRequest.covidTestPictureUrl,
   };
