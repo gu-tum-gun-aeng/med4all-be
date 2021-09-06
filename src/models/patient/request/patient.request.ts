@@ -106,10 +106,10 @@ export type MedicalInfo = {
 };
 
 export type RiskScore = {
-  inclusionLabel?: string,
-  inclusionLabelType?: string,
-  triageScore?: number,
-}
+  inclusionLabel?: string;
+  inclusionLabelType?: string;
+  triageScore?: number;
+};
 
 export const MedicalInfoValidationSchema = {
   labTestWhen: [match(regexIso8601, true)],

@@ -8,7 +8,7 @@ export const validateAndThrow = async (
   options?: ValidationOptions,
 ) => {
   if (input === undefined || input === null) {
-    return
+    return;
   }
 
   const [passes, errors] = await validate(input, schema, options);
