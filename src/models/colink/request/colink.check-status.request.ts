@@ -35,6 +35,10 @@ export const from = (req: CreatePatientRequest): ColinkCheckStatusRequest => {
     };
   }
 
+  if (req.patientPhone === undefined || req.patientPhone === null) {
+    throw new Error("Patient phone number not found.");
+  }
+
   return {
     firstname: req.name,
     lastname: req.surname,
