@@ -16,8 +16,8 @@ export type PublishPatientRequest = {
   weightKg?: number;
   heightCm?: number;
   medicalInfo?: MedicalInfo;
-  checkInDate?: string;
-  checkOutDate?: string;
+  checkInWhen?: string;
+  checkOutWhen?: string;
   address?: Address;
   patientDataSource?: number;
   sourceLocation?: string;

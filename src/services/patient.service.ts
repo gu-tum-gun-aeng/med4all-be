@@ -37,13 +37,13 @@ export const createPatient = async (
     return {
       error: CreatePatientErrors.PatientAlreadyExistInColink,
     };
-  } else {
-    await publishToPatientApi(patient);
-
-    return {
-      patientId: patientId,
-    };
   }
+
+  await publishToPatientApi(patient);
+
+  return {
+    patientId: patientId,
+  };
 
   function isPatientAlreadyRegistered(certificateId: string) {
     return traceWrapperAsync<boolean>(

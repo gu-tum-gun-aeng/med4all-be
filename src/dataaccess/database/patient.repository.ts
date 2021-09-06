@@ -86,8 +86,8 @@ const PatientRepository = {
         ${patient.weightKg}, 
         ${patient.heightCm}, 
         ${patient.medicalInfo}, 
-        ${patient.checkInDate}, 
-        ${patient.checkOutDate},
+        ${patient.checkInWhen}, 
+        ${patient.checkOutWhen},
         ${patient.patientDataSource}, 
         ${patient.sourceLocation}, 
         ${patient.admittedTo}, 
@@ -102,8 +102,8 @@ const PatientRepository = {
         ${currentDateTime}, 
         ${createdByUserId}, 
         ${currentDateTime},
-        ${patient.isMedicineRequested},
-        ${patient.isBypassScreening}
+        ${patient.medicalInfo?.isMedicineRequested},
+        ${patient.medicalInfo?.isBypassScreening}
       );
     `;
       const insertAddressSQL = dbUtils.toQuery`
@@ -128,18 +128,18 @@ const PatientRepository = {
       )
       VALUES (
         ${patientId.value}, 
-        ${patient.address.provinceCode}, 
-        ${patient.address.districtCode}, 
-        ${patient.address.subDistrictCode}, 
-        ${patient.address.moo}, 
-        ${patient.address.road}, 
-        ${patient.address.alley}, 
-        ${patient.address.soi}, 
-        ${patient.address.village}, 
-        ${patient.address.bangkokZoneCode}, 
-        ${patient.address.zipCode}, 
-        ${patient.address.building}, 
-        ${patient.address.note}, 
+        ${patient.address?.provinceCode}, 
+        ${patient.address?.districtCode}, 
+        ${patient.address?.subDistrictCode}, 
+        ${patient.address?.moo}, 
+        ${patient.address?.road}, 
+        ${patient.address?.alley}, 
+        ${patient.address?.soi}, 
+        ${patient.address?.village}, 
+        ${patient.address?.bangkokZoneCode}, 
+        ${patient.address?.zipCode}, 
+        ${patient.address?.building}, 
+        ${patient.address?.note}, 
         ${createdByUserId}, 
         ${currentDateTime}, 
         ${createdByUserId}, 

@@ -61,21 +61,21 @@ Deno.test("PatientController.createPatient should response with error patient al
   }
 });
 
-Deno.test("PatientController.createPatient should should return error if checkInDate format is invalid", async () => {
+Deno.test("PatientController.createPatient should should return error if checkInWhen format is invalid", async () => {
   const invalidRequestMock = {
     ...patientRequestMock,
-    checkInDate: "invalid format",
+    checkInWhen: "invalid format",
   };
-  await testAndAssertInvalidRequestMessage(invalidRequestMock, "checkInDate");
+  await testAndAssertInvalidRequestMessage(invalidRequestMock, "checkInWhen");
 });
 
-Deno.test("PatientController.createPatient should should return error if checkOutDate format is invalid", async () => {
+Deno.test("PatientController.createPatient should should return error if checkOutWhen format is invalid", async () => {
   const invalidRequestMock = {
     ...patientRequestMock,
-    checkOutDate: "invalid format",
+    checkOutWhen: "invalid format",
   };
 
-  await testAndAssertInvalidRequestMessage(invalidRequestMock, "checkOutDate");
+  await testAndAssertInvalidRequestMessage(invalidRequestMock, "checkOutWhen");
 });
 
 Deno.test("PatientController.createPatient should should return error if labTestWhen format is invalid", async () => {
@@ -103,31 +103,30 @@ Deno.test("PatientController.createPatient should should return error if receive
   );
 });
 
-Deno.test("PatientController.createPatient should should return error if secondVaccinedDate format is invalid", async () => {
+Deno.test("PatientController.createPatient should should return error if secondVaccinatedWhen format is invalid", async () => {
   const invalidRequestMock = {
     ...patientRequestMock,
     medicalInfo: {
       ...patientRequestMock.medicalInfo,
-      secondVaccinedDate: "invalid format",
+      secondVaccinatedWhen: "invalid format",
     },
   };
   await testAndAssertInvalidRequestMessage(
     invalidRequestMock,
-    "secondVaccinedDate",
+    "secondVaccinatedWhen",
   );
 });
 
-Deno.test("PatientController.createPatient should should return error if firstDateOfSymtom format is invalid", async () => {
+Deno.test("PatientController.createPatient should should return error if firstSymptomWhen format is invalid", async () => {
   const invalidRequestMock = {
     ...patientRequestMock,
     medicalInfo: {
-      ...patientRequestMock.medicalInfo,
-      firstDateOfSymtom: "invalid format",
+      firstSymptomWhen: "invalid format",
     },
   };
   await testAndAssertInvalidRequestMessage(
     invalidRequestMock,
-    "firstDateOfSymtom",
+    "firstSymptomWhen",
   );
 });
 
