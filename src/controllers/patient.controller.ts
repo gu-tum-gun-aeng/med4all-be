@@ -31,7 +31,7 @@ const PatientController = {
     const createPatientRequest: CreatePatientRequest = await ctx.request.body({
       type: "json",
     }).value;
-    log.info(
+    log.debug(
       `create patient request: ${JSON.stringify(createPatientRequest)}`,
       "createPatient",
     );
@@ -45,7 +45,7 @@ const PatientController = {
 
     const response: CreatePatientResponse = patientRespose;
 
-    log.info(
+    log.debug(
       `create patient response: ${JSON.stringify(response)}`,
       "createPatient",
     );

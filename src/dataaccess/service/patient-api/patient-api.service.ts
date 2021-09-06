@@ -10,7 +10,7 @@ const PatientApiService = {
   ): Promise<PublishPatientResponse> => {
     const url = `${config.patientApiUrl}/patient`;
 
-    log.info(`will call patientApiUrl: ${url}`, "PatientApiService");
+    log.debug(`will call patientApiUrl: ${url}`, "PatientApiService");
 
     return ky.post(url, {
       json: request,

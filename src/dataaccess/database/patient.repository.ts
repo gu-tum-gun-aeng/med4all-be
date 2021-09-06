@@ -29,13 +29,13 @@ const PatientRepository = {
     let result = -1;
     const currentDateTime = (new Date()).toISOString();
 
-    log.info("will fetch patientId from db", "createPatient");
+    log.debug("will fetch patientId from db", "createPatient");
 
     const patientId = await dbUtils.queryOneObject<{ value: BigInt }>`
       SELECT nextval('patient_patient_id_seq') as value
     `;
 
-    log.info(`patientId: ${patientId}`, "createPatient");
+    log.debug(`patientId: ${patientId}`, "createPatient");
 
     if (patientId) {
       const equipments = patient.equipments ? patient.equipments.join(",") : "";
@@ -147,7 +147,7 @@ const PatientRepository = {
       );
     `;
 
-      log.info(
+      log.debug(
         `will run transaction with patientId=${patientId}`,
         "createPatient",
       );
@@ -158,7 +158,7 @@ const PatientRepository = {
       ]);
       result = Number(patientId.value);
 
-      log.info(`get result patientId number=${result}`, "createPatient");
+      log.debug(`get result patientId number=${result}`, "createPatient");
     } else {
       throwError({
         status: 500,
