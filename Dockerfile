@@ -1,6 +1,7 @@
 FROM denoland/deno:1.12.0
-# install denon
-RUN deno install -qAf --unstable https://deno.land/x/denon/denon.ts
+# install velociraptor
+RUN deno install -qAn vr https://deno.land/x/velociraptor@1.1.0/cli.ts
+
 # The port that your application listens to.
 EXPOSE 8000
 
@@ -10,4 +11,4 @@ COPY . .
 RUN /app/lock_update.sh
 RUN deno cache /app/src/app.ts
 
-CMD ["denon", "prod"]
+CMD ["vr", "run", "start-not-hot"]

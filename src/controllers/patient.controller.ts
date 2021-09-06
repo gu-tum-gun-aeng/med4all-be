@@ -13,6 +13,7 @@ import {
 import { CreatePatientResponse } from "../models/patient/response/patient.response.ts";
 import Context from "../types/context.type.ts";
 import { validateAndThrow } from "../utils/validation.util.ts";
+import log from "../utils/logger.util.ts";
 
 const PatientController = {
   getPatientRegisterStatus: async (
@@ -30,6 +31,10 @@ const PatientController = {
     const createPatientRequest: CreatePatientRequest = await ctx.request.body({
       type: "json",
     }).value;
+    log.debug(
+      `create patient request: ${JSON.stringify(createPatientRequest)}`,
+      "createPatient",
+    );
 
     await validateCreatePatientRequest(createPatientRequest);
 
@@ -40,6 +45,10 @@ const PatientController = {
 
     const response: CreatePatientResponse = patientRespose;
 
+    log.debug(
+      `create patient response: ${JSON.stringify(response)}`,
+      "createPatient",
+    );
     responseOk(ctx.response, response);
   },
 

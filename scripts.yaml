@@ -1,0 +1,57 @@
+allow:
+  - net
+  - env
+  - read
+  - write
+  - plugin
+  - run
+
+scripts:
+  start:
+    cmd: deno run ./src/app.ts
+    watch: true
+
+  unit:
+    cmd: deno test ./tests/unit
+    lock: lock.json
+    unstable: true
+    cachedOnly: true
+    env: 
+      ENV: test
+  
+  unit:watch:
+    cmd: deno test ./tests/unit
+    lock: lock.json
+    unstable: true
+    cachedOnly: true
+    env: 
+      ENV: test
+    watch: true
+
+  integration:
+    cmd: deno test ./tests/integration
+    unstable: true
+    lock: lock.json
+    env:
+      ENV: test
+
+  test:
+    cmd: deno test ./tests
+    lock: lock.json
+    unstable: true
+    cachedOnly: true
+    gitHook: pre-push
+    env:
+      ENV: test
+
+  format:
+    cmd: deno fmt
+    gitHook: pre-commit
+
+  lint:
+    cmd: deno lint
+    gitHook: pre-commit
+
+  start-not-hot:
+    cmd: deno run ./src/app.ts
+  
