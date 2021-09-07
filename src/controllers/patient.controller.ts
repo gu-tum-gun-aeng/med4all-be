@@ -12,8 +12,9 @@ import {
 } from "../models/patient/request/patient.request.ts";
 import { CreatePatientResponse } from "../models/patient/response/patient.response.ts";
 import Context from "../types/context.type.ts";
-import { validateAndThrow } from "../utils/validation.util.ts";
+import { validateAndThrow, validateFor } from "../utils/validation.util.ts";
 import log from "../utils/logger.util.ts";
+import { createPatientDefaultValidator } from "../models/patient/request/validator/default.validator.ts";
 
 const PatientController = {
   getPatientRegisterStatus: async (
@@ -87,6 +88,9 @@ const PatientController = {
 async function validateCreatePatientRequest(
   createPatientRequest: CreatePatientRequest,
 ) {
+  // const validator = [createPatientDefaultValidator];
+  // await validateFor(createPatientRequest, validator, "createPatient");
+
   await Promise.all([
     validateAndThrow(
       createPatientRequest,
