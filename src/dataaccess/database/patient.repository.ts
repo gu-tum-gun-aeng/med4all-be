@@ -69,9 +69,7 @@ const PatientRepository = {
         last_modified_by, 
         last_modified_when, 
         created_by, 
-        created_when,
-        is_medicine_requested,
-        is_bypass_screening
+        created_when
       )
       VALUES (
         ${patientId.value},
@@ -101,9 +99,7 @@ const PatientRepository = {
         ${createdByUserId}, 
         ${currentDateTime}, 
         ${createdByUserId}, 
-        ${currentDateTime},
-        ${patient.medicalInfo?.isMedicineRequested},
-        ${patient.medicalInfo?.isBypassScreening}
+        ${currentDateTime}
       );
     `;
       const insertAddressSQL = dbUtils.toQuery`
