@@ -26,7 +26,7 @@ export const validateAndThrow = async (
 
 export async function validateFor(
   input: Record<string, unknown> | undefined,
-  validationSchemas: Array<ValidationRules>,
+  validators: Array<Validator>,
   path: string,
   options?: ValidationOptions,
 ) {
@@ -34,17 +34,17 @@ export async function validateFor(
     return;
   }
 
-  for (const schema of validationSchemas) {
-    const [passes, errors] = await validate(input, schema, options);
+  for (const validator of validators) {
+    const [passes, errors] = await validate(input, validator.schema, options);
 
     if (!passes) {
       throwError({
         status: 200,
-        name: "validation errors",
+        name: "validation error: " + validator.name,
         path: path,
         param: JSON.stringify(input),
         message: JSON.stringify(errors),
-        type: "validation errors",
+        type: "validation error",
       });
     }
   }

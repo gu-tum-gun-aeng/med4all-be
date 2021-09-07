@@ -4,9 +4,12 @@ import { validateFor } from "../../../src/utils/validation.util.ts";
 Deno.test(
   "validate should not throw and error when given input is pass validation rules",
   async () => {
-    const validatorSchema = {
-      name: [required, isString],
-      age: [required, isNumber],
+    const validator = {
+      name: "someValidator",
+      schema: {
+        name: [required, isString],
+        age: [required, isNumber],
+      },
     };
 
     const toValidate = {
@@ -14,19 +17,25 @@ Deno.test(
       age: 1234,
     };
 
-    await validateFor(toValidate, [validatorSchema], "somePath");
+    await validateFor(toValidate, [validator], "somePath");
   },
 );
 
 Deno.test(
   "validate should not throw and error when given multiple validators and the input is match all of validator schemas",
   async () => {
-    const nameValidatorSchema = {
-      name: [required, isString],
+    const nameValidator = {
+      name: "nameValidator",
+      schema: {
+        name: [required, isString],
+      },
     };
 
-    const ageValidatorSchema = {
-      age: [required, isNumber],
+    const ageValidator = {
+      name: "ageValidator",
+      schema: {
+        age: [required, isNumber],
+      },
     };
 
     const toValidate = {
@@ -36,7 +45,7 @@ Deno.test(
 
     await validateFor(
       toValidate,
-      [nameValidatorSchema, ageValidatorSchema],
+      [nameValidator, ageValidator],
       "somePath",
     );
   },
