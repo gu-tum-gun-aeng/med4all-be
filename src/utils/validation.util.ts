@@ -28,14 +28,17 @@ export async function validateFor(
   input: Record<string, unknown> | undefined,
   validators: Array<Validator>,
   path: string,
-  options?: ValidationOptions,
 ) {
   if (input === undefined || input === null) {
     return;
   }
 
   for (const validator of validators) {
-    const [passes, errors] = await validate(input, validator.schema, options);
+    const [passes, errors] = await validate(
+      input,
+      validator.schema,
+      validator.options,
+    );
 
     if (!passes) {
       throwError({
@@ -53,4 +56,5 @@ export async function validateFor(
 type Validator = {
   name: string;
   schema: ValidationRules;
+  options?: ValidationOptions;
 };
