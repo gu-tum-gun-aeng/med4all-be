@@ -96,13 +96,12 @@ Deno.test(
         '{"name":{"isString":"name must be a string"}}',
       );
     }
-  }
+  },
 );
 
 Deno.test(
   "validate should throw and error with custom message when the input is not match at least one of validator schemas and the custom message is provided",
   async () => {
-
     const toValidate = {
       name: 1234,
       age: 1234,
@@ -115,16 +114,16 @@ Deno.test(
       },
       options: {
         messages: {
-          "name.required": "Some custom message."
-        }
-      }
+          "name.isString": "Some custom message.",
+        },
+      },
     };
 
     const ageValidator: Validator = {
       name: "ageValidator",
       schema: {
         age: [required, isNumber],
-      }
+      },
     };
 
     try {
@@ -138,7 +137,7 @@ Deno.test(
     } catch (error) {
       assertEquals(
         error.message,
-        'Some custom message.',
+        '{"name":{"isString":"Some custom message."}}',
       );
     }
   },

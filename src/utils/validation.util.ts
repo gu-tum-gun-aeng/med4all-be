@@ -28,6 +28,7 @@ export async function validateFor(
   input: Record<string, unknown> | undefined,
   validators: Array<Validator>,
   path: string,
+  option?: ValidationOptions,
 ) {
   if (input === undefined || input === null) {
     return;
@@ -40,7 +41,14 @@ export async function validateFor(
       validator.options,
     );
 
-    console.log("name: " + validator.name + ", option: " + JSON.stringify(validator.options))
+    console.log(
+      "######## validator.options ########## name: " + validator.name +
+        ", option: " + JSON.stringify(validator.options),
+    );
+    console.log(
+      "######## direct pass option ########## name: " + validator.name +
+        ", option: " + JSON.stringify(option),
+    );
 
     if (!passes) {
       throwError({
@@ -50,7 +58,7 @@ export async function validateFor(
         param: JSON.stringify(input),
         message: JSON.stringify(errors),
         type: "validation error",
-      }); 
+      });
     }
   }
 }
