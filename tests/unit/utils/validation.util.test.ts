@@ -1,5 +1,6 @@
-import { isNumber, isString, required } from "../../../deps.ts";
+import { assertEquals, isNumber, isString, required } from "../../../deps.ts";
 import { validateFor } from "../../../src/utils/validation.util.ts";
+import { assertShouldNotReachThisLine } from "../../helper/assert.ts";
 
 Deno.test(
   "validate should not throw and error when given input is pass validation rules",
@@ -79,8 +80,10 @@ Deno.test(
         [nameValidator, ageValidator],
         "somePath",
       );
+
+      assertShouldNotReachThisLine();
     } catch (error) {
-      console.log(error);
+      assertEquals(error.message, '{"name":{"isString":"name must be a string"}}')
     }
   },
 );
