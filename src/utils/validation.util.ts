@@ -41,15 +41,6 @@ export async function validateFor(
       validator.options,
     );
 
-    console.log(
-      "######## validator.options ########## name: " + validator.name +
-        ", option: " + JSON.stringify(validator.options),
-    );
-    console.log(
-      "######## direct pass option ########## name: " + validator.name +
-        ", option: " + JSON.stringify(option),
-    );
-
     if (!passes) {
       throwError({
         status: 200,

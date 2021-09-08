@@ -88,16 +88,10 @@ const PatientController = {
 async function validateCreatePatientRequest(
   createPatientRequest: CreatePatientRequest,
 ) {
-  // const validator = [createPatientDefaultValidator];
-  // await validateFor(createPatientRequest, validator, "createPatient");
+  const validator = [createPatientDefaultValidator];
+  await validateFor(createPatientRequest, validator, "createPatient");
 
   await Promise.all([
-    validateAndThrow(
-      createPatientRequest,
-      CreatePatientRequestValidationSchema,
-      "createPatient",
-      CreatePatientRequestValidationMessage,
-    ),
     validateAndThrow(
       createPatientRequest.medicalInfo,
       MedicalInfoValidationSchema,
