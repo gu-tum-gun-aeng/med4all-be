@@ -40,6 +40,8 @@ export async function validateFor(
       validator.options,
     );
 
+    console.log("name: " + validator.name + ", option: " + JSON.stringify(validator.options))
+
     if (!passes) {
       throwError({
         status: 200,
@@ -48,12 +50,12 @@ export async function validateFor(
         param: JSON.stringify(input),
         message: JSON.stringify(errors),
         type: "validation error",
-      });
+      }); 
     }
   }
 }
 
-type Validator = {
+export type Validator = {
   name: string;
   schema: ValidationRules;
   options?: ValidationOptions;

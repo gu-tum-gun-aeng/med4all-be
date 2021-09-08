@@ -1,5 +1,5 @@
 import { assertEquals, isNumber, isString, required } from "../../../deps.ts";
-import { validateFor } from "../../../src/utils/validation.util.ts";
+import { validateFor, Validator } from "../../../src/utils/validation.util.ts";
 import {
   assertShouldNotReachThisLine,
   assertShouldNotThrowException,
@@ -50,8 +50,8 @@ Deno.test(
       age: 1234,
     };
 
-    await assertShouldNotThrowException(async () => {
-      await validateFor(
+    await assertShouldNotThrowExceptionAsync(() => {
+      return validateFor(
         toValidate,
         [nameValidator, ageValidator],
         "somePath",
@@ -61,7 +61,7 @@ Deno.test(
 );
 
 Deno.test(
-  "validate should throw and error when the input is not match atleast one of validator schemas",
+  "validate should throw and error when the input is not match at least one of validator schemas",
   async () => {
     const nameValidator = {
       name: "nameValidator",
@@ -83,19 +83,62 @@ Deno.test(
     };
 
     try {
-      await assertShouldNotThrowExceptionAsync(() => {
-        return validateFor(
-          toValidate,
-          [nameValidator, ageValidator],
-          "somePath",
-        );
-      });
+      await validateFor(
+        toValidate,
+        [nameValidator, ageValidator],
+        "somePath",
+      );
 
       assertShouldNotReachThisLine();
     } catch (error) {
       assertEquals(
         error.message,
         '{"name":{"isString":"name must be a string"}}',
+      );
+    }
+  }
+);
+
+Deno.test(
+  "validate should throw and error with custom message when the input is not match at least one of validator schemas and the custom message is provided",
+  async () => {
+
+    const toValidate = {
+      name: 1234,
+      age: 1234,
+    };
+
+    const nameValidator: Validator = {
+      name: "nameValidator",
+      schema: {
+        name: [required, isString],
+      },
+      options: {
+        messages: {
+          "name.required": "Some custom message."
+        }
+      }
+    };
+
+    const ageValidator: Validator = {
+      name: "ageValidator",
+      schema: {
+        age: [required, isNumber],
+      }
+    };
+
+    try {
+      await validateFor(
+        toValidate,
+        [nameValidator, ageValidator],
+        "somePath",
+      );
+
+      assertShouldNotReachThisLine();
+    } catch (error) {
+      assertEquals(
+        error.message,
+        'Some custom message.',
       );
     }
   },
