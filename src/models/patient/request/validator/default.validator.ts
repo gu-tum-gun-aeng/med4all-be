@@ -4,6 +4,7 @@ import {
   isString,
   match,
   required,
+  validateObject,
 } from "../../../../../deps.ts";
 import { Validator } from "../../../../utils/validation.util.ts";
 
@@ -21,11 +22,13 @@ export const createPatientDefaultValidator: Validator = {
     patientPhone: [required, isString],
     checkInWhen: [match(regexIso8601, true)],
     checkOutWhen: [match(regexIso8601, true)],
-    labTestWhen: [match(regexIso8601, true)],
-    receivedFavipiravirWhen: [match(regexIso8601, true)],
-    firstVaccinatedWhen: [match(regexIso8601, true)],
-    secondVaccinatedWhen: [match(regexIso8601, true)],
-    firstSymptomWhen: [match(regexIso8601, true)],
+    medicalInfo: validateObject(false, {
+      labTestWhen: [match(regexIso8601, true)],
+      receivedFavipiravirWhen: [match(regexIso8601, true)],
+      firstVaccinatedWhen: [match(regexIso8601, true)],
+      secondVaccinatedWhen: [match(regexIso8601, true)],
+      firstSymptomWhen: [match(regexIso8601, true)],
+    }),
   },
   options: {
     messages: {

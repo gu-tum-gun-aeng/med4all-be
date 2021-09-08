@@ -5,14 +5,10 @@ import { responseOk } from "../utils/response.util.ts";
 import { throwError } from "../middlewares/errorHandler.middleware.ts";
 import {
   CreatePatientRequest,
-  CreatePatientRequestValidationMessage,
-  CreatePatientRequestValidationSchema,
-  MedicalInfoValidationMessage,
-  MedicalInfoValidationSchema,
 } from "../models/patient/request/patient.request.ts";
 import { CreatePatientResponse } from "../models/patient/response/patient.response.ts";
 import Context from "../types/context.type.ts";
-import { validateAndThrow, validateFor } from "../utils/validation.util.ts";
+import { validateFor } from "../utils/validation.util.ts";
 import log from "../utils/logger.util.ts";
 import { createPatientDefaultValidator } from "../models/patient/request/validator/default.validator.ts";
 
@@ -90,15 +86,6 @@ async function validateCreatePatientRequest(
 ) {
   const validator = [createPatientDefaultValidator];
   await validateFor(createPatientRequest, validator, "createPatient");
-
-  await Promise.all([
-    validateAndThrow(
-      createPatientRequest.medicalInfo,
-      MedicalInfoValidationSchema,
-      "createPatient",
-      MedicalInfoValidationMessage,
-    ),
-  ]);
 }
 
 export default PatientController;

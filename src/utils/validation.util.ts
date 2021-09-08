@@ -28,7 +28,6 @@ export async function validateFor(
   input: Record<string, unknown> | undefined,
   validators: Array<Validator>,
   path: string,
-  option?: ValidationOptions,
 ) {
   if (input === undefined || input === null) {
     return;

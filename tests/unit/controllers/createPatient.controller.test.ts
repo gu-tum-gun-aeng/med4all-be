@@ -140,13 +140,17 @@ async function testAndAssertInvalidRequestMessage(
     type: "json",
     value: invalidRequest,
   });
+
   try {
     await PatientController.createPatient(mockContext);
     assertShouldNotReachThisLine();
   } catch (error) {
+    const errMsg: string = error.message;
     assertEquals(
-      error.message,
-      `{"${fieldName}":{"match":"Date format should be YYYY-MM-DDTHH:MM:SS.sssZ"}}`,
+      errMsg.includes(
+        `{"${fieldName}":{"match":"Date format should be YYYY-MM-DDTHH:MM:SS.sssZ"}}`,
+      ),
+      true,
     );
   }
 }
