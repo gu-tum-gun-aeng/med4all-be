@@ -9,6 +9,7 @@ import { mockPublishPatientResponse } from "../../mock/patient-api/publishPatien
 import { CreatePatientRequest } from "../../../src/models/patient/request/patient.request.ts";
 import ColinkApiService from "../../../src/dataaccess/service/colink-api/colink-api.service.ts";
 import { mockColinkApiCheckStatusDuplicatePatientResponse } from "../../mock/colink/colink.response.mock.ts";
+import { assertShouldNotReachThisLine } from "../../helper/assert.ts";
 
 Deno.test("PatientController.createPatient should response with error patient already register in colink when given patient is already exist in colink system", async () => {
   const stubPatientRepositoryGetPatientRegisterStatus = stub(
@@ -139,17 +140,17 @@ async function testAndAssertInvalidRequestMessage(
     type: "json",
     value: invalidRequest,
   });
+
   try {
     await PatientController.createPatient(mockContext);
-    shouldNotReachThisLine();
+    assertShouldNotReachThisLine();
   } catch (error) {
+    const errMsg: string = error.message;
     assertEquals(
-      error.message,
-      `{"${fieldName}":{"match":"Date format should be YYYY-MM-DDTHH:MM:SS.sssZ"}}`,
+      errMsg.includes(
+        `{"${fieldName}":{"match":"Date format should be YYYY-MM-DDTHH:MM:SS.sssZ"}}`,
+      ),
+      true,
     );
   }
-}
-
-function shouldNotReachThisLine() {
-  assertEquals(true, false); // Should not reach this line
 }
