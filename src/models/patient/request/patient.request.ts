@@ -1,9 +1,3 @@
-import { match } from "../../../../deps.ts";
-
-const regexIso8601 =
-  /\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d(\.\d+)*([+-][0-2]\d:[0-5]\d|Z)/;
-const dateFormatErrorMessage = "Date format should be YYYY-MM-DDTHH:MM:SS.sssZ";
-
 export type CreatePatientRequest = {
   certificateId: string;
   certificateType: CertificateType;
@@ -31,18 +25,6 @@ export type CreatePatientRequest = {
   riskScore?: RiskScore;
   certificatePictureUrl?: string;
   covidTestPictureUrl?: string;
-};
-
-export const CreatePatientRequestValidationSchema = {
-  checkInWhen: [match(regexIso8601, true)],
-  checkOutWhen: [match(regexIso8601, true)],
-};
-
-export const CreatePatientRequestValidationMessage = {
-  messages: {
-    "checkInWhen.match": dateFormatErrorMessage,
-    "checkOutWhen.match": dateFormatErrorMessage,
-  },
 };
 
 export type MedicalInfo = {
@@ -109,24 +91,6 @@ export type RiskScore = {
   inclusionLabel?: string;
   inclusionLabelType?: string;
   triageScore?: number;
-};
-
-export const MedicalInfoValidationSchema = {
-  labTestWhen: [match(regexIso8601, true)],
-  receivedFavipiravirWhen: [match(regexIso8601, true)],
-  firstVaccinatedWhen: [match(regexIso8601, true)],
-  secondVaccinatedWhen: [match(regexIso8601, true)],
-  firstSymptomWhen: [match(regexIso8601, true)],
-};
-
-export const MedicalInfoValidationMessage = {
-  messages: {
-    "labTestWhen.match": dateFormatErrorMessage,
-    "receivedFavipiravirWhen.match": dateFormatErrorMessage,
-    "firstVaccinatedWhen.match": dateFormatErrorMessage,
-    "secondVaccinatedWhen.match": dateFormatErrorMessage,
-    "firstSymptomWhen.match": dateFormatErrorMessage,
-  },
 };
 
 export type Address = {
