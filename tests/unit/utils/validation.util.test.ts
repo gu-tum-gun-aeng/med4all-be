@@ -1,4 +1,10 @@
-import { assertEquals, isNumber, isString, required } from "../../../deps.ts";
+import {
+  assertEquals,
+  isNumber,
+  isString,
+  required,
+  validateObject,
+} from "../../../deps.ts";
 import { validateFor, Validator } from "../../../src/utils/validation.util.ts";
 import {
   assertShouldNotReachThisLine,
@@ -138,6 +144,50 @@ Deno.test(
       assertEquals(
         error.message,
         '{"name":{"isString":"Some custom message."}}',
+      );
+    }
+  },
+);
+
+Deno.test(
+  "validate should throw and error with custom message when the object inside the input is not match at least one of validator schemas and the custom message is provided",
+  async () => {
+    const toValidate = {
+      name: "someName",
+      age: 1234,
+      address: {
+        road: 5567,
+      },
+    };
+
+    const validator: Validator = {
+      name: "validator",
+      schema: {
+        name: [required, isString],
+        age: [required, isNumber],
+        address: validateObject(false, {
+          road: [isString],
+        }),
+      },
+      options: {
+        messages: {
+          "road.isString": "Some custom message.",
+        },
+      },
+    };
+
+    try {
+      await validateFor(
+        toValidate,
+        [validator],
+        "somePath",
+      );
+
+      assertShouldNotReachThisLine();
+    } catch (error) {
+      assertEquals(
+        error.message,
+        '{"address":{"validateObject":{"road":{"isString":"Some custom message."}}}}',
       );
     }
   },
