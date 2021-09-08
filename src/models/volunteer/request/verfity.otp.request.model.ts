@@ -1,9 +1,5 @@
-import {
-  maxLength,
-  minLength,
-  required,
-  ValidationRules,
-} from "../../../../deps.ts";
+import { maxLength, minLength, required } from "../../../../deps.ts";
+import { Validator } from "../../../utils/validation.util.ts";
 
 export type VerifyOtpRequest = {
   telephone: string;
@@ -11,8 +7,11 @@ export type VerifyOtpRequest = {
   code: string;
 };
 
-export const VerifyOtpRequestValidationSchema: ValidationRules = {
-  telephone: [required, minLength(10), maxLength(10)],
-  requestId: [required],
-  code: [required],
+export const VerifyOtpRequestValidator: Validator = {
+  name: "VerifyOtpRequest validator",
+  schema: {
+    telephone: [required, minLength(10), maxLength(10)],
+    requestId: [required],
+    code: [required],
+  },
 };

@@ -7,13 +7,13 @@ import { TokenOtpResponse } from "../models/volunteer/response/token.otp.respons
 import config from "../config/config.ts";
 import {
   RequestOtpRequest,
-  RequestOtpRequestValidationSchema,
+  requestOtpValidator,
 } from "../models/volunteer/request/request.otp.request.model.ts";
 import {
   VerifyOtpRequest,
-  VerifyOtpRequestValidationSchema,
+  VerifyOtpRequestValidator,
 } from "../models/volunteer/request/verfity.otp.request.model.ts";
-import { validateAndThrow } from "../utils/validation.util.ts";
+import { validateFor } from "../utils/validation.util.ts";
 import { throwError } from "../middlewares/errorHandler.middleware.ts";
 
 const USE_HASH_ALG = tokenUtil.HashAlgorithm.HS512;
@@ -23,11 +23,7 @@ const VolunteerController = {
     const req: RequestOtpRequest = await ctx.request.body({ type: "json" })
       .value;
 
-    await validateAndThrow(
-      req,
-      RequestOtpRequestValidationSchema,
-      "RequestOtpRequest",
-    );
+    await validateFor(req, [requestOtpValidator], "RequestOtpRequest");
 
     const volunteerId = await VolunteerService.getActiveIdByTelephone(
       req.telephone,
@@ -57,11 +53,7 @@ const VolunteerController = {
       type: "json",
     }).value;
 
-    await validateAndThrow(
-      req,
-      VerifyOtpRequestValidationSchema,
-      "VerifyOtpRequest",
-    );
+    await validateFor(req, [VerifyOtpRequestValidator], "VerifyOtpRequest");
 
     const id = await VolunteerService.getActiveIdByTelephone(req.telephone);
     const _ = await VolunteerService.verifyOtp(req.requestId, req.code);
