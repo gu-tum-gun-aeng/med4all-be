@@ -3,6 +3,7 @@ import { validateFor } from "../../../src/utils/validation.util.ts";
 import {
   assertShouldNotReachThisLine,
   assertShouldNotThrowException,
+  assertShouldNotThrowExceptionAsync,
 } from "../../helper/assert.ts";
 
 Deno.test(
@@ -82,11 +83,13 @@ Deno.test(
     };
 
     try {
-      await validateFor(
-        toValidate,
-        [nameValidator, ageValidator],
-        "somePath",
-      );
+      await assertShouldNotThrowExceptionAsync(() => {
+        return validateFor(
+          toValidate,
+          [nameValidator, ageValidator],
+          "somePath",
+        );
+      });
 
       assertShouldNotReachThisLine();
     } catch (error) {
