@@ -4,6 +4,14 @@ import { createPatientDefaultValidator } from "../../models/patient/request/vali
 import { wisibleValidator } from "../../models/patient/request/validator/wisible.validator.ts";
 import { Validator } from "../../utils/validation.util.ts";
 
+export function createPatientValidators(
+  destinations: ExternalRoutingDestinations[],
+): Validator[] {
+  return destinations.map((destination) => {
+    return getCreatePatientValidatorFrom(destination);
+  });
+}
+
 export function getCreatePatientValidatorFrom(
   destination: ExternalRoutingDestinations,
 ): Validator {
