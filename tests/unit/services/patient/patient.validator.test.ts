@@ -3,17 +3,17 @@ import { ExternalRoutingDestinations } from "../../../../src/models/externalRout
 import { colinkValidator } from "../../../../src/models/patient/request/validator/colink.validator.ts";
 import { wisibleValidator } from "../../../../src/models/patient/request/validator/wisible.validator.ts";
 import {
-  createPatientValidators,
   getCreatePatientValidatorFrom,
+  getCreatePatientValidatorsFrom,
 } from "../../../../src/services/patient/patient.validator.ts";
 
-Deno.test("createPatientValidators should return validators when given external destinations", () => {
+Deno.test("getCreatePatientValidatorsFrom should return validators when given external destinations", () => {
   const destinations = [
     ExternalRoutingDestinations.Colink,
     ExternalRoutingDestinations.Wisible,
   ];
 
-  const validator = createPatientValidators(destinations);
+  const validator = getCreatePatientValidatorsFrom(destinations);
 
   assertEquals(validator, [colinkValidator, wisibleValidator]);
 });

@@ -1,4 +1,5 @@
 export enum ExternalRoutingDestinations {
-  Colink = 1,
-  Wisible = 2,
+  Default = 1,
+  Colink = 2,
+  Wisible = 3,
 }
