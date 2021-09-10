@@ -9,6 +9,8 @@ import config from "../../src/config/config.ts";
 import { mockPublishPatientResponse } from "../mock/patient-api/publishPatient.response.mock.ts";
 import ColinkApiService from "../../src/dataaccess/service/colink-api/colink-api.service.ts";
 import { mockColinkApiCheckStatusDuplicatePatientResponse } from "../mock/colink/colink.response.mock.ts";
+import VolunteerRepository from "../../src/dataaccess/database/volunteer.repository.ts";
+import { mockVolunteer } from "../mock/volunteer/volunteer.mock.ts";
 
 Deno.test("when call /v1/patients with invalid token, it should return 401", async () => {
   const mockToken = "FAKE_TOKEN";
@@ -52,6 +54,12 @@ Deno.test("when call post /v1/patient, it should return error when patient is al
     [expectedResult],
   );
 
+  const stubVolunteerRepository = stub(
+    VolunteerRepository,
+    "getVolunteerById",
+    await mockVolunteer,
+  );
+
   const mockToken = await tokenUtil.createToken({
     id: "1",
     hashAlgorithm: tokenUtil.HashAlgorithm.HS512,
@@ -76,5 +84,6 @@ Deno.test("when call post /v1/patient, it should return error when patient is al
     stubPatientRepository.restore();
     stubPatientApiService.restore();
     stubColinkApiService.restore();
+    stubVolunteerRepository.restore();
   }
 });
