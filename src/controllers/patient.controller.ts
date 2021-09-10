@@ -36,18 +36,20 @@ const PatientController = {
 
     await validateCreatePatientRequest(createPatientRequest);
 
-    const patientRespose = await PatientService.createPatient(
-      createPatientRequest,
-      ctx.userId!,
-    );
+    const patientResponse: CreatePatientResponse = await PatientService
+      .createPatient(
+        createPatientRequest,
+        ctx.userId!,
+      );
 
-    const response: CreatePatientResponse = patientRespose;
+    //const response: CreatePatientResponse = patientResponse;
 
     log.debug(
-      `create patient response: ${JSON.stringify(response)}`,
+      `create patient response: ${JSON.stringify(patientResponse)}`,
       "createPatient",
     );
-    responseOk(ctx.response, response);
+
+    responseOk(ctx.response, patientResponse);
   },
 
   uploadImagesByFormData: async (
@@ -85,6 +87,7 @@ async function validateCreatePatientRequest(
   createPatientRequest: CreatePatientRequest,
 ) {
   const validator = [createPatientDefaultValidator];
+
   await validateFor(createPatientRequest, validator, "createPatient");
 }
 
