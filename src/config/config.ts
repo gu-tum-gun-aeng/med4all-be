@@ -4,6 +4,10 @@ import { getNexmoApiConfig, NexmoApiConfig } from "./nexmo.config.ts";
 import { getJwtConfig, JwtConfig } from "./jwt.config.ts";
 import { DotenvConfig } from "https://deno.land/x/dotenv@v2.0.0/mod.ts"; // Todo: should move to deps
 import { ColinkConfig, getColinkConfig } from "./colink.config.ts";
+import {
+  VolunteerTeamExternalRoutingDestination,
+  volunteerTeamExternalRoutingDestinationsConfig,
+} from "./volunteerTeamExternalRoutingDestination.config.ts";
 
 // Todo: should consider to change ENV to more specific name
 const env: string = Deno.env.toObject().ENV;
@@ -27,6 +31,8 @@ const config: ({
   jwt: JwtConfig;
   patientApiUrl: string;
   colink: ColinkConfig;
+  volunteerTeamExternalRoutingDestinations:
+    VolunteerTeamExternalRoutingDestination[];
 }) = {
   env,
   appName: dotenvConfig.APP_NAME,
@@ -42,6 +48,8 @@ const config: ({
   jwt: getJwtConfig(dotenvConfig),
   patientApiUrl: dotenvConfig.PATIENT_API_URL,
   colink: getColinkConfig(dotenvConfig),
+  volunteerTeamExternalRoutingDestinations:
+    volunteerTeamExternalRoutingDestinationsConfig,
 };
 
 function createDotenvFor(targetEnv: string): DotenvConfig {

@@ -1,3 +1,4 @@
 export enum VolunteerTeam {
-  Siriraj = 1,
+  Ava = 1,
+  Siriraj = 2,
 }
