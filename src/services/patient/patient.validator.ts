@@ -1,11 +1,11 @@
-import { ExternalRoutingDestinations } from "../../models/enum/externalRoutingDestination.ts";
+import { ExternalRoutingDestination } from "../../models/enum/externalRoutingDestination.ts";
 import { colinkValidator } from "../../models/patient/request/validator/colink.validator.ts";
 import { createPatientDefaultValidator } from "../../models/patient/request/validator/default.validator.ts";
 import { wisibleValidator } from "../../models/patient/request/validator/wisible.validator.ts";
 import { Validator } from "../../utils/validation.util.ts";
 
 export function getCreatePatientValidatorsFrom(
-  destinations: ExternalRoutingDestinations[],
+  destinations: ExternalRoutingDestination[],
 ): Validator[] {
   return destinations.map((destination) => {
     return getCreatePatientValidatorFrom(destination);
@@ -13,14 +13,14 @@ export function getCreatePatientValidatorsFrom(
 }
 
 export function getCreatePatientValidatorFrom(
-  destination: ExternalRoutingDestinations,
+  destination: ExternalRoutingDestination,
 ): Validator {
   switch (destination) {
-    case ExternalRoutingDestinations.Default:
+    case ExternalRoutingDestination.Default:
       return createPatientDefaultValidator;
-    case ExternalRoutingDestinations.Colink:
+    case ExternalRoutingDestination.Colink:
       return colinkValidator;
-    case ExternalRoutingDestinations.Wisible:
+    case ExternalRoutingDestination.Wisible:
       return wisibleValidator;
     default:
       return createPatientDefaultValidator;
