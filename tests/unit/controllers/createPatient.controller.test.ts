@@ -11,7 +11,10 @@ import ColinkApiService from "../../../src/dataaccess/service/colink-api/colink-
 import { mockColinkApiCheckStatusDuplicatePatientResponse } from "../../mock/colink/colink.response.mock.ts";
 import { assertShouldNotReachThisLine } from "../../helper/assert.ts";
 import VolunteerRepository from "../../../src/dataaccess/database/volunteer.repository.ts";
-import { mockVolunteer } from "../../mock/volunteer/volunteer.mock.ts";
+import {
+  mockInvalidTeamVolunteer,
+  mockVolunteer,
+} from "../../mock/volunteer/volunteer.mock.ts";
 
 Deno.test("PatientController.createPatient should response with error patient already register in colink when given patient is already exist in colink system", async () => {
   const stubPatientRepositoryGetPatientRegisterStatus = stub(
@@ -71,6 +74,61 @@ Deno.test("PatientController.createPatient should response with error patient al
   }
 });
 
+Deno.test("PatientController.createPatient should response with error when there is no match between volunteer team and destination config", async () => {
+  const stubPatientRepositoryGetPatientRegisterStatus = stub(
+    PatientRepository,
+    "getPatientRegisterStatus",
+    [await { is_registered: false }],
+  );
+
+  const colinkCheckStatusResponseAsPatientAlreadyExist =
+    await mockColinkApiCheckStatusDuplicatePatientResponse();
+
+  const stubPatientRepository = stub(
+    PatientRepository,
+    "createPatient",
+    [10],
+  );
+
+  const stubPatientApiService = stub(
+    PatientApiService,
+    "publishPatient",
+    [await mockPublishPatientResponse],
+  );
+
+  const stubColinkApiService = stub(
+    ColinkApiService,
+    "checkStatus",
+    [colinkCheckStatusResponseAsPatientAlreadyExist],
+  );
+
+  const stubVolunteerRepository = stub(
+    VolunteerRepository,
+    "getVolunteerById",
+    await mockInvalidTeamVolunteer,
+  );
+
+  try {
+    const mockContext = testing.createMockContext();
+    (mockContext.request.body as any) = () => ({
+      type: "json",
+      value: patientRequestMock,
+    });
+    await PatientController.createPatient(mockContext);
+  } catch (err) {
+    assertEquals(
+      err.message,
+      "Cannot get external routing destination. Either volunteer team is invalid or the team routing destination is missing.",
+    );
+  } finally {
+    stubPatientRepositoryGetPatientRegisterStatus.restore();
+    stubPatientRepository.restore();
+    stubPatientApiService.restore();
+    stubColinkApiService.restore();
+    stubVolunteerRepository.restore();
+  }
+});
+
 Deno.test("PatientController.createPatient should should return error if checkInWhen format is invalid", async () => {
   const stubVolunteerRepository = stub(
     VolunteerRepository,
@@ -89,7 +147,7 @@ Deno.test("PatientController.createPatient should should return error if checkIn
   }
 });
 
-Deno.test("PatientController.createPatient should should return error if checkOutWhen format is invalid", async () => {
+Deno.test("PatientController.createPatient should return error if checkOutWhen format is invalid", async () => {
   const stubVolunteerRepository = stub(
     VolunteerRepository,
     "getVolunteerById",
@@ -111,7 +169,7 @@ Deno.test("PatientController.createPatient should should return error if checkOu
   }
 });
 
-Deno.test("PatientController.createPatient should should return error if labTestWhen format is invalid", async () => {
+Deno.test("PatientController.createPatient should return error if labTestWhen format is invalid", async () => {
   const stubVolunteerRepository = stub(
     VolunteerRepository,
     "getVolunteerById",
@@ -132,7 +190,7 @@ Deno.test("PatientController.createPatient should should return error if labTest
   }
 });
 
-Deno.test("PatientController.createPatient should should return error if receivedFavipiravirWhen format is invalid", async () => {
+Deno.test("PatientController.createPatient should return error if receivedFavipiravirWhen format is invalid", async () => {
   const stubVolunteerRepository = stub(
     VolunteerRepository,
     "getVolunteerById",
@@ -156,7 +214,7 @@ Deno.test("PatientController.createPatient should should return error if receive
   }
 });
 
-Deno.test("PatientController.createPatient should should return error if secondVaccinatedWhen format is invalid", async () => {
+Deno.test("PatientController.createPatient should return error if secondVaccinatedWhen format is invalid", async () => {
   const stubVolunteerRepository = stub(
     VolunteerRepository,
     "getVolunteerById",
@@ -180,7 +238,7 @@ Deno.test("PatientController.createPatient should should return error if secondV
   }
 });
 
-Deno.test("PatientController.createPatient should should return error if firstSymptomWhen format is invalid", async () => {
+Deno.test("PatientController.createPatient should return error if firstSymptomWhen format is invalid", async () => {
   const stubVolunteerRepository = stub(
     VolunteerRepository,
     "getVolunteerById",

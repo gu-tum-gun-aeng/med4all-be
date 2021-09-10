@@ -111,10 +111,11 @@ async function validateCreatePatientRequest(
   if (!teamDestination) {
     throwError({
       status: 500,
-      name: "team destination config is missing",
+      name: "Cannot get external routing destination",
       path: "createPatient",
       param: "",
-      message: "team destination config is missing",
+      message:
+        "Cannot get external routing destination. Either volunteer team is invalid or the team routing destination is missing.",
       type: "internal error",
     });
 
