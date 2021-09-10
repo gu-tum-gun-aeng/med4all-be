@@ -7,7 +7,13 @@ export type VolunteerTeamExternalRoutingDestination = {
 };
 
 export const volunteerTeamExternalRoutingDestinationsConfig:
-  VolunteerTeamExternalRoutingDestination[] = [{
-    team: VolunteerTeam.Siriraj,
-    externalRoutingDestination: [ExternalRoutingDestination.Default],
-  }];
+  VolunteerTeamExternalRoutingDestination[] = [
+    {
+      team: VolunteerTeam.Ava,
+      externalRoutingDestination: [ExternalRoutingDestination.Default],
+    },
+    {
+      team: VolunteerTeam.Siriraj,
+      externalRoutingDestination: [ExternalRoutingDestination.Default],
+    },
+  ];
