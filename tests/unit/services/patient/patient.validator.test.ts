@@ -1,5 +1,5 @@
 import { assertEquals } from "../../../../deps.ts";
-import { ExternalRoutingDestinations } from "../../../../src/models/externalRoutingDestination.ts";
+import { ExternalRoutingDestinations } from "../../../../src/models/enum/externalRoutingDestination.ts";
 import { colinkValidator } from "../../../../src/models/patient/request/validator/colink.validator.ts";
 import { wisibleValidator } from "../../../../src/models/patient/request/validator/wisible.validator.ts";
 import {

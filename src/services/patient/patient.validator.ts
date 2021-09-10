@@ -1,4 +1,4 @@
-import { ExternalRoutingDestinations } from "../../models/externalRoutingDestination.ts";
+import { ExternalRoutingDestinations } from "../../models/enum/externalRoutingDestination.ts";
 import { colinkValidator } from "../../models/patient/request/validator/colink.validator.ts";
 import { createPatientDefaultValidator } from "../../models/patient/request/validator/default.validator.ts";
 import { wisibleValidator } from "../../models/patient/request/validator/wisible.validator.ts";
