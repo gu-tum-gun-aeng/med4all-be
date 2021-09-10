@@ -10,7 +10,10 @@ import { CreatePatientResponse } from "../models/patient/response/patient.respon
 import Context from "../types/context.type.ts";
 import { validateFor } from "../utils/validation.util.ts";
 import log from "../utils/logger.util.ts";
-import { createPatientDefaultValidator } from "../models/patient/request/validator/default.validator.ts";
+import { Volunteer } from "../models/volunteer/volunteer.model.ts";
+import config from "../config/config.ts";
+import { getCreatePatientValidatorsFrom } from "../services/patient/patient.validator.ts";
+import volunteerRepository from "../dataaccess/database/volunteer.repository.ts";
 
 const PatientController = {
   getPatientRegisterStatus: async (
@@ -34,7 +37,21 @@ const PatientController = {
       "createPatient",
     );
 
-    await validateCreatePatientRequest(createPatientRequest);
+    const volunteer = await volunteerRepository.getVolunteerById(+ctx.userId!);
+    if (!volunteer) {
+      throwError({
+        status: 500,
+        name: "Cannot get volunteer detail",
+        path: "createPatient",
+        param: "",
+        message: "Cannot get volunteer detail",
+        type: "internal error",
+      });
+
+      return;
+    }
+
+    await validateCreatePatientRequest(createPatientRequest, volunteer!);
 
     const patientResponse: CreatePatientResponse = await PatientService
       .createPatient(
@@ -85,8 +102,28 @@ const PatientController = {
 
 async function validateCreatePatientRequest(
   createPatientRequest: CreatePatientRequest,
+  volunteer: Volunteer,
 ) {
-  const validator = [createPatientDefaultValidator];
+  const teamDestination = config.volunteerTeamExternalRoutingDestinations.find(
+    (conf) => conf.team === volunteer.team,
+  );
+
+  if (!teamDestination) {
+    throwError({
+      status: 500,
+      name: "team destination config is missing",
+      path: "createPatient",
+      param: "",
+      message: "team destination config is missing",
+      type: "internal error",
+    });
+
+    return;
+  }
+
+  const validator = getCreatePatientValidatorsFrom(
+    teamDestination?.externalRoutingDestination!,
+  );
 
   await validateFor(createPatientRequest, validator, "createPatient");
 }

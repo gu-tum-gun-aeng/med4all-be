@@ -10,6 +10,8 @@ import { CreatePatientRequest } from "../../../src/models/patient/request/patien
 import ColinkApiService from "../../../src/dataaccess/service/colink-api/colink-api.service.ts";
 import { mockColinkApiCheckStatusDuplicatePatientResponse } from "../../mock/colink/colink.response.mock.ts";
 import { assertShouldNotReachThisLine } from "../../helper/assert.ts";
+import VolunteerRepository from "../../../src/dataaccess/database/volunteer.repository.ts";
+import { mockVolunteer } from "../../mock/volunteer/volunteer.mock.ts";
 
 Deno.test("PatientController.createPatient should response with error patient already register in colink when given patient is already exist in colink system", async () => {
   const stubPatientRepositoryGetPatientRegisterStatus = stub(
@@ -39,6 +41,12 @@ Deno.test("PatientController.createPatient should response with error patient al
     [colinkCheckStatusResponseAsPatientAlreadyExist],
   );
 
+  const stubVolunteerRepository = stub(
+    VolunteerRepository,
+    "getVolunteerById",
+    await mockVolunteer,
+  );
+
   try {
     const mockContext = testing.createMockContext();
     (mockContext.request.body as any) = () => ({
@@ -59,76 +67,140 @@ Deno.test("PatientController.createPatient should response with error patient al
     stubPatientRepository.restore();
     stubPatientApiService.restore();
     stubColinkApiService.restore();
+    stubVolunteerRepository.restore();
   }
 });
 
 Deno.test("PatientController.createPatient should should return error if checkInWhen format is invalid", async () => {
-  const invalidRequestMock = {
-    ...patientRequestMock,
-    checkInWhen: "invalid format",
-  };
-  await testAndAssertInvalidRequestMessage(invalidRequestMock, "checkInWhen");
+  const stubVolunteerRepository = stub(
+    VolunteerRepository,
+    "getVolunteerById",
+    await mockVolunteer,
+  );
+
+  try {
+    const invalidRequestMock = {
+      ...patientRequestMock,
+      checkInWhen: "invalid format",
+    };
+    await testAndAssertInvalidRequestMessage(invalidRequestMock, "checkInWhen");
+  } finally {
+    stubVolunteerRepository.restore();
+  }
 });
 
 Deno.test("PatientController.createPatient should should return error if checkOutWhen format is invalid", async () => {
-  const invalidRequestMock = {
-    ...patientRequestMock,
-    checkOutWhen: "invalid format",
-  };
+  const stubVolunteerRepository = stub(
+    VolunteerRepository,
+    "getVolunteerById",
+    await mockVolunteer,
+  );
 
-  await testAndAssertInvalidRequestMessage(invalidRequestMock, "checkOutWhen");
+  try {
+    const invalidRequestMock = {
+      ...patientRequestMock,
+      checkOutWhen: "invalid format",
+    };
+
+    await testAndAssertInvalidRequestMessage(
+      invalidRequestMock,
+      "checkOutWhen",
+    );
+  } finally {
+    stubVolunteerRepository.restore();
+  }
 });
 
 Deno.test("PatientController.createPatient should should return error if labTestWhen format is invalid", async () => {
-  const invalidRequestMock = {
-    ...patientRequestMock,
-    medicalInfo: {
-      ...patientRequestMock.medicalInfo,
-      labTestWhen: "invalid format",
-    },
-  };
-  await testAndAssertInvalidRequestMessage(invalidRequestMock, "labTestWhen");
+  const stubVolunteerRepository = stub(
+    VolunteerRepository,
+    "getVolunteerById",
+    await mockVolunteer,
+  );
+
+  try {
+    const invalidRequestMock = {
+      ...patientRequestMock,
+      medicalInfo: {
+        ...patientRequestMock.medicalInfo,
+        labTestWhen: "invalid format",
+      },
+    };
+    await testAndAssertInvalidRequestMessage(invalidRequestMock, "labTestWhen");
+  } finally {
+    stubVolunteerRepository.restore();
+  }
 });
 
 Deno.test("PatientController.createPatient should should return error if receivedFavipiravirWhen format is invalid", async () => {
-  const invalidRequestMock = {
-    ...patientRequestMock,
-    medicalInfo: {
-      ...patientRequestMock.medicalInfo,
-      receivedFavipiravirWhen: "invalid format",
-    },
-  };
-  await testAndAssertInvalidRequestMessage(
-    invalidRequestMock,
-    "receivedFavipiravirWhen",
+  const stubVolunteerRepository = stub(
+    VolunteerRepository,
+    "getVolunteerById",
+    await mockVolunteer,
   );
+
+  try {
+    const invalidRequestMock = {
+      ...patientRequestMock,
+      medicalInfo: {
+        ...patientRequestMock.medicalInfo,
+        receivedFavipiravirWhen: "invalid format",
+      },
+    };
+    await testAndAssertInvalidRequestMessage(
+      invalidRequestMock,
+      "receivedFavipiravirWhen",
+    );
+  } finally {
+    stubVolunteerRepository.restore();
+  }
 });
 
 Deno.test("PatientController.createPatient should should return error if secondVaccinatedWhen format is invalid", async () => {
-  const invalidRequestMock = {
-    ...patientRequestMock,
-    medicalInfo: {
-      ...patientRequestMock.medicalInfo,
-      secondVaccinatedWhen: "invalid format",
-    },
-  };
-  await testAndAssertInvalidRequestMessage(
-    invalidRequestMock,
-    "secondVaccinatedWhen",
+  const stubVolunteerRepository = stub(
+    VolunteerRepository,
+    "getVolunteerById",
+    await mockVolunteer,
   );
+
+  try {
+    const invalidRequestMock = {
+      ...patientRequestMock,
+      medicalInfo: {
+        ...patientRequestMock.medicalInfo,
+        secondVaccinatedWhen: "invalid format",
+      },
+    };
+    await testAndAssertInvalidRequestMessage(
+      invalidRequestMock,
+      "secondVaccinatedWhen",
+    );
+  } finally {
+    stubVolunteerRepository.restore();
+  }
 });
 
 Deno.test("PatientController.createPatient should should return error if firstSymptomWhen format is invalid", async () => {
-  const invalidRequestMock = {
-    ...patientRequestMock,
-    medicalInfo: {
-      firstSymptomWhen: "invalid format",
-    },
-  };
-  await testAndAssertInvalidRequestMessage(
-    invalidRequestMock,
-    "firstSymptomWhen",
+  const stubVolunteerRepository = stub(
+    VolunteerRepository,
+    "getVolunteerById",
+    await mockVolunteer,
   );
+
+  try {
+    const invalidRequestMock = {
+      ...patientRequestMock,
+      medicalInfo: {
+        firstSymptomWhen: "invalid format",
+      },
+    };
+    await testAndAssertInvalidRequestMessage(
+      invalidRequestMock,
+      "firstSymptomWhen",
+    );
+  } finally {
+    stubVolunteerRepository.restore();
+  }
 });
 
 async function testAndAssertInvalidRequestMessage(
