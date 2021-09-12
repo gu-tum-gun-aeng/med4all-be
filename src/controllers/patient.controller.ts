@@ -51,6 +51,7 @@ const PatientController = {
       return;
     }
 
+    createPatientRequest.sourceLocation = volunteer.team.toString();
     await validateCreatePatientRequest(createPatientRequest, volunteer!);
 
     const patientResponse: CreatePatientResponse = await PatientService
