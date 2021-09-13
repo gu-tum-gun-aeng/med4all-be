@@ -85,6 +85,8 @@ export type MedicalInfo = {
   firstSymptomWhen?: string;
   isMedicineRequested?: boolean;
   isBypassScreening?: boolean;
+  isBedRequested?: boolean;
+  isOxygenRequested?: boolean;
 };
 
 export type RiskScore = {
