@@ -5,7 +5,6 @@ import PatientApiService from "../../../src/dataaccess/service/patient-api/patie
 
 import * as patientService from "../../../src/services/patient.service.ts";
 import {
-  mockColinkApiCheckStatusDuplicatePatientResponse,
   mockColinkApiCheckStatusPatientResponse,
 } from "../../mock/colink/colink.response.mock.ts";
 import { mockPublishPatientResponse } from "../../mock/patient-api/publishPatient.response.mock.ts";
@@ -74,56 +73,6 @@ Deno.test("createPatient should return duplicate patient in med4all when patient
   } finally {
     stubPatientRepositoryGetPatientRegisterStatus.restore();
     stubPatientRepositoryCreatePatient.restore();
-    stubPatientApiService.restore();
-    stubColinkApiService.restore();
-  }
-});
-
-Deno.test("createPatient should return duplicate patient in colink when colink return patient found in their system", async () => {
-  const stubPatientRepositoryGetPatientRegisterStatus = stub(
-    PatientRepository,
-    "getPatientRegisterStatus",
-    [await { is_registered: false }],
-  );
-
-  const stubPatientRepository = stub(
-    PatientRepository,
-    "createPatient",
-    [await 10],
-  );
-
-  const stubPatientApiService = stub(
-    PatientApiService,
-    "publishPatient",
-    [await mockPublishPatientResponse],
-  );
-
-  const stubColinkApiService = stub(
-    ColinkApiService,
-    "checkStatus",
-    [await mockColinkApiCheckStatusDuplicatePatientResponse()],
-  );
-
-  try {
-    const patienReponse = await patientService.createPatient(
-      patientRequestMock,
-      "20",
-    );
-
-    assertEquals(patienReponse, {
-      error: {
-        id: 1002,
-        message: "Patient is already exist in Colink system.",
-      },
-    });
-
-    assertEquals(stubPatientRepositoryGetPatientRegisterStatus.calls.length, 1);
-    assertEquals(stubPatientRepository.calls.length, 1);
-    assertEquals(stubColinkApiService.calls.length, 1);
-    assertEquals(stubPatientApiService.calls.length, 0);
-  } finally {
-    stubPatientRepositoryGetPatientRegisterStatus.restore();
-    stubPatientRepository.restore();
     stubPatientApiService.restore();
     stubColinkApiService.restore();
   }
