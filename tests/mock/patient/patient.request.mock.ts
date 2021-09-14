@@ -60,15 +60,15 @@ const medicalInfo: MedicalInfo = {
 };
 
 const address: Address = {
-  provinceCode: 1,
-  districtCode: 1,
-  subDistrictCode: 1,
+  province: "someProvince",
+  district: "someDistrict",
+  subDistrict: "someSubDistrict",
   moo: "4",
   road: "bangwak",
   alley: "sss",
   soi: "bangwak 2",
   village: "my Village",
-  bangkokZoneCode: 1,
+  bangkokZone: "someBangkokZone",
   zipCode: 10867,
   building: "",
   note: "",

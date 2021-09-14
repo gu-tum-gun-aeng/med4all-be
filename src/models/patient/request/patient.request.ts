@@ -96,18 +96,19 @@ export type RiskScore = {
 };
 
 export type Address = {
-  provinceCode: number;
-  districtCode: number;
-  subDistrictCode: number;
-  moo: string;
-  road: string;
-  alley: string;
-  soi: string;
-  village: string;
-  bangkokZoneCode: number;
-  zipCode: number;
-  building: string;
-  note: string;
+  province?: string;
+  addressDetail?: string;
+  district?: string;
+  subDistrict?: string;
+  moo?: string;
+  road?: string;
+  alley?: string;
+  soi?: string;
+  village?: string;
+  bangkokZone?: string;
+  zipCode?: number;
+  building?: string;
+  note?: string;
 };
 
 export enum CertificateType {

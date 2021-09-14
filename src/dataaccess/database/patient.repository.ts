@@ -104,16 +104,17 @@ const PatientRepository = {
     `;
       const insertAddressSQL = dbUtils.toQuery`
       INSERT INTO address (
-        patient_id, 
-        province_code, 
-        district_code, 
-        sub_district_code,
+        patient_id,
+        address_detail,
+        province, 
+        district, 
+        sub_district,
         moo, 
         road, 
         alley, 
         soi,
         village, 
-        bangkok_zone_code, 
+        bangkok_zone, 
         zip_code, 
         building, 
         note, 
@@ -123,16 +124,17 @@ const PatientRepository = {
         created_when
       )
       VALUES (
-        ${patientId.value}, 
-        ${patient.address?.provinceCode}, 
-        ${patient.address?.districtCode}, 
-        ${patient.address?.subDistrictCode}, 
+        ${patientId.value},
+        ${patient.address?.addressDetail}
+        ${patient.address?.province}, 
+        ${patient.address?.district}, 
+        ${patient.address?.subDistrict}, 
         ${patient.address?.moo}, 
         ${patient.address?.road}, 
         ${patient.address?.alley}, 
         ${patient.address?.soi}, 
         ${patient.address?.village}, 
-        ${patient.address?.bangkokZoneCode}, 
+        ${patient.address?.bangkokZone}, 
         ${patient.address?.zipCode}, 
         ${patient.address?.building}, 
         ${patient.address?.note}, 
