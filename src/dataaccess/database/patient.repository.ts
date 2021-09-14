@@ -57,7 +57,7 @@ const PatientRepository = {
         check_in_date, 
         check_out_date,
         patient_data_source, 
-        source_location,
+        source_name,
         admitted_to, 
         health_coverage, 
         line_id, 
