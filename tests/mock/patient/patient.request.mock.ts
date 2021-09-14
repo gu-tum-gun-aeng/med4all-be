@@ -90,7 +90,7 @@ export const patientRequestMock: CreatePatientRequest = {
   checkOutWhen: "2021-08-17T08:41:48.912Z",
   address: address,
   patientDataSource: 1,
-  sourceLocation: "home",
+  sourceName: "home",
   admittedTo: "Chula",
   healthCoverage: 1,
   lineId: "myline",

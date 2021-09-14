@@ -22,7 +22,7 @@ export const mapPatientApiRequest = (
     checkOutWhen: createPatientRequest.checkOutWhen,
     address: createPatientRequest.address,
     patientDataSource: createPatientRequest.patientDataSource,
-    sourceLocation: createPatientRequest.sourceLocation,
+    sourceName: createPatientRequest.sourceName,
     admittedTo: createPatientRequest.admittedTo,
     healthCoverage: createPatientRequest.healthCoverage,
     lineId: createPatientRequest.lineId,

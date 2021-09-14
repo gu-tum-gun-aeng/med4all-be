@@ -14,7 +14,7 @@ export type CreatePatientRequest = {
   checkOutWhen?: string;
   address?: Address;
   patientDataSource?: number;
-  sourceLocation?: string;
+  sourceName?: string;
   admittedTo?: string;
   healthCoverage?: number;
   lineId?: string;

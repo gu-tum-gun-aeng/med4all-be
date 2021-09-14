@@ -87,7 +87,7 @@ const PatientRepository = {
         ${patient.checkInWhen}, 
         ${patient.checkOutWhen},
         ${patient.patientDataSource}, 
-        ${patient.sourceLocation}, 
+        ${patient.sourceName}, 
         ${patient.admittedTo}, 
         ${patient.healthCoverage}, 
         ${patient.lineId}, 
