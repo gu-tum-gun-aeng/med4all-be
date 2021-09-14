@@ -16,63 +16,63 @@ import {
   mockVolunteer,
 } from "../../mock/volunteer/volunteer.mock.ts";
 
-Deno.test("PatientController.createPatient should response with error patient already register in colink when given patient is already exist in colink system", async () => {
-  const stubPatientRepositoryGetPatientRegisterStatus = stub(
-    PatientRepository,
-    "getPatientRegisterStatus",
-    [await { is_registered: false }],
-  );
+// Deno.test("PatientController.createPatient should response with error patient already register in colink when given patient is already exist in colink system", async () => {
+//   const stubPatientRepositoryGetPatientRegisterStatus = stub(
+//     PatientRepository,
+//     "getPatientRegisterStatus",
+//     [await { is_registered: false }],
+//   );
 
-  const colinkCheckStatusResponseAsPatientAlreadyExist =
-    await mockColinkApiCheckStatusDuplicatePatientResponse();
+//   const colinkCheckStatusResponseAsPatientAlreadyExist =
+//     await mockColinkApiCheckStatusDuplicatePatientResponse();
 
-  const stubPatientRepository = stub(
-    PatientRepository,
-    "createPatient",
-    [10],
-  );
+//   const stubPatientRepository = stub(
+//     PatientRepository,
+//     "createPatient",
+//     [10],
+//   );
 
-  const stubPatientApiService = stub(
-    PatientApiService,
-    "publishPatient",
-    [await mockPublishPatientResponse],
-  );
+//   const stubPatientApiService = stub(
+//     PatientApiService,
+//     "publishPatient",
+//     [await mockPublishPatientResponse],
+//   );
 
-  const stubColinkApiService = stub(
-    ColinkApiService,
-    "checkStatus",
-    [colinkCheckStatusResponseAsPatientAlreadyExist],
-  );
+//   const stubColinkApiService = stub(
+//     ColinkApiService,
+//     "checkStatus",
+//     [colinkCheckStatusResponseAsPatientAlreadyExist],
+//   );
 
-  const stubVolunteerRepository = stub(
-    VolunteerRepository,
-    "getVolunteerById",
-    await mockVolunteer,
-  );
+//   const stubVolunteerRepository = stub(
+//     VolunteerRepository,
+//     "getVolunteerById",
+//     await mockVolunteer,
+//   );
 
-  try {
-    const mockContext = testing.createMockContext();
-    (mockContext.request.body as any) = () => ({
-      type: "json",
-      value: patientRequestMock,
-    });
-    await PatientController.createPatient(mockContext);
-    assertEquals(mockContext.response.body, {
-      results: {
-        error: {
-          id: 1002,
-          message: "Patient is already exist in Colink system.",
-        },
-      },
-    });
-  } finally {
-    stubPatientRepositoryGetPatientRegisterStatus.restore();
-    stubPatientRepository.restore();
-    stubPatientApiService.restore();
-    stubColinkApiService.restore();
-    stubVolunteerRepository.restore();
-  }
-});
+//   try {
+//     const mockContext = testing.createMockContext();
+//     (mockContext.request.body as any) = () => ({
+//       type: "json",
+//       value: patientRequestMock,
+//     });
+//     await PatientController.createPatient(mockContext);
+//     assertEquals(mockContext.response.body, {
+//       results: {
+//         error: {
+//           id: 1002,
+//           message: "Patient is already exist in Colink system.",
+//         },
+//       },
+//     });
+//   } finally {
+//     stubPatientRepositoryGetPatientRegisterStatus.restore();
+//     stubPatientRepository.restore();
+//     stubPatientApiService.restore();
+//     stubColinkApiService.restore();
+//     stubVolunteerRepository.restore();
+//   }
+// });
 
 Deno.test("PatientController.createPatient should response with error when there is no match between volunteer team and destination config", async () => {
   const stubPatientRepositoryGetPatientRegisterStatus = stub(

@@ -5,9 +5,9 @@ import { CreatePatientRequest } from "../models/patient/request/patient.request.
 import { PatientRegisterStatus } from "../models/patient/response/patientRegisterStatus.response.ts";
 import { mapPatientApiRequest } from "../models/patient-api/request/mapper/patient-api.request.mapper.ts";
 import { PublishPatientResponse } from "../models/patient-api/response/patient-api.response.model.ts";
-import ColinkApiService from "../dataaccess/service/colink-api/colink-api.service.ts";
-import * as ColinkCheckStatusRequest from "../models/colink/request/colink.check-status.request.ts";
-import { ColinkCheckStatusCamelCaseResponse } from "../models/colink/response/colink.check-status.response.ts";
+// import ColinkApiService from "../dataaccess/service/colink-api/colink-api.service.ts";
+// import * as ColinkCheckStatusRequest from "../models/colink/request/colink.check-status.request.ts";
+// import { ColinkCheckStatusCamelCaseResponse } from "../models/colink/response/colink.check-status.response.ts";
 import { CreatePatientResponse } from "../models/patient/response/patient.response.ts";
 import { CreatePatientErrors } from "../models/errors/createPatient.errors.ts";
 
@@ -33,11 +33,11 @@ export const createPatient = async (
 
   const patientId = await savePatientToDb(patient, createdByUserId);
 
-  if ((await apiColinkCheckStatus(patient)).found) {
-    return {
-      error: CreatePatientErrors.PatientAlreadyExistInColink,
-    };
-  }
+  // if ((await apiColinkCheckStatus(patient)).found) {
+  //   return {
+  //     error: CreatePatientErrors.PatientAlreadyExistInColink,
+  //   };
+  // }
 
   await publishToPatientApi(patient);
 
@@ -86,23 +86,23 @@ export const createPatient = async (
     );
   }
 
-  function apiColinkCheckStatus(patient: CreatePatientRequest) {
-    return traceWrapperAsync<
-      ColinkCheckStatusCamelCaseResponse
-    >(
-      async () => {
-        try {
-          return await ColinkApiService.checkStatus(
-            ColinkCheckStatusRequest.from(patient),
-          );
-        } catch (error) {
-          throw new Error("Cannot send request to colink api. Msg: " + error);
-        }
-      },
-      "externalApi",
-      "colinkCheckStatus",
-    );
-  }
+  // function apiColinkCheckStatus(patient: CreatePatientRequest) {
+  //   return traceWrapperAsync<
+  //     ColinkCheckStatusCamelCaseResponse
+  //   >(
+  //     async () => {
+  //       try {
+  //         return await ColinkApiService.checkStatus(
+  //           ColinkCheckStatusRequest.from(patient),
+  //         );
+  //       } catch (error) {
+  //         throw new Error("Cannot send request to colink api. Msg: " + error);
+  //       }
+  //     },
+  //     "externalApi",
+  //     "colinkCheckStatus",
+  //   );
+  // }
 };
 
 export default {
