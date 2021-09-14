@@ -60,8 +60,6 @@ const PatientController = {
         ctx.userId!,
       );
 
-    //const response: CreatePatientResponse = patientResponse;
-
     log.debug(
       `create patient response: ${JSON.stringify(patientResponse)}`,
       "createPatient",

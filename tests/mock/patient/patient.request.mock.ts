@@ -61,6 +61,7 @@ const medicalInfo: MedicalInfo = {
 
 const address: Address = {
   province: "someProvince",
+  addressDetail: "someDetail",
   district: "someDistrict",
   subDistrict: "someSubDistrict",
   moo: "4",

@@ -125,7 +125,7 @@ const PatientRepository = {
       )
       VALUES (
         ${patientId.value},
-        ${patient.address?.addressDetail}
+        ${patient.address?.addressDetail},
         ${patient.address?.province}, 
         ${patient.address?.district}, 
         ${patient.address?.subDistrict}, 
