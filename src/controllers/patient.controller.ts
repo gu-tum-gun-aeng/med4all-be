@@ -14,6 +14,7 @@ import { Volunteer } from "../models/volunteer/volunteer.model.ts";
 import config from "../config/config.ts";
 import { getCreatePatientValidatorsFrom } from "../services/patient/patient.validator.ts";
 import volunteerRepository from "../dataaccess/database/volunteer.repository.ts";
+import { VolunteerTeam } from "../models/volunteer/volunteer.team.ts";
 
 const PatientController = {
   getPatientRegisterStatus: async (
@@ -103,29 +104,27 @@ async function validateCreatePatientRequest(
   createPatientRequest: CreatePatientRequest,
   volunteer: Volunteer,
 ) {
-  const teamDestination = config.volunteerTeamExternalRoutingDestinations.find(
-    (conf) => conf.team === volunteer.team,
-  );
-
-  if (!teamDestination) {
-    throwError({
-      status: 500,
-      name: "Cannot get external routing destination",
-      path: "createPatient",
-      param: "",
-      message:
-        "Cannot get external routing destination. Either volunteer team is invalid or the team routing destination is missing.",
-      type: "internal error",
-    });
-
-    return;
-  }
+  const teamDestination = getTeamDestinationFrom(volunteer);
 
   const validator = getCreatePatientValidatorsFrom(
     teamDestination?.externalRoutingDestination!,
   );
 
   await validateFor(createPatientRequest, validator, "createPatient");
+}
+
+function getTeamDestinationFrom(volunteer: Volunteer) {
+  const teamDestination = config.volunteerTeamExternalRoutingDestinations.find(
+    (conf) => conf.team === volunteer.team,
+  );
+
+  if (!teamDestination) {
+    return config.volunteerTeamExternalRoutingDestinations.find(
+      (conf) => conf.team === VolunteerTeam.Default,
+    );
+  }
+
+  return teamDestination;
 }
 
 export default PatientController;
